@@ -1,3 +1,9 @@
+const Class = artifacts.require("./Class.sol")
+const Studio = artifacts.require("./Studio.sol")
+const Reseller = artifacts.require("./Reseller.sol")
+const Schedule = artifacts.require("./Schedule.sol")
+const Individual = artifacts.require("./Individual.sol")
+
 let barrys = {
 	contactDetails: "135 W 20th St, New York, NY 10011"
 }

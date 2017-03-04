@@ -1,12 +1,11 @@
 pragma solidity ^0.4.0;
 import {Studio} from "./Studio.sol";
 import {Class} from "./Class.sol";
-import {User} from "./User.sol";
+import "./zeppelin/lifecycle/Killable.sol";
 
-contract Schedule {
+contract Schedule is Killable {
 
 	string public instructor;
-	address private owner;
 	address public class;
 
 	struct Dates {
@@ -39,7 +38,7 @@ contract Schedule {
 
 	modifier withinDeadlineCancellation() { if (now <= dates.cancellation) _; }
 	modifier withinDeadlinePurchase() { if (now <= dates.purchase) _; }
-	modifier onlyowner { if (msg.sender == owner) _; }
+	// modifier onlyowner { if (msg.sender == owner) _; }
 
 	event Cancel(string reason);
 	event SpotPurchased(uint spotType, address attendee, address reseller, uint index);
@@ -66,12 +65,12 @@ contract Schedule {
 
 	function() payable { }
 
-	function complete() onlyowner {
+	function complete() onlyOwner {
 		//class has completed. Balance should sent to the owner
 		selfdestruct(owner);
 	}
 
-	function cancel(string reason) onlyowner {
+	function cancel(string reason) onlyOwner {
 		//studio needs to cancel this schedule. Refund all spots, notify all attendees of the reason.
 		Cancel(reason);
 
@@ -115,7 +114,7 @@ contract Schedule {
 				address reseller = studio.resellerWithSender(msg.sender);
 				spot = Spot(spotType, attendee, reseller);
 			} else {
-				if(User(attendee).owner() != msg.sender) {
+				if(Ownable(attendee).owner() != msg.sender) {
 					throw;
 				}
 				spot = Spot(spotType, attendee, 0x0);

@@ -1,7 +1,8 @@
 pragma solidity ^0.4.0;
-import {User} from "./User.sol";
+import "./zeppelin/lifecycle/Killable.sol";
 
-contract Studio is User("name") {
+contract Studio is Killable {
+	string public name;
 	string public contactDetails;
 	address[] public resellers;
 	address[] public schedules;
@@ -14,18 +15,18 @@ contract Studio is User("name") {
 		owner = msg.sender;
 	}
 
-	function updateContactDetails(string _contactDetails) onlyowner returns (bool) {
+	function updateContactDetails(string _contactDetails) onlyOwner returns (bool) {
 		contactDetails = _contactDetails;
 		ContactDetailsUpdated(contactDetails);
 		return true;
 	}
 
-	function scheduleAdded(address schedule) onlyowner {
+	function scheduleAdded(address schedule) onlyOwner {
 		schedules.push(schedule);
 		ScheduleAdded(schedule);
 	}
 
-	function addReseller(address reseller) onlyowner returns (bool) {
+	function addReseller(address reseller) onlyOwner returns (bool) {
 		if(isAuthorizedReseller(reseller)) {
 			throw;
 		}
@@ -33,7 +34,7 @@ contract Studio is User("name") {
 		return true;
 	}
 
-	function removeReseller(address reseller) onlyowner returns (bool) {
+	function removeReseller(address reseller) onlyOwner returns (bool) {
 		if(!isAuthorizedReseller(reseller)) {
 			throw;
 		}
@@ -60,7 +61,7 @@ contract Studio is User("name") {
 	function resellerWithSender(address sender) returns (address) {
 		address reseller = 0x0;
 		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(User(resellers[resellerIndex]).owner() == sender) {
+			if(Ownable(resellers[resellerIndex]).owner() == sender) {
 				reseller = address(resellers[resellerIndex]);
 				break;
 			}
@@ -71,7 +72,7 @@ contract Studio is User("name") {
 	function isSenderAuthorizedReseller(address sender) returns (bool) {
 		bool isReseller = false;
 		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(User(resellers[resellerIndex]).owner() == sender) {
+			if(Ownable(resellers[resellerIndex]).owner() == sender) {
 				isReseller = true;
 				break;
 			}

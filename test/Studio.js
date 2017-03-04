@@ -2,6 +2,9 @@ let barrys = { contactDetails: "135 W 20th St, New York, NY 10011" }
 let legsAss = { name: "Legs & Ass", description: "Work your legs and ass" }
 let classpass = {}
 
+const Reseller = artifacts.require("./Reseller.sol")
+const Studio = artifacts.require("./Studio.sol")
+
 contract("Studio", (accounts) => {
 	barrys.from = accounts[0]
 	classpass.from = accounts[1]
@@ -19,6 +22,8 @@ contract("Studio", (accounts) => {
 	})
 
 	it("should update studio details", (done) => {
+		console.log('xxxxxx')
+		console.log(barrys.instance)
 		barrys.instance.updateContactDetails(
 			barrys.contactDetails, {from: barrys.from}
 		).then(
