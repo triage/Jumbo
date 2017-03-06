@@ -1,5 +1,4 @@
 let barrys = { contactDetails: "135 W 20th St, New York, NY 10011" }
-let legsAss = { name: "Legs & Ass", description: "Work your legs and ass" }
 let classpass = {}
 
 const Reseller = artifacts.require("./Reseller.sol")
@@ -21,6 +20,7 @@ contract("Studio", (accounts) => {
 	    )
 	})
 
+	/*
 	it("should update studio details", (done) => {
 		console.log('xxxxxx')
 		console.log(barrys.instance)
@@ -70,5 +70,5 @@ contract("Studio", (accounts) => {
 				done()
 			}
 		)
-	})
+	})*/
 })

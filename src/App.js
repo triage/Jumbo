@@ -30,15 +30,14 @@ class App extends Component {
       <span>
         <li className="pure-menu-item">
           <Link to="/signup" className="pure-menu-link">Sign Up</Link>
-        </li>
-        <LoginButtonContainer />
+        </li>]
       </span>
     )
 
     return (
       <div className="App">
         <nav className="navbar pure-menu pure-menu-horizontal">
-          <Link to="/" className="pure-menu-heading pure-menu-link">Truffle Box</Link>
+          <Link to="/" className="pure-menu-heading pure-menu-link">JUMBO</Link>
           <ul className="pure-menu-list navbar-right">
             <OnlyGuestLinks />
             <OnlyAuthLinks />

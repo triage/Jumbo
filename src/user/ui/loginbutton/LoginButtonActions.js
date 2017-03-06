@@ -26,34 +26,33 @@ export function loginUser() {
     // Get current ethereum wallet.
     var coinbase = web3.eth.coinbase;
 
-    authentication.deployed().then(function(instance) {
+    authentication.deployed().then((instance) => {
       authenticationInstance = instance
 
       // Attempt to login user.
       authenticationInstance.login({from: coinbase})
-      .catch(function(result) {
+    }).catch((result) => {
         // If error, go to signup page.
         console.log('Wallet ' + coinbase + ' does not have an account!')
 
         return browserHistory.push('/signup')
-      })
-      .then(function(result) {
+    }).then((result) => {
         // If no error, login user.
-        var userName = web3.toUtf8(result)
+      debugger
+      var userName = web3.toUtf8(result)
 
-        dispatch(userLoggedIn({"name": userName}))
+      dispatch(userLoggedIn({"name": userName}))
 
-        // Used a manual redirect here as opposed to a wrapper.
-        // This way, once logged in a user can still access the home page.
-        var currentLocation = browserHistory.getCurrentLocation()
+      // Used a manual redirect here as opposed to a wrapper.
+      // This way, once logged in a user can still access the home page.
+      var currentLocation = browserHistory.getCurrentLocation()
 
-        if ('redirect' in currentLocation.query)
-        {
-          return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
-        }
+      if ('redirect' in currentLocation.query)
+      {
+        return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
+      }
 
-        return browserHistory.push('/dashboard')
-      })
+      return browserHistory.push('/dashboard')
     })
   }
 }
