@@ -1,5 +1,6 @@
 import Web3 from 'web3'
 import AuthenticationContract from '../../../../build/contracts/Authentication.json'
+
 import { browserHistory } from 'react-router'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
@@ -7,7 +8,7 @@ const web3 = new Web3(provider)
 const contract = require('truffle-contract')
 
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
-function userLoggedIn(user) {
+export function userLoggedIn(user) {
   return {
     type: USER_LOGGED_IN,
     payload: user
@@ -30,7 +31,7 @@ export function loginUser() {
       authenticationInstance = instance
 
       // Attempt to login user.
-      authenticationInstance.login({from: coinbase})
+      return authenticationInstance.login({ from: coinbase })
     }).catch((result) => {
         // If error, go to signup page.
         console.log('Wallet ' + coinbase + ' does not have an account!')
@@ -38,10 +39,9 @@ export function loginUser() {
         return browserHistory.push('/signup')
     }).then((result) => {
         // If no error, login user.
-      debugger
-      var userName = web3.toUtf8(result)
+      var user = result
 
-      dispatch(userLoggedIn({"name": userName}))
+      dispatch(userLoggedIn({"user": user}))
 
       // Used a manual redirect here as opposed to a wrapper.
       // This way, once logged in a user can still access the home page.

@@ -34,20 +34,15 @@ export function signUpUser(name) {
 
     studio.new(name, { from: coinbase, gas: 4700000 }).then((instance) => {
       studioInstance = instance
-      console.log(`created new studio!`)
-      console.log(instance)
       return authentication.deployed()
     }).catch((error) => {
       console.log(`error creating new studio:${error}`)
     }).then((instance) => {
-      console.log(`auth instance:`)
-      console.log(instance)
       authenticationInstance = instance
       return authenticationInstance.signup(studioInstance.address, { from: coinbase })
     }).catch((error) => {
       console.log(`error registering studio:${error}`)
     }).then((result) => {
-      console.log(`done:${result}`)
       if(result) {
         dispatch(loginUser())
       } else {

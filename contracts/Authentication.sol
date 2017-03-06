@@ -8,7 +8,7 @@ contract Authentication is Killable {
 
   uint private id; // Stores user id temporarily
 
-  function login() constant returns (bool) {
+  function login() constant returns (address) {
     // Check if user exists.
     // If yes, return user.
     // If no, throw.
@@ -18,7 +18,7 @@ contract Authentication is Killable {
         throw;
     }
 
-    return (users[msg.sender]);
+    return users[msg.sender];
   }
 
   function signup(address user) payable returns (bool) {
