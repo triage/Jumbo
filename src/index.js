@@ -25,15 +25,30 @@ import store from './store';
 // import truffleConfig from './../truffle.js'
 
 const history = syncHistoryWithStore(browserHistory, store)
+const isAuthenticated = web3.eth.accounts.length === 1
 
-var coinbase = web3.eth.coinbase;
+const HomeAuthenticated = (
+  <Home isAuthenticated={true} />
+)
+
+const HomeAnonymous = (
+  <Home isAuthenticated={false} />
+)
+
+function HomeWrapper(){
+  if (!isAuthenticated) {
+    return HomeAnonymous
+  }
+  debugger
+  return HomeAuthenticated
+}
 
 function render() {
   ReactDOM.render((
       <Provider store={store}>
         <Router history={history}>
           <Route path="/" component={App}>
-            <IndexRoute component={Home} />
+            <IndexRoute component={HomeWrapper} />
             <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
             <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
             <Route path="profile" component={UserIsAuthenticated(Profile)} />
@@ -45,7 +60,7 @@ function render() {
   );
 }
 
-if(!coinbase) {
+if(!isAuthenticated) {
   render()
 } else {
     const authentication = contract(AuthenticationContract)
@@ -57,6 +72,8 @@ if(!coinbase) {
       if(user) {
         store.dispatch(userLoggedIn(user))
       }
+      render()
+    }).catch(() => {
       render()
     })
 }
