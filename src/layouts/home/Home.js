@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 
 const Home = ((isAuthenticated) => {
-  debugger
-  console.log(`isAuthenticated:${isAuthenticated}`)
   if(isAuthenticated.isAuthenticated) {
     return (
       <main className="container">
@@ -16,8 +14,6 @@ const Home = ((isAuthenticated) => {
       </main>
     )
   }
-
-  debugger
 
   return(
     <main className="container">

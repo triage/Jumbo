@@ -21,9 +21,6 @@ import Profile from './user/layouts/profile/Profile';
 // Redux Store
 import store from './store';
 
-// Config
-// import truffleConfig from './../truffle.js'
-
 const history = syncHistoryWithStore(browserHistory, store)
 const isAuthenticated = web3.eth.accounts.length === 1
 
@@ -39,7 +36,6 @@ function HomeWrapper(){
   if (!isAuthenticated) {
     return HomeAnonymous
   }
-  debugger
   return HomeAuthenticated
 }
 
@@ -60,6 +56,7 @@ function render() {
   );
 }
 
+
 if(!isAuthenticated) {
   render()
 } else {
@@ -71,6 +68,9 @@ if(!isAuthenticated) {
     }).then((user) => {
       if(user) {
         store.dispatch(userLoggedIn(user))
+        if (window.location.pathname === "/") {
+          browserHistory.push("dashboard")
+        }
       }
       render()
     }).catch(() => {
