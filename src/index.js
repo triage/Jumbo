@@ -22,21 +22,19 @@ import Profile from './user/layouts/profile/Profile';
 import store from './store';
 
 const history = syncHistoryWithStore(browserHistory, store)
-const isAuthenticated = web3.eth.accounts.length === 1
+const isAuthenticated = (web3.eth.accounts[0] !== undefined)
+let hasAccount = false
 
-const HomeAuthenticated = (
-  <Home isAuthenticated={true} />
-)
+// const HomeAuthenticated = (
+//   <Home isAuthenticated={isAuthenticated} hasAccount={hasAccount} />
+// )
 
-const HomeAnonymous = (
-  <Home isAuthenticated={false} />
-)
+// const HomeAnonymous = (
+//   <Home isAuthenticated={false}  hasAccount={hasAccount} />
+// )
 
 function HomeWrapper(){
-  if (!isAuthenticated) {
-    return HomeAnonymous
-  }
-  return HomeAuthenticated
+  return <Home isAuthenticated={isAuthenticated} hasAccount={hasAccount} />
 }
 
 function render() {
@@ -58,8 +56,10 @@ function render() {
 
 
 if(!isAuthenticated) {
+  debugger
   render()
 } else {
+    debugger
     const authentication = contract(AuthenticationContract)
     authentication.setProvider(provider)
 
@@ -67,13 +67,16 @@ if(!isAuthenticated) {
       return instance.login()
     }).then((user) => {
       if(user) {
+        hasAccount = true
         store.dispatch(userLoggedIn(user))
         if (window.location.pathname === "/") {
           browserHistory.push("dashboard")
         }
       }
+      debugger
       render()
     }).catch(() => {
+      debugger
       render()
     })
 }
