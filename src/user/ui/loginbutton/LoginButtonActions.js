@@ -1,6 +1,5 @@
 import Web3 from 'web3'
 import AuthenticationContract from '../../../../build/contracts/Authentication.json'
-import StudioContract from '../../../../build/contracts/Studio.json'
 
 import { browserHistory } from 'react-router'
 
@@ -18,7 +17,6 @@ export function userLoggedIn(user) {
 
 export function loginUser() {
   return function(dispatch) {
-    debugger
     // Using truffle-contract we create the authentication object.
     const authentication = contract(AuthenticationContract)
     authentication.setProvider(provider)
@@ -26,9 +24,6 @@ export function loginUser() {
     // Declaring this for later so we can chain functions on Authentication.
     var authenticationInstance
 
-    const Studio = web3.eth.contract(StudioContract.abi)
-
-    debugger
     // Get current ethereum wallet.
     var coinbase = web3.eth.coinbase;
 
@@ -42,13 +37,8 @@ export function loginUser() {
         console.log('Wallet ' + coinbase + ' does not have an account!')
 
         return browserHistory.push('/signup')
-    }).then((result) => {
-      debugger
-       return Studio.at(result)
-    }).then((studio) => {
-        // If no error, login user.
-        debugger
-      dispatch(userLoggedIn({"user": studio}))
+    }).then((user) => {
+      dispatch(userLoggedIn({"user": user}))
 
       // Used a manual redirect here as opposed to a wrapper.
       // This way, once logged in a user can still access the home page.

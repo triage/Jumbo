@@ -22,19 +22,11 @@ import Profile from './user/layouts/profile/Profile';
 import store from './store';
 
 const history = syncHistoryWithStore(browserHistory, store)
-const isAuthenticated = (web3.eth.accounts[0] !== undefined)
+let isAnonymous = false
 let hasAccount = false
 
-// const HomeAuthenticated = (
-//   <Home isAuthenticated={isAuthenticated} hasAccount={hasAccount} />
-// )
-
-// const HomeAnonymous = (
-//   <Home isAuthenticated={false}  hasAccount={hasAccount} />
-// )
-
 function HomeWrapper(){
-  return <Home isAuthenticated={isAuthenticated} hasAccount={hasAccount} />
+  return <Home isAuthenticated={!isAnonymous} hasAccount={hasAccount} />
 }
 
 function render() {
@@ -42,7 +34,7 @@ function render() {
       <Provider store={store}>
         <Router history={history}>
           <Route path="/" component={App}>
-            <IndexRoute component={HomeWrapper} />
+            <IndexRoute component={UserIsNotAuthenticated(HomeWrapper)} />
             <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
             <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
             <Route path="profile" component={UserIsAuthenticated(Profile)} />
@@ -54,29 +46,29 @@ function render() {
   );
 }
 
+web3.eth.getCoinbase((error, coinbase) => {
+  if (error) {
+    return
+  }
+  isAnonymous = coinbase === null
+  if (isAnonymous) {
+    render()
+    return
+  }
 
-if(!isAuthenticated) {
-  debugger
-  render()
-} else {
-    debugger
-    const authentication = contract(AuthenticationContract)
-    authentication.setProvider(provider)
+  const authentication = contract(AuthenticationContract)
+  authentication.setProvider(provider)
+  authentication.deployed().then((instance) => {
+    return instance.login()
+  }).then((user) => {
+    if (user) {
+      hasAccount = true
+      store.dispatch(userLoggedIn(user))
+    }
+    render()
+  }).catch((error) => {
+    render()
+  })
+})
 
-    authentication.deployed().then((instance) => {
-      return instance.login()
-    }).then((user) => {
-      if(user) {
-        hasAccount = true
-        store.dispatch(userLoggedIn(user))
-        if (window.location.pathname === "/") {
-          browserHistory.push("dashboard")
-        }
-      }
-      debugger
-      render()
-    }).catch(() => {
-      debugger
-      render()
-    })
-}
+

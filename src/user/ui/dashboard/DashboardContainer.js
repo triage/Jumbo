@@ -3,7 +3,6 @@ import Dashboard from './Dashboard'
 // import { loginUser } from './LoginButtonActions'
 
 const mapStateToProps = (state, ownProps) => {
-  debugger
   return {
     user: state.user
   }
@@ -12,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onClassCreate: (event) => {
-      
+
     }
     // onLoginUserClick: (event) => {
     //   event.preventDefault();

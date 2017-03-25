@@ -1,8 +1,12 @@
 import React from 'react'
+import CreateClassContainer from './class/CreateClassContainer'
 
 const Dashboard = (() => {
   return(
-    <p>Create a class</p>
+    <div>
+      <p>Create a class</p>
+      <CreateClassContainer />    
+    </div>
   )
 })
 
