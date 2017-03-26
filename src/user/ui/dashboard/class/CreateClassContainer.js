@@ -1,5 +1,8 @@
 import { connect } from 'react-redux'
-import CreateClass from './CreateClass'
+import CreateClassForm from './CreateClassForm'
+import createClass from './CreateClassActions'
+
+let input = {}
 
 const mapStateToProps = (state, ownProps) => {
   return {}
@@ -7,20 +10,21 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCreateClass: (event, state) => {
+    onCreateClass: (event) => {
       if(!event) {
         return
       }
       event.preventDefault();
 
-      // dispatch(loginUser())
+      dispatch(createClass(input.name, input.description))
     },
     onNameChanged: (event) => {
       console.log(event.target.value)
-      
+      input.name = event.target.value
     },
     onDescriptionChanged: (event) => {
       console.log(event.target.value)
+      input.description = event.target.value
     }
   }
 }
@@ -28,6 +32,6 @@ const mapDispatchToProps = (dispatch) => {
 const CreateClassContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateClass)
+)(CreateClassForm)
 
 export default CreateClassContainer

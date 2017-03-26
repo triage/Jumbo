@@ -1,15 +1,15 @@
 import React from 'react'
 
-const CreateClass = ((props) => (
-  <form className="pure-form pure-form-stacked" onSubmit={props.onCreateClass(this)}>
+const CreateClassForm = ((props) => (
+  <form className="pure-form pure-form-stacked" onSubmit={(event) => {props.onCreateClass(event)}}>
     <fieldset>
       <label htmlFor="name">Class Name</label>
-      <input id="name" type="text" onChange={(value) => {
-        props.onNameChanged(value)}
+      <input id="name" type="text" onChange={(event) => {
+        props.onNameChanged(event)}
       } placeholder="Name" />
       <p>Description:</p>
-      <textarea id="description" onChange={(value) => {
-        props.onDescriptionChanged(value)}
+      <textarea id="description" onChange={(event) => {
+        props.onDescriptionChanged(event)}
       } />
       <span className="pure-form-message">This is a required field.</span>
       <br />
@@ -18,4 +18,4 @@ const CreateClass = ((props) => (
   </form>
 ))
 
-export default CreateClass
+export default CreateClassForm
