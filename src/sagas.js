@@ -1,7 +1,8 @@
 import { put, takeEvery, call } from 'redux-saga/effects'
+import { watchCreateClass } from './user/ui/dashboard/class/CreateClassSaga'
 
-export default function* rootSaga() {
+export function* rootSaga() {
   yield [
-    createClassSaga()
+    watchCreateClass()
   ]
 }

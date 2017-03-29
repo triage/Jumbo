@@ -4,20 +4,13 @@ import Dashboard from './Dashboard'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user: state.user
+    user: state.user,
+    classes: state.classes
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClassCreate: (event) => {
-
-    }
-    // onLoginUserClick: (event) => {
-    //   event.preventDefault();
-
-    //   dispatch(loginUser())
-    // }
   }
 }
 

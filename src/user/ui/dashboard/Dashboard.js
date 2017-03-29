@@ -1,11 +1,13 @@
 import React from 'react'
 import CreateClassContainer from './class/CreateClassContainer'
 
-const Dashboard = (() => {
+const Dashboard = ((user, classes) => {
   return(
     <div>
       <p>Create a class</p>
-      <CreateClassContainer />    
+      <CreateClassContainer /> 
+      <br />
+      classes: 
     </div>
   )
 })

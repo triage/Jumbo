@@ -1,7 +1,7 @@
 import React from 'react'
 
 const CreateClassForm = ((props) => (
-  <form className="pure-form pure-form-stacked" onSubmit={(event) => {props.onCreateClass(event)}}>
+  <form className="pure-form pure-form-stacked" onSubmit={(event) => {props.onCreateClass(event, props.studio)}}>
     <fieldset>
       <label htmlFor="name">Class Name</label>
       <input id="name" type="text" onChange={(event) => {

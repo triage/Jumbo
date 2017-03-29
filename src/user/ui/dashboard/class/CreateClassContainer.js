@@ -1,29 +1,28 @@
 import { connect } from 'react-redux'
 import CreateClassForm from './CreateClassForm'
-import createClass from './CreateClassActions'
+import { classCreate } from './CreateClassActions'
 
 let input = {}
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+    studio: state.user.data,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCreateClass: (event) => {
+    onCreateClass: (event, studio) => {
       if(!event) {
         return
       }
       event.preventDefault();
-
-      dispatch(createClass(input.name, input.description))
+      dispatch(classCreate(studio, input.name, input.description))
     },
     onNameChanged: (event) => {
-      console.log(event.target.value)
       input.name = event.target.value
     },
     onDescriptionChanged: (event) => {
-      console.log(event.target.value)
       input.description = event.target.value
     }
   }

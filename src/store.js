@@ -8,7 +8,6 @@ import { rootSaga } from './sagas'
 
 const routingMiddleware = routerMiddleware(browserHistory)
 const sagaMiddleware = createSagaMiddleware()
-sagaMiddleware.run(rootSaga)
 
 const store = createStore(
   reducer,
@@ -19,6 +18,6 @@ const store = createStore(
   )
 )
 
-
+sagaMiddleware.run(rootSaga)
 
 export default store
