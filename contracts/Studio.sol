@@ -6,8 +6,10 @@ contract Studio is Killable {
 	string public contactDetails;
 	address[] public resellers;
 	address[] public schedules;
+	address[] public classes;
 
 	event ScheduleAdded(address indexed schedule);
+	event ClassAdded(address indexed class);
 	event ContactDetailsUpdated(string contactDetails);
 
 	function Studio(string _name) {
@@ -19,6 +21,11 @@ contract Studio is Killable {
 		contactDetails = _contactDetails;
 		ContactDetailsUpdated(contactDetails);
 		return true;
+	}
+
+	function classAdded(address class) onlyOwner {
+		classes.push(class);
+		ClassAdded(class);
 	}
 
 	function scheduleAdded(address schedule) onlyOwner {

@@ -1,4 +1,4 @@
-import { CLASS_CREATED } from './CreateClassActions'
+import { CLASS_CREATED } from '/src/user/model/ClassesActions'
 
 const initialState = {
   classes: []

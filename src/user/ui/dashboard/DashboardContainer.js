@@ -5,7 +5,7 @@ import Dashboard from './Dashboard'
 const mapStateToProps = (state, ownProps) => {
   return {
     user: state.user,
-    classes: state.classes
+    classes: state.studio.classes
   }
 }
 

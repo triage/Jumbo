@@ -25,7 +25,8 @@ const history = syncHistoryWithStore(browserHistory, store)
 let isAnonymous = false
 let hasAccount = false
 
-function HomeWrapper(){
+
+function HomeWrapper() {
   return <Home isAuthenticated={!isAnonymous} hasAccount={hasAccount} />
 }
 
