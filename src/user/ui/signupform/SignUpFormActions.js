@@ -39,6 +39,7 @@ export function signUpUser(name) {
       console.log(`error creating new studio:${error}`)
     }).then((instance) => {
       authenticationInstance = instance
+      debugger
       return authenticationInstance.signup(studioInstance.address, { from: coinbase })
     }).catch((error) => {
       console.log(`error registering studio:${error}`)

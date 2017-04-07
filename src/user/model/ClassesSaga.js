@@ -16,12 +16,12 @@ Studio.setProvider(provider)
 
 export function* studioSaga(action) {
   try {
-    debugger
-    const studioInstance = Studio.at(action.studio)
+    const studioInstance = Studio.at([action.address])
     const classes = yield apply(studioInstance, studioInstance.classes)
     debugger
 
   } catch (error) {
+    debugger
     console.log(error)
     yield put({ type: "CLASS_CREATE_FAILED", error })
   }

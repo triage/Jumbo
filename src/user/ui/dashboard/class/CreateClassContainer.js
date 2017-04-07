@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import CreateClassForm from './CreateClassForm'
-import { classCreate } from '/user/model/ClassesActions'
+import { classCreate } from 'src/user/model/ClassesActions'
 
 let input = {}
 
