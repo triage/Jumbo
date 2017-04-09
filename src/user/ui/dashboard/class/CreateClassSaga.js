@@ -19,7 +19,6 @@ export function* createClassSaga(action) {
   const coinbase = web3.eth.coinbase;
 
   try {
-    debugger
     //create the class
     const classInstance = yield apply(Class, Class.new, [action.studio, action.name, action.description, { from: coinbase, gas: 4700000 }])
     const studioInstance = Studio.at(action.studio)

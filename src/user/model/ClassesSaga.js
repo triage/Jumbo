@@ -1,4 +1,4 @@
-import { put, call, apply, takeEvery } from 'redux-saga/effects'
+import { put, call, takeEvery } from 'redux-saga/effects'
 import ClassContract from '../../../build/contracts/Class.json'
 import StudioContract from '../../../build/contracts/Studio.json'
 import Web3 from 'web3'
@@ -13,25 +13,16 @@ Class.setProvider(provider)
 const Studio = contract(StudioContract)
 Studio.setProvider(provider)
 
-export function* studioSaga(action) {
+export function* classesSaga(action) {
 
   try {
-
     const studioInstance = Studio.at(action.address)
-    debugger
     const classesCount = yield call(studioInstance.classesCount.call)
-    for(let i=0; i<classesCount; i++) {
-      const classAddress = yield call(studioInstance.classAtIndex(i).call)
-      debugger
+    for(let classIndex = 0; classIndex < classesCount.toNumber(); classIndex++) {
+      const classAddress = yield call(studioInstance.classAtIndex.call, classIndex)
       yield put(classLoad(classAddress))
     }
-    yield put(classNameLoaded(action.address, name))
-    // console.log(`classes:${classes}`)
-    debugger
   } catch (error) {
-    console.log('omfg')
-    console.log(error)
-    debugger
     yield put({ type: "CLASS_CREATE_FAILED", error })
   }
 }
@@ -47,7 +38,7 @@ export function* classSaga(action) {
 }
 
 export function* watchClassesLoad() {
-  yield takeEvery(CLASSES_LOAD, studioSaga)
+  yield takeEvery(CLASSES_LOAD, classesSaga)
 }
 
 export function* watchClassLoad() {
