@@ -1,4 +1,13 @@
 export const CLASSES_LOAD = 'CLASSES_LOAD'
+export const CLASS_LOAD = 'CLASS_LOAD'
+
+export function classLoad(address) {
+  return {
+    type: CLASS_LOAD,
+    address: address
+  }
+}
+
 export function classesLoad(address) {
   return {
     type: CLASSES_LOAD,

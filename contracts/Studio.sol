@@ -17,10 +17,25 @@ contract Studio is Killable {
 		owner = msg.sender;
 	}
 
-	function updateContactDetails(string _contactDetails) onlyOwner returns (bool) {
+	function updateContactDetails(string _contactDetails) public onlyOwner {
 		contactDetails = _contactDetails;
 		ContactDetailsUpdated(contactDetails);
-		return true;
+	}
+
+	function schedulesCount() returns (uint) {
+		return schedules.length;
+	}
+
+	function scheduleAtIndex(uint index) returns (address) {
+		return schedules[index];
+	}
+
+	function classesCount() returns (uint) {
+		return classes.length;
+	}
+
+	function classAtIndex(uint index) returns (address) {
+		return classes[index];
 	}
 
 	function classAdded(address class) onlyOwner {
@@ -33,12 +48,11 @@ contract Studio is Killable {
 		ScheduleAdded(schedule);
 	}
 
-	function addReseller(address reseller) onlyOwner returns (bool) {
+	function addReseller(address reseller) public onlyOwner {
 		if(isAuthorizedReseller(reseller)) {
 			throw;
 		}
 		resellers.push(reseller);
-		return true;
 	}
 
 	function removeReseller(address reseller) onlyOwner returns (bool) {
