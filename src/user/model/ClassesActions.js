@@ -1,10 +1,10 @@
 export const CLASSES_LOAD = 'CLASSES_LOAD'
-export const CLASS_LOAD = 'CLASS_LOAD'
+export const CLASS_LOADED = 'CLASS_LOADED'
 
-export function classLoad(address) {
+export function classLoaded(classObject) {
   return {
-    type: CLASS_LOAD,
-    address: address
+    type: CLASS_LOADED,
+    classObject
   }
 }
 
