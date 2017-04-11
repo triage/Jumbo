@@ -2,7 +2,9 @@ import { connect } from 'react-redux'
 import ClassesSelector from "./ClassesSelector"
 
 const mapStateToProps = (state, ownProps) => {
-  return state
+  return {
+    classes: state.studio.classes
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

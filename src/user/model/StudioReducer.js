@@ -10,14 +10,14 @@ const initialState = {
 
 const studioReducer = (state = initialState, action) => {
   if (action.type === CLASS_CREATED) {
-    let classes = state.classes
+    let classes = Array.from(state.classes)
     classes.push(action.class)
     return Object.assign({}, state, {
       classes: classes
     })
   }
   else if (action.type === CLASS_LOADED) {
-    let classes = state.classes
+    let classes = Array.from(state.classes)
     let found = classes.find((element) => {
       return element.address === action.address
     })

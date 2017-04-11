@@ -3,8 +3,7 @@ import Dashboard from './Dashboard'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user: state.user,
-    studio: state.studio
+    user: state.user
   }
 }
 
