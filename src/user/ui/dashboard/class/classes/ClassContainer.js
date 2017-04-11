@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Class from "./Class"
+import ClassOption from "./ClassOption"
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -9,18 +9,13 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClassTap: (event, studio) => {
-      if(!event) {
-        return
-      }
-      event.preventDefault()
-    }
+    
   }
 }
 
 const ClassContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Class)
+)(ClassOption)
 
 export default ClassContainer

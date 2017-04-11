@@ -1,10 +1,8 @@
 import { connect } from 'react-redux'
-import Classes from "./Classes"
+import ClassesSelector from "./ClassesSelector"
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    classes: state.classes
-  }
+  return state
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -21,6 +19,6 @@ const mapDispatchToProps = (dispatch) => {
 const ClassesContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Classes)
+)(ClassesSelector)
 
 export default ClassesContainer
