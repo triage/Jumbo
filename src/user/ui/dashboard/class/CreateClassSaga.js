@@ -27,7 +27,7 @@ export function* createClassSaga(action) {
     yield apply(studioInstance, studioInstance.classAdded, [classInstance.address, { from: coinbase, gas: 4700000 }])
 
     //dispatch
-    yield put(classCreated(classInstance.address))
+    yield put(classCreated({ address: classInstance.address, name: action.name, description: action.description }))
 
   } catch (error) {
     console.log(error)

@@ -2,10 +2,10 @@ import { connect } from 'react-redux'
 import Dashboard from './Dashboard'
 
 const mapStateToProps = (state, ownProps) => {
-  debugger
   return {
     user: state.user,
-    classes: state.studio.classes
+    classes: state.studio.classes,
+    studio: state.studio
   }
 }
 

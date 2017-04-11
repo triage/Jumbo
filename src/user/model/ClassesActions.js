@@ -52,9 +52,9 @@ export function classCreate(studio, name, description) {
 }
 
 export const CLASS_CREATED = 'CLASS_CREATED'
-export function classCreated(newClass) {
+export function classCreated(classObject) {
   return {
     type: CLASS_CREATED,
-    class: newClass
+    class: classObject
   }
 }

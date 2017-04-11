@@ -6,6 +6,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers.js'
 import { userLoggedIn } from './user/ui/loginbutton/LoginButtonActions.js'
 import { classesLoad } from 'src/user/model/ClassesActions'
+import { studioInfoLoad } from 'src/user/model/StudioActions'
 import Web3 from 'web3'
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)
@@ -65,7 +66,9 @@ web3.eth.getCoinbase((error, coinbase) => {
   }).then((user) => {
     if (user) {
       hasAccount = true
+      //todo: make into a saga
       store.dispatch(userLoggedIn(user))
+      store.dispatch(studioInfoLoad(user))
       store.dispatch(classesLoad(user))
     }
     render()
