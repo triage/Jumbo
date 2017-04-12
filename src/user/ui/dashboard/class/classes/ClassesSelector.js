@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ClassesSelector = ({classes, onClassTap}) => {
+const ClassesSelector = ({classes, onClassTap, onClassNew}) => {
   if(!classes) {
     return <div />
   }
@@ -14,8 +14,12 @@ const ClassesSelector = ({classes, onClassTap}) => {
   })
 
   return (
-    <select>
+    <select onChange={(value) => {
+      alert("hi")
+      debugger
+    }}>
       {options}
+      <option value="new">Create new ...</option>
     </select>
   )  
 }

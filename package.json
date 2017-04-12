@@ -52,7 +52,9 @@
   },
   "dependencies": {
     "detect-port": "^1.1.0",
+    "moment": "^2.18.1",
     "react": "^15.4.2",
+    "react-big-calendar": "^0.13.0",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
     "react-router": "^3.0.2",

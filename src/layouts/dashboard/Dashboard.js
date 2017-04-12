@@ -6,7 +6,7 @@ const Dashboard = function() {
   <main className="container">
     <div className="pure-g">
       <div className="pure-u-1-1">
-        <h1>Dashboard</h1>
+        
         <DashboardContainer />
       </div>
     </div>

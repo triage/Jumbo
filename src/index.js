@@ -19,6 +19,7 @@ import Home from './layouts/home/Home';
 import Dashboard from './layouts/dashboard/Dashboard';
 import SignUp from './user/layouts/signup/SignUp';
 import Profile from './user/layouts/profile/Profile';
+import ScheduleNew from './layouts/schedule/ScheduleNew'
 
 // Redux Store
 import store from './store';
@@ -39,6 +40,7 @@ function render() {
           <Route path="/" component={App}>
             <IndexRoute component={UserIsNotAuthenticated(HomeWrapper)} />
             <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
+            <Route path="schedule/new" component={UserIsAuthenticated(ScheduleNew)} />
             <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
             <Route path="profile" component={UserIsAuthenticated(Profile)} />
           </Route>

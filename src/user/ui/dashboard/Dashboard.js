@@ -1,15 +1,21 @@
 import React from 'react'
-import CreateClassContainer from './class/CreateClassContainer'
-import ClassesContainer from './class/classes/ClassesContainer'
+import BigCalendar from 'react-big-calendar'
+import moment from 'moment'
+import { Link } from 'react-router'
+
+BigCalendar.setLocalizer(
+  BigCalendar.momentLocalizer(moment)
+);
 
 const Dashboard = ((user) => {
   return(
     <div>
-      <p>Create a class</p>
-      <CreateClassContainer /> 
-      <br />
-      classes: 
-      <ClassesContainer />
+      <link rel="stylesheet" type="text/css" href="/react-big-calendar.css"></link>
+      <Link to="schedule/new" className="pure-menu-link">Add New Schedule</Link>
+      <BigCalendar
+        events={[]}
+        startAccessor='startDate'
+        endAccessor='endDate' />
     </div>
   )
 })
