@@ -1,13 +1,15 @@
 import React from 'react'
-import ClassesContainer from 'src/user/ui/dashboard/class/classes/ClassesContainer'
+import ScheduleForm from 'user/ui/scheduleForm/ScheduleForm'
 
 const ScheduleNew = function() {
   return (
   <main className="container">
     <div className="pure-g">
       <div className="pure-u-1-1">
-        <div>Create a new schedule</div>
-        <ClassesContainer />
+        <h1>Create a new schedule</h1>
+
+        <ScheduleForm />
+
       </div>
     </div>
   </main>
