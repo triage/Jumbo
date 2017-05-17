@@ -3,7 +3,7 @@ import React from 'react'
 const ClassesSelector = ({classes, onClassSelect}) => {
   const options = classes.map((classObject) => {
     return (
-      <option data-class={classObject} key={`studio_${classObject.address}`}>{classObject.name}</option>
+      <option data-class={classObject.address} key={`studio_${classObject.address}`}>{classObject.name}</option>
     )
   })
 

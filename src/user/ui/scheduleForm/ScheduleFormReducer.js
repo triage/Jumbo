@@ -15,10 +15,11 @@ const ScheduleFormReducer = (state = initialState, action) => {
   }
   else if (action.type === SCHEDULE_INSTRUCTOR_CHANGED) {
     return Object.assign({}, state, {
-      date: action.instructor
+      instructor: action.instructor
     })
   }
   else if (action.type === SCHEDULE_CLASS_CHANGED) {
+    debugger
     return Object.assign({}, state, {
       class: action.class
     })

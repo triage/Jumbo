@@ -1,6 +1,6 @@
 import Web3 from 'web3'
-import StudioContract from '../../../../build/contracts/Studio.json'
-import AuthenticationContract from '../../../../build/contracts/Authentication.json'
+import StudioContract from 'contracts/Studio.json'
+import AuthenticationContract from 'contracts/Authentication.json'
 import { loginUser } from '../loginbutton/LoginButtonActions'
 import { browserHistory } from 'react-router'
 

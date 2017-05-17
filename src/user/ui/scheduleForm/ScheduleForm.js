@@ -3,7 +3,7 @@ import ClassesSelector from 'src/user/ui/class/classes/ClassesSelector'
 import { connect } from 'react-redux'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { scheduleDateChanged, scheduleClassChanged } from './ScheduleFormActions'
+import { scheduleDateChanged, scheduleClassChanged, scheduleInstructorChanged, scheduleSubmit } from './ScheduleFormActions'
 
 const ScheduleForm = ({ classes, dateSelected, onClassSelect, onDateSelect, onInstructorChanged, onSubmit }) => (
   <form onSubmit={onSubmit}>
@@ -17,7 +17,9 @@ const ScheduleForm = ({ classes, dateSelected, onClassSelect, onDateSelect, onIn
       onChange={onDateSelect} />
 
     <h2>Instructor Name</h2>
-    <input type="text" onChange={onInstructorChanged(this)} name="instructor" />
+    <input type="text" onChange={(event) => {
+      onInstructorChanged(event)
+    }} name="instructor" />
     <input type="submit" />
   </form>
 )
@@ -33,18 +35,19 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClassSelect: (event) => {
       event.preventDefault();
-      const classObj = event.target.selectedOptions[0].dataset.class
-      dispatch(scheduleClassChanged(classObj))
+      const address = event.target.selectedOptions[0].dataset.class
+      debugger
+      dispatch(scheduleClassChanged(address))
     },
     onDateSelect: (date) => {
       dispatch(scheduleDateChanged(date))
     },
     onInstructorChanged: (event) => {
-      console.log(event)
+      dispatch(scheduleInstructorChanged(event.target.value))
     },
     onSubmit: (event) => {
-      debugger
-      event.preventDefault()
+      // event.preventDefault()
+      dispatch(scheduleSubmit())
     }
   }
 }

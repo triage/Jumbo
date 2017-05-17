@@ -7,7 +7,7 @@ export const scheduleDateChanged = (date) => {
 }
 
 export const SCHEDULE_INSTRUCTOR_CHANGED = 'SCHEDULE_INSTRUCTOR_CHANGED'
-export const scheduleInstrctorChanged = (instructor) => {
+export const scheduleInstructorChanged = (instructor) => {
   return {
     type: SCHEDULE_INSTRUCTOR_CHANGED,
     instructor
@@ -15,9 +15,16 @@ export const scheduleInstrctorChanged = (instructor) => {
 }
 
 export const SCHEDULE_CLASS_CHANGED = 'SCHEDULE_CLASS_CHANGED'
-export const scheduleClassChanged = (classObj) => {
+export const scheduleClassChanged = (classAddress) => {
   return {
     type: SCHEDULE_CLASS_CHANGED,
-    class: classObj ? classObj : null
+    class: classAddress ? classAddress : null
+  }
+}
+
+export const SCHEDULE_SUBMIT = "SCHEDULE_SUBMIT"
+export const scheduleSubmit = () => {
+  return {
+    type: SCHEDULE_SUBMIT
   }
 }

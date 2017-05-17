@@ -17,7 +17,7 @@ Studio.setProvider(provider)
 
 export function* createClassSaga(action) {
 
-  const coinbase = web3.eth.coinbase;
+  const coinbase = web3.eth.coinbase
 
   try {
     //create the class
