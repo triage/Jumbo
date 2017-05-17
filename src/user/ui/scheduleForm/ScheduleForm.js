@@ -5,8 +5,8 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { scheduleDateChanged, scheduleClassChanged } from './ScheduleFormActions'
 
-const ScheduleForm = ({ classes, dateSelected, onClassSelect, onDateSelect }) => (
-  <form>
+const ScheduleForm = ({ classes, dateSelected, onClassSelect, onDateSelect, onInstructorChanged, onSubmit }) => (
+  <form onSubmit={onSubmit}>
 
     <h2>Class:</h2>
     <ClassesSelector classes={classes} onClassSelect={onClassSelect} />
@@ -17,7 +17,8 @@ const ScheduleForm = ({ classes, dateSelected, onClassSelect, onDateSelect }) =>
       onChange={onDateSelect} />
 
     <h2>Instructor Name</h2>
-    <input type="text" name="instructor" />
+    <input type="text" onChange={onInstructorChanged(this)} name="instructor" />
+    <input type="submit" />
   </form>
 )
 
@@ -32,11 +33,18 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClassSelect: (event) => {
       event.preventDefault();
-      debugger
-      dispatch(scheduleClassChanged())
+      const classObj = event.target.selectedOptions[0].dataset.class
+      dispatch(scheduleClassChanged(classObj))
     },
     onDateSelect: (date) => {
       dispatch(scheduleDateChanged(date))
+    },
+    onInstructorChanged: (event) => {
+      console.log(event)
+    },
+    onSubmit: (event) => {
+      debugger
+      event.preventDefault()
     }
   }
 }

@@ -1,8 +1,15 @@
-import CreateClassContainer from './class/CreateClassContainer'
-import ClassesContainer from './class/classes/ClassesContainer'
+import React from 'react'
+import CreateClassContainer from 'user/ui/class/CreateClassContainer'
+// import ClassesContainer from './class/classes/ClassesContainer'
 
-      <p>Create a class</p>
-      <CreateClassContainer /> 
-      <br />
-      classes: 
-      <ClassesContainer />
+const CreateClass = () => (
+  <main className="container">
+    <div className="pure-g">
+      <div className="pure-u-1-1">
+        <CreateClassContainer /> 
+      </div>
+    </div>
+  </main>
+)
+
+export default CreateClass

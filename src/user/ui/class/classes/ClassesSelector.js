@@ -13,7 +13,7 @@ const ClassesSelector = ({classes, onClassSelect}) => {
     }}>
       <option value=""></option>
       {options}
-      <option value="new" data={{foo: "bar"}} data-foo="foobar" data-class={null}>Create new ...</option>
+      <option value="new" data-action="new" data-class={null}>Create new ...</option>
     </select>
   )  
 }

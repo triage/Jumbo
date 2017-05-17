@@ -1,4 +1,4 @@
-import { SCHEDULE_DATE_CHANGED, SCHEDULE_INSTRUCTOR_CHANGED } from './ScheduleFormActions'
+import { SCHEDULE_DATE_CHANGED, SCHEDULE_CLASS_CHANGED, SCHEDULE_INSTRUCTOR_CHANGED } from './ScheduleFormActions'
 import moment from 'moment'
 
 const initialState = {
@@ -16,6 +16,11 @@ const ScheduleFormReducer = (state = initialState, action) => {
   else if (action.type === SCHEDULE_INSTRUCTOR_CHANGED) {
     return Object.assign({}, state, {
       date: action.instructor
+    })
+  }
+  else if (action.type === SCHEDULE_CLASS_CHANGED) {
+    return Object.assign({}, state, {
+      class: action.class
     })
   }
   return state

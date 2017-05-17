@@ -18,6 +18,6 @@ export const SCHEDULE_CLASS_CHANGED = 'SCHEDULE_CLASS_CHANGED'
 export const scheduleClassChanged = (classObj) => {
   return {
     type: SCHEDULE_CLASS_CHANGED,
-    class: classObj
+    class: classObj ? classObj : null
   }
 }
