@@ -16,7 +16,7 @@ export const getSchedule = (state) => state.schedule
 
 export function* scheduleClassChangedSaga(action) {
   try {
-    if (action.class === undefined) {
+    if (!action.class) {
       yield call(browserHistory.push, '/class/new')
     }
   } catch (error) {
@@ -31,6 +31,7 @@ export function* scheduleSubmitSaga(action) {
 
   try {
     const submission = yield select(getSchedule)
+    debugger
     //function Schedule(address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {
     const schedule = yield apply(
       Schedule,

@@ -3,31 +3,84 @@ import ClassesSelector from 'src/user/ui/class/classes/ClassesSelector'
 import { connect } from 'react-redux'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { scheduleDateChanged, scheduleClassChanged, scheduleInstructorChanged, scheduleSubmit } from './ScheduleFormActions'
+import {
+  scheduleDateChanged,
+  scheduleTimeStartChanged,
+  scheduleTimeEndChanged,
+  scheduleClassChanged,
+  scheduleInstructorChanged,
+  scheduleSubmit,
+  numberSpotsChanged,
+  numberResellerSpotsChanged
+} from './ScheduleFormActions'
+import NumericInput from 'react-numeric-input';
 
-const ScheduleForm = ({ classes, dateSelected, onClassSelect, onDateSelect, onInstructorChanged, onSubmit }) => (
-  <form onSubmit={onSubmit}>
+const ScheduleForm = ({
+  classes,
+  dateSelected,
+  spots,
+  timeStartSelected,
+  timeEndSelected,
+  onClassSelect,
+  onDateChanged,
+  onTimeStartChanged,
+  onTimeEndChanged,
+  onInstructorChanged,
+  onNumberOfSpotsChanged,
+  onNumberOfResllerSpotsChanged,
+  onSubmit }) => (
+    <form onSubmit={onSubmit}>
 
-    <h2>Class:</h2>
-    <ClassesSelector classes={classes} onClassSelect={onClassSelect} />
+      <h2>Class:</h2>
+      <ClassesSelector classes={classes} onClassSelect={onClassSelect} />
 
-    <h2>Date</h2>
-    <DatePicker
-      selected={dateSelected}
-      onChange={onDateSelect} />
+      <h2>Date Start:</h2>
+      <DatePicker
+        selected={dateSelected}
+        onChange={onDateChanged} />
 
-    <h2>Instructor Name</h2>
-    <input type="text" onChange={(event) => {
-      onInstructorChanged(event)
-    }} name="instructor" />
-    <input type="submit" />
-  </form>
+      <h2>Time Start:</h2>
+      <input
+        type="text"
+        value={timeStartSelected}
+        onChange={(event) => {
+          onTimeStartChanged(event)
+        }} />
+
+      <h2>Time End:</h2>
+      <input
+        type="text"
+        value={timeEndSelected}
+        onChange={(event) => {
+          onTimeEndChanged(event)
+        }} />
+
+      <h2>Instructor Name</h2>
+      <input type="text" onChange={(event) => {
+        onInstructorChanged(event)
+      }} name="instructor" />
+
+      <h2>Number of spots</h2>
+      <NumericInput min={0} max={100} value={spots.total} onChange={(valueAsNumber) => {
+        onNumberOfSpotsChanged(valueAsNumber)
+      }}/>
+
+      <h2>Reseller spots</h2>
+      <NumericInput min={0} max={spots.total} value={spots.reseller} onChange={(valueAsNumber) => {
+        onNumberOfResllerSpotsChanged(valueAsNumber)
+      }}/>
+      <hr />
+      <input type="submit" />
+    </form>
 )
 
 const mapStateToProps = (state, ownProps) => {
   return {
     classes: state.studio.classes,
-    dateSelected: state.schedule.date
+    dateSelected: state.schedule.date,
+    spots: state.schedule.spots,
+    timeStartSelected: state.schedule.time.start,
+    timeEndSelected: state.schedule.time.end,
   }
 }
 
@@ -36,17 +89,28 @@ const mapDispatchToProps = (dispatch) => {
     onClassSelect: (event) => {
       event.preventDefault();
       const address = event.target.selectedOptions[0].dataset.class
-      debugger
       dispatch(scheduleClassChanged(address))
     },
-    onDateSelect: (date) => {
+    onDateChanged: (date) => {
       dispatch(scheduleDateChanged(date))
+    },
+    onTimeStartChanged: (event) => {
+      dispatch(scheduleTimeStartChanged(event.target.value))
+    },
+    onTimeEndChanged: (event) => {
+      dispatch(scheduleTimeEndChanged(event.target.value))
     },
     onInstructorChanged: (event) => {
       dispatch(scheduleInstructorChanged(event.target.value))
     },
+    onNumberOfSpotsChanged: (value) => {
+      dispatch(numberSpotsChanged(value))
+    },
+    onNumberOfResllerSpotsChanged: (value) => {
+      dispatch(numberResellerSpotsChanged(value))
+    },
     onSubmit: (event) => {
-      // event.preventDefault()
+      event.preventDefault()
       dispatch(scheduleSubmit())
     }
   }
