@@ -1,5 +1,5 @@
 //scheduleClassChanged
-import { SCHEDULE_CLASS_CHANGED, SCHEDULE_SUBMIT } from './ScheduleFormActions'
+import { SCHEDULE_CLASS_CHANGED, SCHEDULE_SUBMIT, scheduleCreated, scheduleCreateError } from './ScheduleFormActions'
 import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
 import { browserHistory } from 'react-router'
 import Web3 from 'web3'
@@ -31,8 +31,6 @@ export function* scheduleSubmitSaga(action) {
 
   try {
     const submission = yield select(getSchedule)
-    debugger
-    //function Schedule(address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {
     const schedule = yield apply(
       Schedule,
       Schedule.new,
@@ -48,8 +46,9 @@ export function* scheduleSubmitSaga(action) {
         { from: coinbase, gas: 4700000 }
       ]
     )
+    yield put(scheduleCreated(schedule))
   } catch (error) {
-
+    yield put (scheduleCreateError(error))
   }
 }
 

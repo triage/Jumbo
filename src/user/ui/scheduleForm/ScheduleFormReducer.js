@@ -15,8 +15,8 @@ const initialState = {
   class: null,
   date: moment(),
   time: {
-    start: null,
-    end: null
+    start: "8:00",
+    end: "9:00"
   },
   instructor: null,
   spots: {

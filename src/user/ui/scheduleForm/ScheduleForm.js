@@ -11,7 +11,9 @@ import {
   scheduleInstructorChanged,
   scheduleSubmit,
   numberSpotsChanged,
-  numberResellerSpotsChanged
+  numberResellerSpotsChanged,
+  priceIndividualChanged,
+  priceResellerChanged
 } from './ScheduleFormActions'
 import NumericInput from 'react-numeric-input';
 
@@ -28,6 +30,8 @@ const ScheduleForm = ({
   onInstructorChanged,
   onNumberOfSpotsChanged,
   onNumberOfResllerSpotsChanged,
+  onPriceIndividualChanged,
+  onPriceResellerChanged,
   onSubmit }) => (
     <form onSubmit={onSubmit}>
 
@@ -69,6 +73,17 @@ const ScheduleForm = ({
       <NumericInput min={0} max={spots.total} value={spots.reseller} onChange={(valueAsNumber) => {
         onNumberOfResllerSpotsChanged(valueAsNumber)
       }}/>
+
+      <h2>Price (individual)</h2>
+      <input type="text" onChange={(event) => {
+        onPriceIndividualChanged(event)
+      }} />
+
+      <h2>Price (reseller)</h2>
+      <input type="text" onChange={(event) => {
+        onPriceResellerChanged(event)
+      }} />
+
       <hr />
       <input type="submit" />
     </form>
@@ -108,6 +123,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     onNumberOfResllerSpotsChanged: (value) => {
       dispatch(numberResellerSpotsChanged(value))
+    },
+    onPriceIndividualChanged: (event) => {
+      dispatch(priceIndividualChanged(event.target.value))
+    },
+    onPriceResellerChanged: (event) => {
+      dispatch(priceResellerChanged(event.target.value))
     },
     onSubmit: (event) => {
       event.preventDefault()

@@ -45,6 +45,22 @@ export const scheduleSubmit = () => {
   }
 }
 
+export const SCHEDULE_CREATED = "SCHEDULE_CREATED"
+export const scheduleCreated = (contract) => {
+  return {
+    type: SCHEDULE_CREATED,
+    contract: contract
+  }
+}
+
+export const SCHEDULE_CREATE_ERROR = "SCHEDULE_CREATE_ERROR"
+export const scheduleCreateError = (error) => {
+  return {
+    type: SCHEDULE_CREATE_ERROR,
+    error
+  }
+}
+
 export const SCHEDULE_NUMBER_SPOTS_CHANGED = "SCHEDULE_NUMBER_SPOTS_CHANGED"
 export const numberSpotsChanged = (numberOfSpots) => {
   return {
