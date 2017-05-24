@@ -4,6 +4,7 @@ import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
 import { browserHistory } from 'react-router'
 import Web3 from 'web3'
 import ScheduleContract from 'contracts/Schedule.json'
+import StudioContract from 'contracts/Studio.json'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)
@@ -12,7 +13,12 @@ const contract = require('truffle-contract')
 const Schedule = contract(ScheduleContract)
 Schedule.setProvider(provider)
 
-export const getSchedule = (state) => state.schedule
+const Studio = contract(StudioContract)
+Studio.setProvider(provider)
+
+const getSchedule = (state) => state.schedule
+const getStudio = (state) => state.studio
+const getUser = (state) => state.user
 
 export function* scheduleClassChangedSaga(action) {
   try {
@@ -37,8 +43,8 @@ export function* scheduleSubmitSaga(action) {
       [
         submission.class,
         submission.instructor,
-        submission.date.start,
-        submission.date.end,
+        submission.date.start.toDate().valueOf(),
+        submission.date.end.toDate().valueOf(),
         submission.spots.total,
         submission.spots.reseller,
         submission.price.individual,
@@ -46,7 +52,12 @@ export function* scheduleSubmitSaga(action) {
         { from: coinbase, gas: 4700000 }
       ]
     )
+
+    const userObj = yield select(getUser)
+    const studio = Studio.at(userObj.data)
+    yield apply(studio.scheduleAdded, { from: coinbase, gas: 4700000 })
     yield put(scheduleCreated(schedule))
+    yield call(browserHistory.push, '/dashboard')
   } catch (error) {
     yield put (scheduleCreateError(error))
   }

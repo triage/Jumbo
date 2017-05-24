@@ -7,7 +7,10 @@ BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
 );
 
-const Dashboard = ((user) => {
+const Dashboard = ({ user, onLoad }) => {
+
+  onLoad()
+
   return(
     <div>
       <link rel="stylesheet" type="text/css" href="/react-big-calendar.css"></link>
@@ -18,6 +21,6 @@ const Dashboard = ((user) => {
         endAccessor='endDate' />
     </div>
   )
-})
+}
 
 export default Dashboard

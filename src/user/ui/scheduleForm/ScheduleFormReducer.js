@@ -1,7 +1,6 @@
 import {
-  SCHEDULE_DATE_CHANGED,
-  SCHEDULE_TIME_START_CHANGED,
-  SCHEDULE_TIME_END_CHANGED,
+  SCHEDULE_DATE_START_CHANGED,
+  SCHEDULE_DATE_END_CHANGED,
   SCHEDULE_CLASS_CHANGED,
   SCHEDULE_INSTRUCTOR_CHANGED,
   SCHEDULE_NUMBER_SPOTS_CHANGED,
@@ -13,10 +12,9 @@ import moment from 'moment'
 
 const initialState = {
   class: null,
-  date: moment(),
-  time: {
-    start: "8:00",
-    end: "9:00"
+  date: {
+    start: moment(),
+    end: moment()
   },
   instructor: null,
   spots: {
@@ -30,20 +28,16 @@ const initialState = {
 }
 
 const ScheduleFormReducer = (state = initialState, action) => {
-  if (action.type === SCHEDULE_DATE_CHANGED) {
+  if (action.type === SCHEDULE_DATE_START_CHANGED) {
     return Object.assign({}, state, {
-      date: action.date
-    })
-  } else if (action.type === SCHEDULE_TIME_START_CHANGED) {
-    return Object.assign({}, state, {
-      time: Object.assign({}, state.time, {
-        start: action.time.start
+      date: Object.assign({}, state.date, {
+        start: action.date
       })
     })
-  } else if (action.type === SCHEDULE_TIME_END_CHANGED) {
+  } else if (action.type === SCHEDULE_DATE_END_CHANGED) {
     return Object.assign({}, state, {
-      time: Object.assign({}, state.time, {
-        end: action.time.end
+      date: Object.assign({}, state.date, {
+        end: action.date
       })
     })
   } else if (action.type === SCHEDULE_INSTRUCTOR_CHANGED) {

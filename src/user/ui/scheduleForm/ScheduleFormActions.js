@@ -1,11 +1,3 @@
-export const SCHEDULE_DATE_CHANGED = 'SCHEDULE_DATE_CHANGED'
-export const scheduleDateChanged = (date) => {
-  return {
-    type: SCHEDULE_DATE_CHANGED,
-    date
-  }
-}
-
 export const SCHEDULE_INSTRUCTOR_CHANGED = 'SCHEDULE_INSTRUCTOR_CHANGED'
 export const scheduleInstructorChanged = (instructor) => {
   return {
@@ -14,19 +6,19 @@ export const scheduleInstructorChanged = (instructor) => {
   }
 }
 
-export const SCHEDULE_TIME_START_CHANGED = 'SCHEDULE_TIME_START_CHANGED'
-export const scheduleTimeStartChanged = (time) => {
+export const SCHEDULE_DATE_START_CHANGED = 'SCHEDULE_TIME_START_CHANGED'
+export const scheduleDateStartChanged = (date) => {
   return {
-    type: SCHEDULE_TIME_START_CHANGED,
-    time
+    type: SCHEDULE_DATE_START_CHANGED,
+    date
   }
 }
 
-export const SCHEDULE_TIME_END_CHANGED = 'SCHEDULE_TIME_END_CHANGED'
-export const scheduleTimeEndChanged = (time) => {
+export const SCHEDULE_DATE_END_CHANGED = 'SCHEDULE_TIME_END_CHANGED'
+export const scheduleDateEndChanged = (date) => {
   return {
-    type: SCHEDULE_TIME_END_CHANGED,
-    time
+    type: SCHEDULE_DATE_END_CHANGED,
+    date
   }
 }
 

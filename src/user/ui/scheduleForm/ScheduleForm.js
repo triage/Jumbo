@@ -1,12 +1,11 @@
 import React from 'react'
 import ClassesSelector from 'src/user/ui/class/classes/ClassesSelector'
 import { connect } from 'react-redux'
-import DatePicker from 'react-datepicker'
+import { TransitionView, Calendar } from 'react-date-picker'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
-  scheduleDateChanged,
-  scheduleTimeStartChanged,
-  scheduleTimeEndChanged,
+  scheduleDateStartChanged,
+  scheduleDateEndChanged,
   scheduleClassChanged,
   scheduleInstructorChanged,
   scheduleSubmit,
@@ -17,47 +16,48 @@ import {
 } from './ScheduleFormActions'
 import NumericInput from 'react-numeric-input';
 
+import 'react-date-picker/index.css'
+
 const ScheduleForm = ({
   classes,
-  dateSelected,
+  date,
   spots,
-  timeStartSelected,
-  timeEndSelected,
   onClassSelect,
-  onDateChanged,
-  onTimeStartChanged,
-  onTimeEndChanged,
+  onDateStartChanged,
+  onDateEndChanged,
   onInstructorChanged,
   onNumberOfSpotsChanged,
   onNumberOfResllerSpotsChanged,
   onPriceIndividualChanged,
   onPriceResellerChanged,
   onSubmit }) => (
+
     <form onSubmit={onSubmit}>
 
       <h2>Class:</h2>
       <ClassesSelector classes={classes} onClassSelect={onClassSelect} />
 
-      <h2>Date Start:</h2>
-      <DatePicker
-        selected={dateSelected}
-        onChange={onDateChanged} />
+      <h2>Starts at:</h2>
+      <TransitionView>
+          <Calendar
+            dateFormat="YYYY-MM-DD HH:mm:ss.z"
+            defaultDate={date.start}
+            onChange={(dateString, { dateMoment, timestamp}) => {
+              onDateStartChanged(dateMoment)
+            }}
+          />
+        </TransitionView>
 
-      <h2>Time Start:</h2>
-      <input
-        type="text"
-        value={timeStartSelected}
-        onChange={(event) => {
-          onTimeStartChanged(event)
-        }} />
-
-      <h2>Time End:</h2>
-      <input
-        type="text"
-        value={timeEndSelected}
-        onChange={(event) => {
-          onTimeEndChanged(event)
-        }} />
+      <h2>Ends at:</h2>
+      <TransitionView>
+          <Calendar
+            dateFormat="YYYY-MM-DD HH:mm:ss.z"
+            defaultDate={date.end}
+            onChange={(dateString, { dateMoment, timestamp}) => {
+              onDateEndChanged(dateMoment)
+            }}
+          />
+        </TransitionView>
 
       <h2>Instructor Name</h2>
       <input type="text" onChange={(event) => {
@@ -92,10 +92,8 @@ const ScheduleForm = ({
 const mapStateToProps = (state, ownProps) => {
   return {
     classes: state.studio.classes,
-    dateSelected: state.schedule.date,
+    date: state.schedule.date,
     spots: state.schedule.spots,
-    timeStartSelected: state.schedule.time.start,
-    timeEndSelected: state.schedule.time.end,
   }
 }
 
@@ -106,14 +104,11 @@ const mapDispatchToProps = (dispatch) => {
       const address = event.target.selectedOptions[0].dataset.class
       dispatch(scheduleClassChanged(address))
     },
-    onDateChanged: (date) => {
-      dispatch(scheduleDateChanged(date))
+    onDateStartChanged: (date) => {
+      dispatch(scheduleDateStartChanged(date))
     },
-    onTimeStartChanged: (event) => {
-      dispatch(scheduleTimeStartChanged(event.target.value))
-    },
-    onTimeEndChanged: (event) => {
-      dispatch(scheduleTimeEndChanged(event.target.value))
+    onDateEndChanged: (date) => {
+      dispatch(scheduleDateEndChanged(date))
     },
     onInstructorChanged: (event) => {
       dispatch(scheduleInstructorChanged(event.target.value))
