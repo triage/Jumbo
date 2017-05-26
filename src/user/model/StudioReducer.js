@@ -3,7 +3,7 @@ import { STUDIO_INFO_LOADED } from './StudioActions'
 
 const initialState = {
   classes: [],
-  schedules: [],
+  schedules: null,
   name: null,
   contactDetails: null
 }

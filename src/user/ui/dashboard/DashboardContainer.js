@@ -1,16 +1,18 @@
 import { connect } from 'react-redux'
 import Dashboard from './Dashboard'
+import { studioInfoLoad } from '../../model/StudioActions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user: state.user
+    user: state.user,
+    studio: state.studio
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLoad: (dispatch) => {
-
+    onLoad: (address) => {
+      dispatch(studioInfoLoad(address))
     }
   }
 }
