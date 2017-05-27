@@ -72,8 +72,8 @@ web3.eth.getCoinbase((error, coinbase) => {
       hasAccount = true
       //todo: make into a saga
       store.dispatch(userLoggedIn(user))
-      store.dispatch(studioInfoLoad(user))
-      store.dispatch(classesLoad(user))
+      // store.dispatch(studioInfoLoad(user))
+      // store.dispatch(classesLoad(user))
     }
     render()
   }).catch((error) => {

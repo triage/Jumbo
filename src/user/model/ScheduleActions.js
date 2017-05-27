@@ -5,3 +5,11 @@ export const scheduleLoadDetails = (address) => {
         address
     }
 }
+
+export const SCHEDULE_DETAILS_LOADED = "SCHEDULE_DETAILS_LOADED"
+export const scheduleDetailsLoaded = (schedule) => {
+    return {
+        type: SCHEDULE_DETAILS_LOADED,
+        schedule
+    }
+}
