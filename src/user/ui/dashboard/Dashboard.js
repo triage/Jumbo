@@ -19,6 +19,10 @@ const Dashboard = ({ user, studio, schedules, onLoad }) => {
       <BigCalendar
         events={schedules}
         step={15}
+        selectable
+        onSelecting={({start, end}) => {
+          console.log(start)
+        }}
         min={moment({hour: 5}).toDate()}
         max={moment({hour: 21}).toDate()}
         timeslots={4}
