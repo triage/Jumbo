@@ -1,15 +1,23 @@
-export const SCHEDULE_LOAD_DETAILS = "SCHEDULE_LOAD_DETAILS"
-export const scheduleLoadDetails = (address) => {
+export const SCHEDULES_LOADED = 'SCHEDULES_LOADED'
+export const schedulesLoaded = (schedules) => {
     return {
-        type: SCHEDULE_LOAD_DETAILS,
-        address
+        type: SCHEDULES_LOADED,
+        schedules
     }
 }
 
-export const SCHEDULE_DETAILS_LOADED = "SCHEDULE_DETAILS_LOADED"
-export const scheduleDetailsLoaded = (schedule) => {
+export const SCHEDULES_LOAD = 'SCHEDULES_LOAD'
+export const schedulesLoad = (studio) => {
     return {
-        type: SCHEDULE_DETAILS_LOADED,
+        type: SCHEDULES_LOAD,
+        studio
+    }
+}
+
+export const SCHEDULE_ADDED = 'SCHEDULE_ADDED'
+export const scheduleAdded = (schedule) => {
+    return {
+        type: SCHEDULE_ADDED,
         schedule
     }
 }

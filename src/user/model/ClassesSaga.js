@@ -2,7 +2,7 @@ import { put, call, takeEvery } from 'redux-saga/effects'
 import ClassContract from '../../../build/contracts/Class.json'
 import StudioContract from '../../../build/contracts/Studio.json'
 import Web3 from 'web3'
-import { CLASSES_LOAD, classLoaded } from './ClassesActions'
+import { CLASSES_LOAD, classLoaded, classesLoaded } from './ClassesActions'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const contract = require('truffle-contract')
@@ -14,18 +14,24 @@ const Studio = contract(StudioContract)
 Studio.setProvider(provider)
 
 export function* classesSaga(action) {
-
   try {
-    const studioInstance = Studio.at(action.address)
-    const classesCount = yield call(studioInstance.classesCount.call)
+    const studio = Studio.at(action.address)
+    const classesCount = yield call(studio.classesCount.call)
+    let classes = []
     for(let classIndex = 0; classIndex < classesCount.toNumber(); classIndex++) {
-      const classAddress = yield call(studioInstance.classAtIndex.call, classIndex)
-      const classInstance = Class.at(classAddress)
-      const name = yield call(classInstance.name.call)
-      const description = yield call(classInstance.description.call)
-      const classObject = {address: classAddress, name, description}
-      yield put(classLoaded(classObject))
+      const address = yield call(studio.classAtIndex.call, classIndex)
+      const instance = Class.at(address)
+      const name = yield call(instance.name.call)
+      const description = yield call(instance.description.call)
+      const classObject = {
+        address,
+        name,
+        description,
+        instance
+      }
+      classes.push(classObject)
     }
+    yield put(classesLoaded(classes))
   } catch (error) {
     yield put({ type: "CLASS_CREATE_FAILED", error })
   }

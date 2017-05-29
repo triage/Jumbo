@@ -1,7 +1,8 @@
 import { put, call, takeEvery } from 'redux-saga/effects'
 import ScheduleContract from 'contracts/Schedule.json'
+import StudioContract from 'contracts/Studio.json'
 import Web3 from 'web3'
-import { SCHEDULE_LOAD_DETAILS } from './ScheduleActions'
+import { schedulesLoaded, SCHEDULES_LOAD } from './ScheduleActions'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const contract = require('truffle-contract')
@@ -9,21 +10,34 @@ const contract = require('truffle-contract')
 const Schedule = contract(ScheduleContract)
 Schedule.setProvider(provider)
 
-function* scheduleLoadDetailsSaga(action) {
-  try {
-    debugger
-    const schedule = Schedule.at(action.address)
+const Studio = contract(StudioContract)
+
+function* schedulesLoadSaga(action) {
+  debugger
+  const studio = Studio.at(action.studio)
+  const schedulesCount = yield call(studio.schedulesCount.call)
+  console.log(`schedules count:${schedulesCount}`)
+
+  let schedules = []
+  for (let i = 0; i < schedulesCount; i++) {
+    const address = yield call(studio.scheduleAtIndex.call, i)
+    // console.log(`schedule:${schedule}`)
+    const schedule = Schedule.at(address)
     const instructor = yield call(schedule.instructor.call)
     const dates = yield call(schedule.dates.call)
     const klass = yield call(schedule.class.call)
-
-    debugger
-  } catch (error) {
-      debugger
-    // yield put({ type: STUDIO_INFO_ERROR, error })
+    schedules.push({
+      schedule,
+      instructor,
+      dates,
+      class: klass,
+      instance: schedule,
+    })
   }
+  debugger
+  yield put(schedulesLoaded(schedules))
 }
 
-export function* watchScheduleLoadDetails() {
-  yield takeEvery(SCHEDULE_LOAD_DETAILS, scheduleLoadDetailsSaga)
+export function* watchSchedulesLoad() {
+  yield takeEvery(SCHEDULES_LOAD, schedulesLoadSaga)
 }

@@ -7,8 +7,9 @@ BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
 );
 
-const Dashboard = ({ user, studio, onLoad }) => {
-  if (!studio.schedules) {
+const Dashboard = ({ user, studio, schedules, onLoad }) => {
+  if (!studio.loaded) {
+    debugger
     onLoad(user.data)
   }
 

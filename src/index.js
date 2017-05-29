@@ -5,8 +5,8 @@ import { Provider } from 'react-redux'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers.js'
 import { userLoggedIn } from './user/ui/loginbutton/LoginButtonActions.js'
-import { classesLoad } from 'src/user/model/ClassesActions'
-import { studioInfoLoad } from 'src/user/model/StudioActions'
+// import { classesLoad } from 'src/user/model/ClassesActions'
+// import { studioInfoLoad } from 'src/user/model/StudioActions'
 import Web3 from 'web3'
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)

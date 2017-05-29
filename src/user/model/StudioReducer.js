@@ -1,8 +1,10 @@
-import { CLASS_LOADED, CLASS_CREATED } from './ClassesActions'
-import { STUDIO_INFO_LOADED } from './StudioActions'
+import { CLASS_LOADED, CLASS_CREATED, CLASSES_LOADED } from './ClassesActions'
+import { STUDIO_INFO_LOADED, STUDIO_LOADED } from './StudioActions'
+import { SCHEDULES_LOADED } from './ScheduleActions'
 
 const initialState = {
-  classes: [],
+  loaded: false,
+  classes: null,
   schedules: null,
   name: null,
   contactDetails: null
@@ -16,21 +18,14 @@ const studioReducer = (state = initialState, action) => {
       classes: classes
     })
   }
-  else if (action.type === CLASS_LOADED) {
-    let classes = Array.from(state.classes)
-    let found = classes.find((element) => {
-      return element.address === action.address
-    })
-    if(!found) {
-      classes.push(action.classObject)
-    }
+  else if (action.type === CLASSES_LOADED) {
     return Object.assign({}, state, {
-      classes: classes
+      classes: action.classes
     })
-  } else if (action.type === STUDIO_INFO_LOADED) {
+  } else if (action.type === SCHEDULES_LOADED) {
     return Object.assign({}, state, {
-      name: action.name,
-      contactDetails: action.contactDetails
+      schedules: action.schedules,
+      loaded: true
     })
   }
   return state

@@ -57,7 +57,15 @@ export function* scheduleSubmitSaga(action) {
     const studio = Studio.at(userObj.data)
     debugger
     yield apply(studio, studio.scheduleAdded, [schedule.address, { from: coinbase, gas: 4700000 }])
-    yield put(scheduleCreated(schedule))
+    //todo: fix this
+      // schedules.push({
+      //   schedule,
+      //   instructor,
+      //   dates,
+      //   class: klass,
+      //   instance: schedule,
+      // })
+
     yield call(browserHistory.push, '/dashboard')
   } catch (error) {
     yield put (scheduleCreateError(error))
