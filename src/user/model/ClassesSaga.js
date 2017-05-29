@@ -15,7 +15,8 @@ Studio.setProvider(provider)
 
 export function* classesSaga(action) {
   try {
-    const studio = Studio.at(action.address)
+    const studio = Studio.at(action.studio)
+
     const classesCount = yield call(studio.classesCount.call)
     let classes = []
     for(let classIndex = 0; classIndex < classesCount.toNumber(); classIndex++) {
@@ -33,7 +34,9 @@ export function* classesSaga(action) {
     }
     yield put(classesLoaded(classes))
   } catch (error) {
-    yield put({ type: "CLASS_CREATE_FAILED", error })
+    // yield put({ type: "CLASS_CREATE_FAILED", error })
+    console.log(`error:${error}`)
+    debugger
   }
 }
 

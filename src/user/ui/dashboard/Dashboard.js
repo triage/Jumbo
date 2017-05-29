@@ -9,7 +9,6 @@ BigCalendar.setLocalizer(
 
 const Dashboard = ({ user, studio, schedules, onLoad }) => {
   if (!studio.loaded) {
-    debugger
     onLoad(user.data)
   }
 
@@ -18,9 +17,13 @@ const Dashboard = ({ user, studio, schedules, onLoad }) => {
       <link rel="stylesheet" type="text/css" href="/react-big-calendar.css"></link>
       <Link to="schedule/new" className="pure-menu-link">Add New Schedule</Link>
       <BigCalendar
-        events={[]}
-        startAccessor='startDate'
-        endAccessor='endDate' />
+        events={schedules}
+        step={15}
+        min={moment({hour: 5}).toDate()}
+        max={moment({hour: 21}).toDate()}
+        timeslots={4}
+        defaultView='week'
+        defaultDate={new Date()} />
     </div>
   )
 }

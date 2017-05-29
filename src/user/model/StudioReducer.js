@@ -5,7 +5,7 @@ import { SCHEDULES_LOADED } from './ScheduleActions'
 const initialState = {
   loaded: false,
   classes: null,
-  schedules: null,
+  schedules: [],
   name: null,
   contactDetails: null
 }

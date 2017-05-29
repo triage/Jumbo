@@ -6,16 +6,20 @@ const mapStateToProps = (state, ownProps) => {
   return {
     user: state.user,
     studio: state.studio,
-    schedules: state.studio.schedules
+    schedules: state.studio.schedules.map((schedule) => {
+      return {
+        start: schedule.dates.start,
+        end: schedule.dates.end,
+        title: schedule.class
+      }
+    })
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onLoad: (address) => {
-      debugger
       dispatch(studioLoad(address))
-      // dispatch(studioInfoLoad(address))
     }
   }
 }
