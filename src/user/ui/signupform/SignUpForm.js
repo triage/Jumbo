@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import web3 from 'web3'
 
 class SignUpForm extends Component {
   constructor(props) {
@@ -15,12 +14,13 @@ class SignUpForm extends Component {
   }
 
   handleSubmit(event) {
+    debugger
     event.preventDefault()
     if (this.state.name.length < 2)
     {
       return alert('Please fill in your name.')
     }
-
+    debugger
     this.props.onSignUpFormSubmit(this.state.name)
   }
 

@@ -1,13 +1,12 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
-import { Link } from 'react-router'
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
 );
 
-const Dashboard = ({ user, studio, schedules, onLoad }) => {
+const Dashboard = ({ user, studio, schedules, onLoad, onSelectSlot }) => {
   if (!studio.loaded) {
     onLoad(user.data)
   }
@@ -15,13 +14,12 @@ const Dashboard = ({ user, studio, schedules, onLoad }) => {
   return(
     <div>
       <link rel="stylesheet" type="text/css" href="/react-big-calendar.css"></link>
-      <Link to="schedule/new" className="pure-menu-link">Add New Schedule</Link>
       <BigCalendar
         events={schedules}
         step={15}
         selectable
-        onSelecting={({start, end}) => {
-          console.log(start)
+        onSelectSlot={({start, end}) => {
+          onSelectSlot(start,end)
         }}
         min={moment({hour: 5}).toDate()}
         max={moment({hour: 21}).toDate()}

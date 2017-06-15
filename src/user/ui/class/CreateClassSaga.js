@@ -30,7 +30,7 @@ export function* createClassSaga(action) {
     //dispatch
     yield put(classCreated({ address: classInstance.address, name: action.name, description: action.description }))
 
-    yield call(browserHistory.push, '/schedule/new')
+    yield call(browserHistory.push, '/schedule')
 
   } catch (error) {
     console.log(error)

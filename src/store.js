@@ -1,9 +1,10 @@
 import { browserHistory } from 'react-router'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { routerMiddleware } from 'react-router-redux'
-import reducer from './reducer'
 import createSagaMiddleware from 'redux-saga'
+import { persistStore, autoRehydrate } from 'redux-persist'
+import reducer from './reducer'
 import { rootSaga } from './sagas'
 
 const routingMiddleware = routerMiddleware(browserHistory)
@@ -11,10 +12,14 @@ const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(
   reducer,
-  applyMiddleware(
-    thunkMiddleware,
-    routingMiddleware,
-    sagaMiddleware
+  undefined,
+  compose(
+    applyMiddleware(
+      thunkMiddleware,
+      routingMiddleware,
+      sagaMiddleware
+    ),
+    autoRehydrate()
   )
 )
 

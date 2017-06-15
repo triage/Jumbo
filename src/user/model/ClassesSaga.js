@@ -2,7 +2,7 @@ import { put, call, takeEvery } from 'redux-saga/effects'
 import ClassContract from '../../../build/contracts/Class.json'
 import StudioContract from '../../../build/contracts/Studio.json'
 import Web3 from 'web3'
-import { CLASSES_LOAD, classLoaded, classesLoaded } from './ClassesActions'
+import { CLASSES_LOAD, classesLoaded } from './ClassesActions'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const contract = require('truffle-contract')

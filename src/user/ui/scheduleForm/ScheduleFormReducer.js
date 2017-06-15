@@ -1,4 +1,5 @@
 import {
+  SCHEDULE_DATES_CHANGED,
   SCHEDULE_DATE_START_CHANGED,
   SCHEDULE_DATE_END_CHANGED,
   SCHEDULE_CLASS_CHANGED,
@@ -28,7 +29,14 @@ const initialState = {
 }
 
 const ScheduleFormReducer = (state = initialState, action) => {
-  if (action.type === SCHEDULE_DATE_START_CHANGED) {
+if (action.type === SCHEDULE_DATES_CHANGED) {
+    return Object.assign({}, state, {
+      date: Object.assign({}, state.date, {
+        start: action.start,
+        end: action.end
+      })
+    })
+  } else if (action.type === SCHEDULE_DATE_START_CHANGED) {
     return Object.assign({}, state, {
       date: Object.assign({}, state.date, {
         start: action.date

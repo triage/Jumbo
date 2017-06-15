@@ -1,6 +1,8 @@
 import { connect } from 'react-redux'
 import Dashboard from './Dashboard'
 import { studioLoad } from '../../model/StudioActions'
+import { browserHistory } from 'react-router'
+import { scheduleDatesChanged } from '../scheduleForm/ScheduleFormActions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -20,6 +22,13 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLoad: (address) => {
       dispatch(studioLoad(address))
+    },
+    onSelectSlot: (start, end) => {
+      dispatch(scheduleDatesChanged(start, end))
+      browserHistory.push('schedule', {
+        startDate: start,
+        endDate: end
+      })
     }
   }
 }

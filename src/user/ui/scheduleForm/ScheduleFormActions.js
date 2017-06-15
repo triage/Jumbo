@@ -6,6 +6,15 @@ export const scheduleInstructorChanged = (instructor) => {
   }
 }
 
+export const SCHEDULE_DATES_CHANGED = 'SCHEDULE_DATES_CHANGED'
+export const scheduleDatesChanged = (start, end) => {
+  return {
+    type: SCHEDULE_DATES_CHANGED,
+    start,
+    end
+  }
+}
+
 export const SCHEDULE_DATE_START_CHANGED = 'SCHEDULE_TIME_START_CHANGED'
 export const scheduleDateStartChanged = (date) => {
   return {

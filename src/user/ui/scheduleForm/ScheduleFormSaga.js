@@ -1,5 +1,5 @@
 //scheduleClassChanged
-import { SCHEDULE_CLASS_CHANGED, SCHEDULE_SUBMIT, scheduleCreated, scheduleCreateError } from './ScheduleFormActions'
+import { SCHEDULE_CLASS_CHANGED, SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
 import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
 import { browserHistory } from 'react-router'
 import Web3 from 'web3'
@@ -17,7 +17,6 @@ const Studio = contract(StudioContract)
 Studio.setProvider(provider)
 
 const getSchedule = (state) => state.schedule
-const getStudio = (state) => state.studio
 const getUser = (state) => state.user
 
 export function* scheduleClassChangedSaga(action) {

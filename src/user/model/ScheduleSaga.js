@@ -21,7 +21,6 @@ function* schedulesLoadSaga(action) {
   let schedules = []
   for (let i = 0; i < schedulesCount; i++) {
     const address = yield call(studio.scheduleAtIndex.call, i)
-    // console.log(`schedule:${schedule}`)
     const schedule = Schedule.at(address)
     const instructor = yield call(schedule.instructor.call)
     const dates = yield call(schedule.dates.call)
@@ -32,10 +31,10 @@ function* schedulesLoadSaga(action) {
       schedule,
       instructor,
       dates: {
-        start: moment.unix(parseInt(dates[0].valueOf())/1000).toDate(),
-        end: moment.unix(parseInt(dates[1].valueOf())/1000).toDate(),
-        cancellation: moment.unix(parseInt(dates[2].valueOf())/1000).toDate(),
-        purchase: moment.unix(parseInt(dates[3].valueOf())/1000).toDate(),
+        start: moment.unix(parseInt(dates[0].valueOf()) / 1000).toDate(),
+        end: moment.unix(parseInt(dates[1].valueOf()) / 1000).toDate(),
+        cancellation: moment.unix(parseInt(dates[2].valueOf()) / 1000).toDate(),
+        purchase: moment.unix(parseInt(dates[3].valueOf()) / 1000).toDate(),
       },
       class: klass,
       instance: schedule,

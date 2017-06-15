@@ -1,7 +1,7 @@
 import React from 'react'
 import ClassesSelector from 'src/user/ui/class/classes/ClassesSelector'
 import { connect } from 'react-redux'
-import { TransitionView, Calendar } from 'react-date-picker'
+import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
   scheduleDateStartChanged,
@@ -17,6 +17,8 @@ import {
 import NumericInput from 'react-numeric-input';
 
 import 'react-date-picker/index.css'
+
+const format = 'ddd, MMM D, H:mm a'
 
 const ScheduleForm = ({
   classes,
@@ -38,26 +40,10 @@ const ScheduleForm = ({
       <ClassesSelector classes={classes} onClassSelect={onClassSelect} />
 
       <h2>Starts at:</h2>
-      <TransitionView>
-          <Calendar
-            dateFormat="YYYY-MM-DD HH:mm:ss.z"
-            defaultDate={date.start}
-            onChange={(dateString, { dateMoment, timestamp}) => {
-              onDateStartChanged(dateMoment)
-            }}
-          />
-        </TransitionView>
+      <h4>{moment(date.start).format(format)}</h4>
 
       <h2>Ends at:</h2>
-      <TransitionView>
-          <Calendar
-            dateFormat="YYYY-MM-DD HH:mm:ss.z"
-            defaultDate={date.end}
-            onChange={(dateString, { dateMoment, timestamp}) => {
-              onDateEndChanged(dateMoment)
-            }}
-          />
-        </TransitionView>
+      <h4>{moment(date.end).format(format)}</h4>
 
       <h2>Instructor Name</h2>
       <input type="text" onChange={(event) => {
@@ -91,7 +77,7 @@ const ScheduleForm = ({
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    classes: state.studio.classes,
+    classes: state.studio.classes || [],
     date: state.schedule.date,
     spots: state.schedule.spots,
   }

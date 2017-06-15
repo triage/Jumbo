@@ -1,5 +1,4 @@
-import { CLASS_LOADED, CLASS_CREATED, CLASSES_LOADED } from './ClassesActions'
-import { STUDIO_INFO_LOADED, STUDIO_LOADED } from './StudioActions'
+import { CLASS_CREATED, CLASSES_LOADED } from './ClassesActions'
 import { SCHEDULES_LOADED } from './ScheduleActions'
 
 const initialState = {
