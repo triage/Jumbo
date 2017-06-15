@@ -31,7 +31,7 @@ export function* scheduleClassChangedSaga(action) {
 }
 
 export function* scheduleSubmitSaga(action) {
-
+  debugger;
   const coinbase = web3.eth.coinbase
 
   try {
@@ -42,8 +42,8 @@ export function* scheduleSubmitSaga(action) {
       [
         submission.class,
         submission.instructor,
-        submission.date.start.toDate().valueOf(),
-        submission.date.end.toDate().valueOf(),
+        submission.date.start.valueOf(),
+        submission.date.end.valueOf(),
         submission.spots.total,
         submission.spots.reseller,
         submission.price.individual,
@@ -66,6 +66,7 @@ export function* scheduleSubmitSaga(action) {
 
     yield call(browserHistory.push, '/dashboard')
   } catch (error) {
+    console.log(`error:${error}`)
     yield put (scheduleCreateError(error))
   }
 }
