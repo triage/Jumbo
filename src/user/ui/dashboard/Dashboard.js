@@ -6,7 +6,14 @@ BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
 );
 
-const Dashboard = ({ user, studio, schedules, onLoad, onSelectSlot }) => {
+const Event = ({ event }) => (
+  <span>
+    <strong>{event.name}</strong><br />
+    {event.instructor}
+  </span>
+)
+
+const Dashboard = ({ user, studio, events, onLoad, onSelectSlot }) => {
   if (!studio.loaded) {
     onLoad(user.data)
   }
@@ -15,11 +22,14 @@ const Dashboard = ({ user, studio, schedules, onLoad, onSelectSlot }) => {
     <div>
       <link rel="stylesheet" type="text/css" href="/react-big-calendar.css"></link>
       <BigCalendar
-        events={schedules}
+        events={events}
         step={15}
         selectable
         onSelectSlot={({start, end}) => {
           onSelectSlot(start,end)
+        }}
+        components={{
+          event: Event
         }}
         min={moment({hour: 5}).toDate()}
         max={moment({hour: 21}).toDate()}

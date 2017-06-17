@@ -10,7 +10,9 @@ const initialState = {
 }
 
 const studioReducer = (state = initialState, action) => {
-  if (action.type === CLASS_CREATED) {
+  if (action.type === 'persiste/REHYDRATE') {
+    return action.payload;
+  } else if (action.type === CLASS_CREATED) {
     let classes = Array.from(state.classes)
     classes.push(action.class)
     return Object.assign({}, state, {

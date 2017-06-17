@@ -1,4 +1,4 @@
-import { put, call, takeEvery } from 'redux-saga/effects'
+import { put, call, takeEvery, select } from 'redux-saga/effects'
 import ScheduleContract from 'contracts/Schedule.json'
 import StudioContract from 'contracts/Studio.json'
 import Web3 from 'web3'
@@ -18,6 +18,7 @@ function* schedulesLoadSaga(action) {
   const studio = Studio.at(action.studio)
   const schedulesCount = yield call(studio.schedulesCount.call)
 
+  const classes = yield select(state => state.studio.classes);
   let schedules = []
   for (let i = 0; i < schedulesCount; i++) {
     const address = yield call(studio.scheduleAtIndex.call, i)
@@ -36,7 +37,11 @@ function* schedulesLoadSaga(action) {
         cancellation: moment.unix(parseInt(dates[2].valueOf()) / 1000).toDate(),
         purchase: moment.unix(parseInt(dates[3].valueOf()) / 1000).toDate(),
       },
-      class: klass,
+      class: classes.find(found => {
+        if (found.address === klass) {
+          return found;
+        }
+      }),
       instance: schedule,
     })
   }

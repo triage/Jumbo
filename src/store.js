@@ -18,15 +18,15 @@ const composeEnhancers =
     }) : compose;
 
 const enhancer = composeEnhancers(
+  autoRehydrate(),
   applyMiddleware(
     thunkMiddleware,
     routingMiddleware,
     sagaMiddleware
-  ),
-  autoRehydrate()
+  )
 );
-const store = createStore(reducer, undefined, enhancer, autoRehydrate());
-
+const store = createStore(reducer, undefined, enhancer);
 sagaMiddleware.run(rootSaga)
+persistStore(store);
 
 export default store

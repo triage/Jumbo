@@ -8,11 +8,12 @@ const mapStateToProps = (state, ownProps) => {
   return {
     user: state.user,
     studio: state.studio,
-    schedules: state.studio.schedules.map((schedule) => {
+    events: state.studio.schedules.map((schedule) => {
       return {
         start: schedule.dates.start,
         end: schedule.dates.end,
-        title: schedule.class
+        name: schedule.class ? schedule.class.name : 'n/a',
+        instructor: schedule.instructor
       }
     })
   }
