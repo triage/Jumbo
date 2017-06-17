@@ -17,10 +17,8 @@ const Dashboard = ({ user, studio, events, onLoad, onSelectSlot }) => {
   if (!studio.loaded) {
     onLoad(user.data)
   }
-
   return(
     <div>
-      <link rel="stylesheet" type="text/css" href="/react-big-calendar.css"></link>
       <BigCalendar
         events={events}
         step={15}
@@ -34,7 +32,7 @@ const Dashboard = ({ user, studio, events, onLoad, onSelectSlot }) => {
         min={moment({hour: 5}).toDate()}
         max={moment({hour: 21}).toDate()}
         timeslots={4}
-        defaultView='week'
+        defaultView={'week'}
         defaultDate={new Date()} />
     </div>
   )

@@ -8,6 +8,7 @@ import StudioContract from 'contracts/Studio.json'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)
+const coinbase = web3.eth.coinbase
 const contract = require('truffle-contract')
 
 const Schedule = contract(ScheduleContract)
@@ -18,6 +19,8 @@ Studio.setProvider(provider)
 
 const getSchedule = (state) => state.schedule
 const getUser = (state) => state.user
+const gas = 4700000
+const from = { from: coinbase, gas }
 
 export function* scheduleClassChangedSaga(action) {
   try {
@@ -31,10 +34,9 @@ export function* scheduleClassChangedSaga(action) {
 }
 
 export function* scheduleSubmitSaga(action) {
-  debugger;
-  const coinbase = web3.eth.coinbase
-
   try {
+
+    const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
     const submission = yield select(getSchedule)
     const schedule = yield apply(
       Schedule,
@@ -42,19 +44,20 @@ export function* scheduleSubmitSaga(action) {
       [
         submission.class,
         submission.instructor,
-        submission.date.start.valueOf(),
-        submission.date.end.valueOf(),
+        new Date(submission.date.start).valueOf(),
+        new Date(submission.date.end).valueOf(),
         submission.spots.total,
         submission.spots.reseller,
         submission.price.individual,
         submission.price.reseller,
-        { from: coinbase, gas: 4700000 }
+        from
       ]
     )
-
+    debugger;
     const userObj = yield select(getUser)
     const studio = Studio.at(userObj.data)
-    yield apply(studio, studio.scheduleAdded, [schedule.address, { from: coinbase, gas: 4700000 }])
+    const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
+    yield apply(studio, studio.scheduleAdded, [schedule.address, from])
     //todo: fix this
       // schedules.push({
       //   schedule,

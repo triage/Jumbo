@@ -52,6 +52,7 @@ function render() {
 
 web3.eth.getCoinbase((error, coinbase) => {
   if (error) {
+    console.log(`error:${error}`)
     return
   }
   isAnonymous = coinbase === null
@@ -71,6 +72,7 @@ web3.eth.getCoinbase((error, coinbase) => {
     }
     render()
   }).catch((error) => {
+    console.log(`error:${error}`)
     render()
   })
 })

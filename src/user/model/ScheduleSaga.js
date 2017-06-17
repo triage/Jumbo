@@ -26,7 +26,6 @@ function* schedulesLoadSaga(action) {
     const instructor = yield call(schedule.instructor.call)
     const dates = yield call(schedule.dates.call)
     const klass = yield call(schedule.class.call)
-    //move this somewhere model-specific
 
     schedules.push({
       schedule,
