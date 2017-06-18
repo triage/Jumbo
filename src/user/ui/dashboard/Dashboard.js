@@ -13,10 +13,10 @@ const Event = ({ event }) => (
   </span>
 )
 
-const Dashboard = ({ user, studio, events, onLoad, onSelectSlot }) => {
-  if (!studio.loaded) {
+const Dashboard = ({ user, studio, events, onLoad, onSelectSlot, onSelectEvent }) => {
+  // if (!studio.loaded) {
     onLoad(user.data)
-  }
+  // }
   return(
     <div>
       <BigCalendar
@@ -26,6 +26,7 @@ const Dashboard = ({ user, studio, events, onLoad, onSelectSlot }) => {
         onSelectSlot={({start, end}) => {
           onSelectSlot(start,end)
         }}
+        onSelectEvent={event => { onSelectEvent(event)} }
         components={{
           event: Event
         }}

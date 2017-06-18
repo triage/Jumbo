@@ -2,7 +2,7 @@ import { put, call, takeEvery, select } from 'redux-saga/effects'
 import ScheduleContract from 'contracts/Schedule.json'
 import StudioContract from 'contracts/Studio.json'
 import Web3 from 'web3'
-import { schedulesLoaded, SCHEDULES_LOAD } from './ScheduleActions'
+import { schedulesLoaded, SCHEDULES_LOAD, SCHEDULE_LOAD } from './ScheduleActions'
 import moment from 'moment'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
@@ -20,6 +20,7 @@ function* schedulesLoadSaga(action) {
 
   const classes = yield select(state => state.studio.classes);
   let schedules = []
+
   for (let i = 0; i < schedulesCount; i++) {
     const address = yield call(studio.scheduleAtIndex.call, i)
     const schedule = Schedule.at(address)
@@ -28,6 +29,7 @@ function* schedulesLoadSaga(action) {
     const klass = yield call(schedule.class.call)
 
     schedules.push({
+      address,
       schedule,
       instructor,
       dates: {
@@ -49,4 +51,5 @@ function* schedulesLoadSaga(action) {
 
 export function* watchSchedulesLoad() {
   yield takeEvery(SCHEDULES_LOAD, schedulesLoadSaga)
+  // yield takeEvery(SCHEDULE_LOAD, scheduleLoadSaga)
 }

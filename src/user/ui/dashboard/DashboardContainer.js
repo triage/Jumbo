@@ -10,6 +10,7 @@ const mapStateToProps = (state, ownProps) => {
     studio: state.studio,
     events: state.studio.schedules.map((schedule) => {
       return {
+        address: schedule.address,
         start: new Date(schedule.dates.start),
         end: new Date(schedule.dates.end),
         name: schedule.class ? schedule.class.name : 'n/a',
@@ -22,6 +23,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onLoad: (address) => {
+      debugger;
       dispatch(studioLoad(address))
     },
     onSelectSlot: (start, end) => {
@@ -30,6 +32,9 @@ const mapDispatchToProps = (dispatch) => {
         startDate: start,
         endDate: end
       })
+    },
+    onSelectEvent: (event) => {
+      browserHistory.push(`schedule/${event.address}`);
     }
   }
 }
