@@ -23,12 +23,11 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onLoad: (address) => {
-      debugger;
       dispatch(studioLoad(address))
     },
     onSelectSlot: (start, end) => {
       dispatch(scheduleDatesChanged(start, end))
-      browserHistory.push('schedule', {
+      browserHistory.push('schedule/new', {
         startDate: start,
         endDate: end
       })

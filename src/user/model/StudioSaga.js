@@ -25,7 +25,6 @@ function* studioInfoSaga(action) {
 
 function* studioLoadSaga(action) {
   try {
-    debugger;
     //first load studio info
     yield put(studioInfoLoad(action.studio))
     yield take(STUDIO_INFO_LOADED)

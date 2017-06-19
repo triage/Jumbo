@@ -10,11 +10,14 @@ const Schedule = ({ schedule, scheduleLoad }) => {
     )
   }
 
+  console.log('render!')
+  console.log(schedule)
+
   return (
     <div>
       <h2>{schedule.class.name}</h2>
       <h3>{schedule.instructor}</h3>
-      <h4>{moment(schedule.date.start).format(format)} - {moment(schedule.date.end).format(format)}</h4>
+      <h4>{moment(schedule.dates.start).format(format)} - {moment(schedule.dates.end).format(format)}</h4>
     </div>
   )
 }

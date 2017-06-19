@@ -36,7 +36,6 @@ export function* classesSaga(action) {
   } catch (error) {
     // yield put({ type: "CLASS_CREATE_FAILED", error })
     console.log(`error:${error}`)
-    debugger
   }
 }
 

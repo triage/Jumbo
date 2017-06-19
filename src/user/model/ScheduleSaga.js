@@ -6,6 +6,8 @@ import { schedulesLoaded, SCHEDULES_LOAD, SCHEDULE_LOAD } from './ScheduleAction
 import moment from 'moment'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
+const web3 = new Web3(provider)
+
 const contract = require('truffle-contract')
 
 const Schedule = contract(ScheduleContract)
@@ -27,9 +29,11 @@ function* schedulesLoadSaga(action) {
     const instructor = yield call(schedule.instructor.call)
     const dates = yield call(schedule.dates.call)
     const klass = yield call(schedule.class.call)
+    const balance = web3.eth.getBalance(address).valueOf()
 
     schedules.push({
       address,
+      balance,
       schedule,
       instructor,
       dates: {

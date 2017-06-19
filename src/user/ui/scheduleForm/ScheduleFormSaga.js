@@ -36,7 +36,7 @@ export function* scheduleClassChangedSaga(action) {
 export function* scheduleSubmitSaga(action) {
   try {
 
-    const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
+    // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
     const submission = yield select(getSchedule)
     const schedule = yield apply(
       Schedule,
@@ -53,10 +53,9 @@ export function* scheduleSubmitSaga(action) {
         from
       ]
     )
-    debugger;
     const userObj = yield select(getUser)
     const studio = Studio.at(userObj.data)
-    const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
+    // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
     yield apply(studio, studio.scheduleAdded, [schedule.address, from])
     //todo: fix this
       // schedules.push({
