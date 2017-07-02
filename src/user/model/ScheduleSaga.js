@@ -2,7 +2,7 @@ import { put, call, takeEvery, select } from 'redux-saga/effects'
 import ScheduleContract from 'contracts/Schedule.json'
 import StudioContract from 'contracts/Studio.json'
 import Web3 from 'web3'
-import { schedulesLoaded, SCHEDULES_LOAD, SCHEDULE_LOAD } from './ScheduleActions'
+import { schedulesLoaded, SCHEDULES_LOAD } from './ScheduleActions'
 import moment from 'moment'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
@@ -37,6 +37,7 @@ function* schedulesLoadSaga(action) {
       schedule,
       instructor,
       dates: {
+        /* eslint-disable radix */
         start: moment.unix(parseInt(dates[0].valueOf()) / 1000).toDate(),
         end: moment.unix(parseInt(dates[1].valueOf()) / 1000).toDate(),
         cancellation: moment.unix(parseInt(dates[2].valueOf()) / 1000).toDate(),
@@ -46,6 +47,7 @@ function* schedulesLoadSaga(action) {
         if (found.address === klass) {
           return found;
         }
+        return undefined;
       }),
       instance: schedule,
     })
@@ -55,5 +57,4 @@ function* schedulesLoadSaga(action) {
 
 export function* watchSchedulesLoad() {
   yield takeEvery(SCHEDULES_LOAD, schedulesLoadSaga)
-  // yield takeEvery(SCHEDULE_LOAD, scheduleLoadSaga)
 }

@@ -14,9 +14,9 @@ const Event = ({ event }) => (
 )
 
 const Dashboard = ({ user, studio, events, onLoad, onSelectSlot, onSelectEvent }) => {
-  // if (!studio.loaded) {
+  if (!studio.loaded) {
     onLoad(user.data)
-  // }
+  }
   return(
     <div>
       <BigCalendar

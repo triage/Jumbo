@@ -2,6 +2,7 @@
 import { SCHEDULE_CLASS_CHANGED, SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
 import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
 import { browserHistory } from 'react-router'
+import { schedulesLoad } from 'user/model/ScheduleActions'
 import Web3 from 'web3'
 import ScheduleContract from 'contracts/Schedule.json'
 import StudioContract from 'contracts/Studio.json'
@@ -57,14 +58,7 @@ export function* scheduleSubmitSaga(action) {
     const studio = Studio.at(userObj.data)
     // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
     yield apply(studio, studio.scheduleAdded, [schedule.address, from])
-    //todo: fix this
-      // schedules.push({
-      //   schedule,
-      //   instructor,
-      //   dates,
-      //   class: klass,
-      //   instance: schedule,
-      // })
+    yield put(schedulesLoad(userObj.data))
 
     yield call(browserHistory.push, '/dashboard')
   } catch (error) {
