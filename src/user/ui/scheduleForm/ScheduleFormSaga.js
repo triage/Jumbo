@@ -1,7 +1,7 @@
 //scheduleClassChanged
 import { SCHEDULE_CLASS_CHANGED, SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
 import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router-dom'
 import { schedulesLoad } from 'user/model/ScheduleActions'
 import Web3 from 'web3'
 import ScheduleContract from 'contracts/Schedule.json'

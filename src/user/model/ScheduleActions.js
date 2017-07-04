@@ -21,9 +21,3 @@ export const scheduleAdded = (schedule) => ({
     type: SCHEDULE_ADDED,
     schedule
 })
-
-export const SCHEDULE_CANCEL = 'SCHEDULE_CANCEL'
-export const scheduleCancel = (schedule) => ({
-    type: SCHEDULE_CANCEL,
-    schedule
-})

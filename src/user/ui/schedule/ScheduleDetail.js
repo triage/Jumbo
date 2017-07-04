@@ -1,5 +1,6 @@
 import moment from 'moment'
 import React from 'react'
+import { Field, reduxForm } from 'redux-form'
 
 const format = 'ddd, MMM D, H:mm a'
 const style = {
@@ -11,7 +12,14 @@ const style = {
   }
 }
 
-const Schedule = ({ schedule, scheduleLoad, scheduleCancel }) => {
+let Schedule = props => {
+
+  const {
+    schedule,
+    scheduleLoad,
+    scheduleCancel
+  } = props;
+
   if (!schedule) {
     return (
       <p>Not Found</p>
@@ -36,9 +44,20 @@ const Schedule = ({ schedule, scheduleLoad, scheduleCancel }) => {
         attendees ...
       </div>
       <hr />
-      <input type="button" onMouseUp={() => {scheduleCancel(schedule.address)}} value="Cancel" />
+      <form onSubmit={values => {
+        debugger
+        scheduleCancel(values.message)
+      }}>
+        <Field name="message" component="input" type="text" />
+        <button type="submit" onMouseUp={() => {scheduleCancel(schedule.address)}} value="Cancel" />
+      </form>
     </div>
   )
 }
+
+Schedule = reduxForm({
+  // a unique name for the form
+  form: 'cancel'
+})(Schedule)
 
 export default Schedule

@@ -78,15 +78,16 @@ contract Schedule is Killable {
 		for(uint spotIndex = 0; spotIndex < nSpots; spotIndex ++) {
 			Spot spot = spots[spotIndex];
 			if(spot.reseller != 0x0) {
-		        if (!spot.reseller.send(0)) {
-		            throw;
-		        }
+				if (!spot.reseller.send(price[uint(SpotType.Reseller)])) {
+						throw;
+				}
 			} else {
-		        if (!spot.attendee.send(0)) {	
-		            throw;
-		        }
+				if (!spot.attendee.send(price[uint(SpotType.Individual)])) {	
+						throw;
+				}
 			}
 		}
+		selfdestruct(owner);
 	}
 
 	function getPrice() public returns (uint) {

@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import ScheduleDetail from './ScheduleDetail'
-import { scheduleLoad, scheduleCancel } from '../../model/ScheduleActions'
+import { scheduleLoad } from '../../model/ScheduleActions'
+import { scheduleCancel } from './ScheduleDetailActions'
 
 const mapStateToProps = (state, ownProps) => ({
   schedule: state.studio.schedules.find(found => {
