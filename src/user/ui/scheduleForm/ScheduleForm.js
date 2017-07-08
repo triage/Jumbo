@@ -1,11 +1,10 @@
 import React from 'react'
 import ClassesSelector from 'src/user/ui/class/classes/ClassesSelector'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
-  scheduleDateStartChanged,
-  scheduleDateEndChanged,
   scheduleClassChanged,
   scheduleInstructorChanged,
   scheduleSubmit,
@@ -20,24 +19,39 @@ import 'react-date-picker/index.css'
 
 const format = 'ddd, MMM D, H:mm a'
 
-const ScheduleForm = ({
-  classes,
-  date,
-  spots,
-  onClassSelect,
-  onDateStartChanged,
-  onDateEndChanged,
-  onInstructorChanged,
-  onNumberOfSpotsChanged,
-  onNumberOfResllerSpotsChanged,
-  onPriceIndividualChanged,
-  onPriceResellerChanged,
-  onSubmit }) => (
+const ScheduleForm = props => {
 
-    <form onSubmit={onSubmit}>
+  const {
+    classes,
+    date,
+    spots,
+    instructor,
+    price,
+    scheduleClassChanged,
+    scheduleInstructorChanged,
+    numberSpotsChanged,
+    numberResellerSpotsChanged,
+    priceIndividualChanged,
+    priceResellerChanged,
+    scheduleSubmit,
+    history
+  } = props;
 
+  return (
+    <form
+      onSubmit={event => {
+        event.preventDefault()
+        scheduleSubmit(history)
+      }}>
       <h2>Class:</h2>
-      <ClassesSelector classes={classes} onClassSelect={onClassSelect} />
+      <ClassesSelector
+        classes={classes}
+        onClassSelect={event => {
+          event.preventDefault();
+          const address = event.target.selectedOptions[0].dataset.class
+          scheduleClassChanged(address, history);
+        }}
+      />
 
       <h2>Starts at:</h2>
       <h4>{moment(date.start).format(format)}</h4>
@@ -46,81 +60,82 @@ const ScheduleForm = ({
       <h4>{moment(date.end).format(format)}</h4>
 
       <h2>Instructor Name</h2>
-      <input type="text" onChange={(event) => {
-        onInstructorChanged(event)
-      }} name="instructor" />
+      <input
+        name="instructor"
+        type="text"
+        onChange={event => {
+          scheduleInstructorChanged(event.target.value)
+        }}
+        value={instructor}
+      />
 
       <h2>Number of spots</h2>
-      <NumericInput min={0} max={100} value={spots.total} onChange={(valueAsNumber) => {
-        onNumberOfSpotsChanged(valueAsNumber)
-      }}/>
+      <NumericInput
+        min={0}
+        max={100}
+        value={spots.total}
+        onChange={value => {
+          numberSpotsChanged(value)
+        }}
+      />
 
       <h2>Reseller spots</h2>
-      <NumericInput min={0} max={spots.total} value={spots.reseller} onChange={(valueAsNumber) => {
-        onNumberOfResllerSpotsChanged(valueAsNumber)
-      }}/>
+      <NumericInput
+        min={0}
+        max={spots.total}
+        value={spots.reseller}
+        onChange={value => {
+          numberResellerSpotsChanged(value)
+        }}
+      />
 
       <h2>Price (individual)</h2>
-      <input type="text" onChange={(event) => {
-        onPriceIndividualChanged(event)
-      }} />
+      <input
+        type="text"
+        onChange={event => {
+          priceIndividualChanged(event.target.value)
+        }}
+        value={price.individual}
+      />
 
       <h2>Price (reseller)</h2>
-      <input type="text" onChange={(event) => {
-        onPriceResellerChanged(event)
-      }} />
+      <input
+        type="text"
+        onChange={event => {
+          priceResellerChanged(event.target.value)
+        }}
+        value={price.reseller}
+      />
 
       <hr />
       <input type="submit" />
     </form>
-)
+  )
+}
 
 const mapStateToProps = (state, ownProps) => {
   return {
     classes: state.studio.classes || [],
     date: state.schedule.date,
     spots: state.schedule.spots,
+    instructor: state.schedule.instructor,
+    price: state.schedule.price
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onClassSelect: (event) => {
-      event.preventDefault();
-      const address = event.target.selectedOptions[0].dataset.class
-      dispatch(scheduleClassChanged(address))
-    },
-    onDateStartChanged: (date) => {
-      dispatch(scheduleDateStartChanged(date))
-    },
-    onDateEndChanged: (date) => {
-      dispatch(scheduleDateEndChanged(date))
-    },
-    onInstructorChanged: (event) => {
-      dispatch(scheduleInstructorChanged(event.target.value))
-    },
-    onNumberOfSpotsChanged: (value) => {
-      dispatch(numberSpotsChanged(value))
-    },
-    onNumberOfResllerSpotsChanged: (value) => {
-      dispatch(numberResellerSpotsChanged(value))
-    },
-    onPriceIndividualChanged: (event) => {
-      dispatch(priceIndividualChanged(event.target.value))
-    },
-    onPriceResellerChanged: (event) => {
-      dispatch(priceResellerChanged(event.target.value))
-    },
-    onSubmit: (event) => {
-      event.preventDefault()
-      dispatch(scheduleSubmit())
-    }
-  }
-}
+const mapDispatchToProps = ({
+  scheduleClassChanged,
+  scheduleInstructorChanged,
+  numberSpotsChanged,
+  numberResellerSpotsChanged,
+  priceIndividualChanged,
+  priceResellerChanged,
+  scheduleSubmit
+})
 
 const ScheduleFormContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ScheduleForm)
 
-export default ScheduleFormContainer
+export default withRouter(ScheduleFormContainer)

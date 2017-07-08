@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import Dashboard from './Dashboard'
 import { studioLoad } from '../../model/StudioActions'
-import { browserHistory } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { scheduleDatesChanged } from '../scheduleForm/ScheduleFormActions'
 
 const mapStateToProps = (state, ownProps) => {
@@ -20,27 +20,14 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onLoad: (address) => {
-      dispatch(studioLoad(address))
-    },
-    onSelectSlot: (start, end) => {
-      dispatch(scheduleDatesChanged(start, end))
-      browserHistory.push('schedule/new', {
-        startDate: start,
-        endDate: end
-      })
-    },
-    onSelectEvent: (event) => {
-      browserHistory.push(`schedule/${event.address}`);
-    }
-  }
-}
+const mapDispatchToProps = ({
+  studioLoad,
+  scheduleDatesChanged
+})
 
 const DashboardContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Dashboard)
+)(withRouter(Dashboard))
 
 export default DashboardContainer

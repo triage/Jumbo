@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
 
 // Styles
@@ -34,7 +34,8 @@ class App extends Component {
         <nav className="navbar pure-menu pure-menu-horizontal">
           
           <ul className="pure-menu-list navbar-right">
-            
+            <OnlyGuestLinks />
+            <OnlyAuthLinks />
           </ul>
         </nav>
 
@@ -44,6 +45,6 @@ class App extends Component {
   }
 }
 
-export default App
+export default withRouter(App)
 
 //<Link to="/dashboard" className="pure-menu-heading pure-menu-link">JUMBO</Link>

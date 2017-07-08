@@ -6,7 +6,7 @@ const Schedule = props => {
   <main className="container">
     <div className="pure-g">
       <div className="pure-u-1-1">
-        <ScheduleDetailContainer {...props.params} />
+        <ScheduleDetailContainer {...props} />
       </div>
     </div>
   </main>

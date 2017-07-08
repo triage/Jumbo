@@ -1,6 +1,5 @@
-import { put, call, takeEvery, apply } from 'redux-saga/effects'
+import { put, call, takeEvery } from 'redux-saga/effects'
 import ScheduleContract from 'contracts/Schedule.json'
-import { browserHistory } from 'react-router-dom'
 import Web3 from 'web3'
 import { SCHEDULE_CANCEL } from './ScheduleDetailActions'
 

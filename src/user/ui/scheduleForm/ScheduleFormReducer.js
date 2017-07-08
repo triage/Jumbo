@@ -29,7 +29,7 @@ const initialState = {
 }
 
 const ScheduleFormReducer = (state = initialState, action) => {
-if (action.type === SCHEDULE_DATES_CHANGED) {
+  if (action.type === SCHEDULE_DATES_CHANGED) {
     return Object.assign({}, state, {
       date: Object.assign({}, state.date, {
         start: action.start,

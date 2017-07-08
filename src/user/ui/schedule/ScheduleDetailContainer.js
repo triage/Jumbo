@@ -5,7 +5,7 @@ import { scheduleCancel } from './ScheduleDetailActions'
 
 const mapStateToProps = (state, ownProps) => ({
   schedule: state.studio.schedules.find(found => {
-    if (found.address === ownProps.address) {
+    if (found.address === ownProps.match.params.address) {
       return found
     }
     return false

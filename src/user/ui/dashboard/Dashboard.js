@@ -13,9 +13,19 @@ const Event = ({ event }) => (
   </span>
 )
 
-const Dashboard = ({ user, studio, events, onLoad, onSelectSlot, onSelectEvent }) => {
+const Dashboard = props => {
+
+  const {
+    user,
+    studio,
+    events,
+    studioLoad,
+    scheduleDatesChanged,
+    history,
+  } = props;
+
   if (!studio.loaded) {
-    onLoad(user.data)
+    studioLoad(user.data)
   }
   return(
     <div>
@@ -23,10 +33,13 @@ const Dashboard = ({ user, studio, events, onLoad, onSelectSlot, onSelectEvent }
         events={events}
         step={15}
         selectable
-        onSelectSlot={({start, end}) => {
-          onSelectSlot(start,end)
+        onSelectSlot={({start, end}) => {   
+          scheduleDatesChanged(start, end)
+          history.push('schedule/new')
         }}
-        onSelectEvent={event => { onSelectEvent(event)} }
+        onSelectEvent={event => { 
+          history.push(`schedule/${event.address}`)
+        }}
         components={{
           event: Event
         }}

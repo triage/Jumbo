@@ -15,12 +15,13 @@ export function classesLoaded(classes) {
 }
 
 export const CLASS_CREATE = 'CLASS_CREATE'
-export function classCreate(studio, name, description) {
+export function classCreate(studio, name, description, history) {
   return {
     type: CLASS_CREATE,
     studio,
     name,
-    description
+    description,
+    history
   }
 }
 

@@ -1,7 +1,6 @@
 //scheduleClassChanged
 import { SCHEDULE_CLASS_CHANGED, SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
 import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
-import { browserHistory } from 'react-router-dom'
 import { schedulesLoad } from 'user/model/ScheduleActions'
 import Web3 from 'web3'
 import ScheduleContract from 'contracts/Schedule.json'
@@ -26,7 +25,7 @@ const from = { from: coinbase, gas }
 export function* scheduleClassChangedSaga(action) {
   try {
     if (!action.class) {
-      yield call(browserHistory.push, '/class/new')
+      yield call(action.history.push, '/class/new')
     }
   } catch (error) {
     console.log(error)
@@ -60,7 +59,7 @@ export function* scheduleSubmitSaga(action) {
     yield apply(studio, studio.scheduleAdded, [schedule.address, from])
     yield put(schedulesLoad(userObj.data))
 
-    yield call(browserHistory.push, '/dashboard')
+    yield call(action.history.push, '/dashboard')
   } catch (error) {
     console.log(`error:${error}`)
     yield put (scheduleCreateError(error))

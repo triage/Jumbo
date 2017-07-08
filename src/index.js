@@ -33,8 +33,8 @@ let hasAccount = false
 function render() {
   ReactDOM.render((
     <Provider store={store}>
-      <App>
-        <BrowserRouter>
+      <BrowserRouter>
+        <App>
           <Switch>
             <Route path="/dashboard" component={UserIsAuthenticated(Dashboard)} />
             <Route path="/schedule/new" component={UserIsAuthenticated(ScheduleNew)} />
@@ -43,8 +43,8 @@ function render() {
             <Route path="/signup" component={UserIsNotAuthenticated(SignUp)} />
             <Route path="/profile" component={UserIsAuthenticated(Profile)} />
           </Switch>
+          </App>
         </BrowserRouter>
-      </App>
     </Provider>
     ),
     document.getElementById('root')

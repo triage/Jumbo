@@ -9,6 +9,9 @@ const style = {
   },
   balance: {
 
+  },
+  cancel: {
+
   }
 }
 
@@ -17,7 +20,10 @@ let Schedule = props => {
   const {
     schedule,
     scheduleLoad,
-    scheduleCancel
+    scheduleCancel,
+    handleSubmit,
+    pristine,
+    submitting
   } = props;
 
   if (!schedule) {
@@ -44,12 +50,12 @@ let Schedule = props => {
         attendees ...
       </div>
       <hr />
-      <form onSubmit={values => {
-        debugger
-        scheduleCancel(values.message)
-      }}>
-        <Field name="message" component="input" type="text" />
-        <button type="submit" onMouseUp={() => {scheduleCancel(schedule.address)}} value="Cancel" />
+      <span style={style.cancel}>Cancel:</span>
+      <form onSubmit={handleSubmit(values => {
+        console.log(values)
+      })}>
+        <Field name="reason" component="input" type="text" placeholder="cancellation reason"/>
+        <input disabled={pristine || submitting} type="submit" value="Cancel" />
       </form>
     </div>
   )

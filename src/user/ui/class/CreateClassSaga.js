@@ -1,7 +1,6 @@
 import { put, call, takeEvery, apply } from 'redux-saga/effects'
 import ClassContract from 'contracts/Class.json'
 import StudioContract from 'contracts/Studio.json'
-import { browserHistory } from 'react-router-dom'
 import Web3 from 'web3'
 import { CLASS_CREATE, classCreated } from 'src/user/model/ClassesActions'
 
@@ -16,7 +15,7 @@ const Studio = contract(StudioContract)
 Studio.setProvider(provider)
 
 export function* createClassSaga(action) {
-
+  debugger
   const coinbase = web3.eth.coinbase
 
   try {
@@ -26,11 +25,8 @@ export function* createClassSaga(action) {
 
     //add the class to the studio
     yield apply(studioInstance, studioInstance.classAdded, [classInstance.address, { from: coinbase, gas: 4700000 }])
-
-    //dispatch
     yield put(classCreated({ address: classInstance.address, name: action.name, description: action.description }))
-
-    yield call(browserHistory.push, '/schedule/new')
+    yield call(action.history.push, '/schedule/new')
 
   } catch (error) {
     console.log(error)
