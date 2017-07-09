@@ -1,6 +1,6 @@
 export const SCHEDULE_CANCEL = 'SCHEDULE_CANCEL'
-export const scheduleCancel = (schedule, message) => ({
+export const scheduleCancel = (schedule, reason) => ({
     type: SCHEDULE_CANCEL,
     schedule,
-    message
+    reason
 })

@@ -15,7 +15,7 @@ const style = {
   }
 }
 
-let Schedule = props => {
+const Schedule = props => {
 
   const {
     schedule,
@@ -37,33 +37,34 @@ let Schedule = props => {
   const end = moment(schedule.dates.end).format(format)
 
   return (
-    <div>
-      <h2>{schedule.class.name}</h2>
-      <span style={style.address}>
-        (<a href={url} target="_blank">{schedule.address}</a>)
+    <form
+      onSubmit={handleSubmit(values => {
+        scheduleCancel(schedule.address, values.reason)
+      })}
+    >
+      <div>
+        <h2>{schedule.class.name}</h2>
+        <span style={style.address}>
+          (<a href={url} target="_blank">{schedule.address}</a>)
       </span>
-      <h3>{schedule.instructor}</h3>
-      <h4>{start} - {end}</h4>
-      <hr />
-      <span style={style.balance}>${schedule.balance}</span>
-      <div id="attendees">
-        attendees ...
+        <h3>{schedule.instructor}</h3>
+        <h4>{start} - {end}</h4>
+        <hr />
+        <span style={style.balance}>${schedule.balance}</span>
+        <div id="attendees">
+          attendees ...
       </div>
-      <hr />
-      <span style={style.cancel}>Cancel:</span>
-      <form onSubmit={handleSubmit(values => {
-        console.log(values)
-      })}>
-        <Field name="reason" component="input" type="text" placeholder="cancellation reason"/>
+        <hr />
+        <span style={style.cancel}>Cancel:</span>
+
+        <Field name="reason" component="input" type="text" placeholder="cancellation reason" />
         <input disabled={pristine || submitting} type="submit" value="Cancel" />
-      </form>
-    </div>
+      </div>
+    </form>
   )
 }
 
-Schedule = reduxForm({
+export default reduxForm({
   // a unique name for the form
   form: 'cancel'
 })(Schedule)
-
-export default Schedule

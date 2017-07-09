@@ -9,6 +9,7 @@ contract Studio is Killable {
 	address[] public classes;
 
 	event ScheduleAdded(address indexed schedule);
+	event ScheduleRemoved(address indexed schedule);
 	event ClassAdded(address indexed class);
 	event ContactDetailsUpdated(string contactDetails);
 
@@ -46,6 +47,16 @@ contract Studio is Killable {
 	function scheduleAdded(address schedule) onlyOwner {
 		schedules.push(schedule);
 		ScheduleAdded(schedule);
+	}
+
+	function scheduleRemoved(address schedule) onlyOwner {
+		for(uint i = 0; i < schedules.length; i++) {
+			if(schedules[i] == schedule) {
+				delete[schedules[i];
+				ScheduleRemoved(schedule);
+				break;
+			}
+		}
 	}
 
 	function addReseller(address reseller) public onlyOwner {

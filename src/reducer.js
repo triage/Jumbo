@@ -10,7 +10,7 @@ const reducer = combineReducers({
   user: userReducer,
   studio: studioReducer,
   schedule: ScheduleFormReducer,
-  formReducer
+  form: formReducer
 })
 
 export default reducer
