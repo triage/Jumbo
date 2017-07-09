@@ -44,9 +44,10 @@ export function loginUser() {
       // This way, once logged in a user can still access the home page.
       var currentLocation = browserHistory.getCurrentLocation()
 
-      if ('redirect' in currentLocation.query)
+      if ('replace' in currentLocation.query)
       {
-        return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
+      console.log(currentLocation)
+        return browserHistory.push(decodeURIComponent(currentLocation.query.replace))
       }
 
       return browserHistory.push('/dashboard')

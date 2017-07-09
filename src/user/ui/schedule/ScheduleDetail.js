@@ -18,9 +18,11 @@ const style = {
 const Schedule = props => {
 
   const {
+    studio,
     schedule,
     scheduleLoad,
     scheduleCancel,
+    history,
     handleSubmit,
     pristine,
     submitting
@@ -39,7 +41,7 @@ const Schedule = props => {
   return (
     <form
       onSubmit={handleSubmit(values => {
-        scheduleCancel(schedule.address, values.reason)
+        scheduleCancel(schedule.address, values.reason, history)
       })}
     >
       <div>

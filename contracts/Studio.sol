@@ -23,14 +23,6 @@ contract Studio is Killable {
 		ContactDetailsUpdated(contactDetails);
 	}
 
-	function schedulesCount() returns (uint) {
-		return schedules.length;
-	}
-
-	function scheduleAtIndex(uint index) returns (address) {
-		return schedules[index];
-	}
-
 	function classesCount() returns (uint) {
 		return classes.length;
 	}
@@ -44,6 +36,14 @@ contract Studio is Killable {
 		ClassAdded(class);
 	}
 
+	function schedulesCount() returns (uint) {
+		return schedules.length;
+	}
+
+	function scheduleAtIndex(uint index) returns (address) {
+		return schedules[index];
+	}
+
 	function scheduleAdded(address schedule) onlyOwner {
 		schedules.push(schedule);
 		ScheduleAdded(schedule);
@@ -52,7 +52,11 @@ contract Studio is Killable {
 	function scheduleRemoved(address schedule) onlyOwner {
 		for(uint i = 0; i < schedules.length; i++) {
 			if(schedules[i] == schedule) {
-				delete[schedules[i];
+				if(i < schedules.length - 1) {
+					schedules[i] = schedules[i+1];
+				}
+				delete schedules[schedules.length - 1];
+				schedules.length--;
 				ScheduleRemoved(schedule);
 				break;
 			}

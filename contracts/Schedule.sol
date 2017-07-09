@@ -82,7 +82,7 @@ contract Schedule is Killable {
 						throw;
 				}
 			} else {
-				if (!spot.attendee.send(price[uint(SpotType.Individual)])) {	
+				if (spot.attendee != 0x0 && !spot.attendee.send(price[uint(SpotType.Individual)])) {	
 						throw;
 				}
 			}

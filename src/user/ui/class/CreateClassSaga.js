@@ -7,6 +7,7 @@ import { CLASS_CREATE, classCreated } from 'src/user/model/ClassesActions'
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)
 const contract = require('truffle-contract')
+const coinbase = web3.eth.coinbase
 
 const Class = contract(ClassContract)
 Class.setProvider(provider)
@@ -15,8 +16,6 @@ const Studio = contract(StudioContract)
 Studio.setProvider(provider)
 
 export function* createClassSaga(action) {
-  debugger
-  const coinbase = web3.eth.coinbase
 
   try {
     //create the class

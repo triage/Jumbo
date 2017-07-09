@@ -1,4 +1,4 @@
-import { put, call, take, takeEvery } from 'redux-saga/effects'
+import { put, call, take, apply, takeEvery } from 'redux-saga/effects'
 import StudioContract from 'contracts/Studio.json'
 import Web3 from 'web3'
 import { STUDIO_INFO_LOAD, STUDIO_INFO_LOADED, STUDIO_LOAD, studioInfoLoad, studioInfoError, studioInfoLoaded } from './StudioActions'

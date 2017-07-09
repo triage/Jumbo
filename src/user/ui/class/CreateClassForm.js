@@ -10,8 +10,6 @@ const CreateClassForm = props => {
     history,
   } = props;
 
-  debugger
-
   return (
     <form
       className="pure-form pure-form-stacked"

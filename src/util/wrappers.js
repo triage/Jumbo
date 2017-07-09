@@ -1,8 +1,6 @@
 import { UserAuthWrapper } from 'redux-auth-wrapper'
 import { routerActions } from 'react-router-redux'
 
-// Layout Component Wrappers
-
 export const UserIsAuthenticated = UserAuthWrapper({
   authSelector: state => state.user,
   redirectAction: routerActions.replace,
@@ -13,14 +11,15 @@ export const UserIsAuthenticated = UserAuthWrapper({
 export const UserIsNotAuthenticated = UserAuthWrapper({
   authSelector: state => state.user,
   redirectAction: routerActions.replace,
-  failureRedirectPath: (state, ownProps) => ownProps.location.query.redirect || '/dashboard',
+  failureRedirectPath: (state, ownProps) => {
+    return ownProps.location.pathname || '/dashboard'
+  },
   wrapperDisplayName: 'UserIsNotAuthenticated',
   predicate: user => user.data === null,
   allowRedirectBack: false
 })
 
 // UI Component Wrappers
-
 export const VisibleOnlyAuth = UserAuthWrapper({
   authSelector: state => state.user,
   wrapperDisplayName: 'VisibleOnlyAuth',

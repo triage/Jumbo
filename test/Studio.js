@@ -5,6 +5,7 @@ let barrysClass = {}
 const Reseller = artifacts.require("./Reseller.sol")
 const Studio = artifacts.require("./Studio.sol")
 const Class = artifacts.require("./Class.sol")
+const schedule = 0x123
 
 contract("Studio", (accounts) => {
 	barrys.from = accounts[0]
@@ -31,7 +32,7 @@ contract("Studio", (accounts) => {
 		})
 	})
 
-	it("should add a class", (done) => {
+	it("should add, then remove a class", (done) => {
 		Class.new(barrys.instance.address, "Class name", "Class description", { from: barrys.from }).then((classInstance) => {
 			barrysClass = classInstance
 			return barrys.instance.classAdded(barrysClass.address)
@@ -42,6 +43,22 @@ contract("Studio", (accounts) => {
 			return barrys.instance.classAtIndex.call(0)
 		}).then((address) => {
 			assert.equal(address, barrysClass.address, "classAtIndex[0] should == barrysClass.address")
+			done()
+		})
+	})
+
+	it("should add, then remove a schedule", (done) => {
+		barrys.instance.scheduleAdded(schedule, {from: barrys.from}).then(() => {
+			return barrys.instance.schedulesCount.call()
+		}).then((count) => {
+			assert.equal(count, 1, "schedules count should == 1")
+			return barrys.instance.scheduleRemoved(schedule)
+		}).then(() => {
+			return barrys.instance.schedulesCount.call()
+		}).then((count) => {
+			console.log('omfg')
+			console.log(count)
+			assert.equal(count, 0, "should have 0 classes after cancellation")
 			done()
 		})
 	})

@@ -17,7 +17,7 @@ const initialState = {
     start: moment(),
     end: moment()
   },
-  instructor: null,
+  instructor: '',
   spots: {
     total: 20,
     reseller: 0

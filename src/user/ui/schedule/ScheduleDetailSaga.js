@@ -1,6 +1,8 @@
-import { put, call, select, takeEvery } from 'redux-saga/effects'
-import ScheduleContract from 'contracts/Schedule.json'
+import { put, call, select, apply, takeEvery } from 'redux-saga/effects'
 import Web3 from 'web3'
+import ScheduleContract from 'contracts/Schedule.json'
+import StudioContract from 'contracts/Studio.json'
+import { schedulesLoad } from 'user/model/ScheduleActions'
 import { SCHEDULE_CANCEL } from './ScheduleDetailActions'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
@@ -11,8 +13,6 @@ const coinbase = web3.eth.coinbase
 const Studio = contract(StudioContract)
 Studio.setProvider(provider)
 
-const getSchedule = (state) => state.schedule
-const getUser = (state) => state.user
 const gas = 4700000
 const from = { from: coinbase, gas }
 
@@ -21,20 +21,15 @@ Schedule.setProvider(provider)
 
 export function* doCancelSchedule(action) {
   try {
-    debugger
-    const coinbase = web3.eth.coinbase
-    const schedule = Schedule.at(action.address)
-
     const studioAddress = yield select(state => state.user.data);
-
-    const studio = Studio.at(action.studioAddress)
-
-    yield call(schedule.cancel, [action.reason, from])
     
+    const schedule = Schedule.at(action.schedule)
+    const studio = Studio.at(studioAddress)
+    yield apply(schedule, schedule.cancel, [action.reason, from])
     // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
-    yield call(studio, studio.scheduleRemoved, [schedule.address, from])
+    yield apply(studio, studio.scheduleRemoved, [schedule.address, from])
     yield put(schedulesLoad(studioAddress))
-
+    yield call(action.history.push, '/dashboard')
   } catch (error) {
     console.log(error)
     yield put({ type: "SCHEDULE_CANCEL_FAILED", error })
