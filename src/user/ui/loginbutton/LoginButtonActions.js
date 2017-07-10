@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import AuthenticationContract from '../../../../build/contracts/Authentication.json'
+import AuthenticationContract from 'contracts/Authentication.json'
 
 import { browserHistory } from 'react-router-dom'
 
