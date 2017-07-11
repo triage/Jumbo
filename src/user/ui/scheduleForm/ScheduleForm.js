@@ -34,7 +34,13 @@ const ScheduleForm = props => {
       })}
     >
       <h2>Class:</h2>
-      <Field name="class" component={ClassesSelector} classes={classes} />
+      <Field
+        name="class"
+        component={ClassesSelector}
+        selected={location.state.class}
+        history={history}
+        location={location}
+        classes={classes} />
 
       <h2>Starts at:</h2>
       <h4>{moment(date.start).format(format)}</h4>

@@ -35,7 +35,6 @@ export function* scheduleSubmitSaga(action) {
   try {
 
     // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
-    console.log(action)
     const values = action.values;
     const schedule = yield apply(
       Schedule,
@@ -60,7 +59,6 @@ export function* scheduleSubmitSaga(action) {
     yield call(action.history.push, '/dashboard')
   } catch (error) {
     console.log(`error:${error}`)
-    debugger
     yield put (scheduleCreateError(error))
   }
 }

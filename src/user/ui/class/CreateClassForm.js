@@ -7,6 +7,7 @@ const CreateClassForm = props => {
     classCreate,
     handleSubmit,
     history,
+    location,
     pristine,
     submitting
   } = props;
@@ -15,7 +16,7 @@ const CreateClassForm = props => {
     <form
       className="pure-form pure-form-stacked"
       onSubmit={handleSubmit(values => {
-        classCreate(values.name, values.description, history)
+        classCreate(values.name, values.description, history, location)
       })}
     >
       <fieldset>
