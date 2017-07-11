@@ -36,15 +36,15 @@ function render() {
       <BrowserRouter>
         <App>
           <Switch>
-            <Route path="/dashboard" component={UserIsAuthenticated(Dashboard)} />
             <Route path="/schedule/new" component={UserIsAuthenticated(ScheduleForm)} />
             <Route path="/schedule/:address" component={ScheduleDetail} />
             <Route path="/class/new" component={UserIsAuthenticated(CreateClass)} />
             <Route path="/signup" component={UserIsNotAuthenticated(SignUp)} />
             <Route path="/profile" component={UserIsAuthenticated(Profile)} />
+            <Route path="/" component={UserIsAuthenticated(Dashboard)} />
           </Switch>
-          </App>
-        </BrowserRouter>
+        </App>
+      </BrowserRouter>
     </Provider>
     ),
     document.getElementById('root')
