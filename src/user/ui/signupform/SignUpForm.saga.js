@@ -11,7 +11,6 @@ export function* doUserSignup(action) {
 
   if (data.type === UserType.studio) {
     try {
-      debugger
       const studio = yield apply(Studio, Studio.new, [data.name, from])
       const authentication = yield call(Authentication.deployed)
       yield apply(authentication, authentication.signup, [studio.address, from])

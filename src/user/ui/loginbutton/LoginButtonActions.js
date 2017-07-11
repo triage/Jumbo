@@ -9,7 +9,6 @@ const contract = require('truffle-contract')
 
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export function userLoggedIn(user) {
-  debugger
   return {
     type: USER_LOGGED_IN,
     payload: user

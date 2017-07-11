@@ -60,9 +60,6 @@ web3.eth.getCoinbase((error, coinbase) => {
   Authentication.deployed().then((instance) => {
     return instance.login()
   }).then((user) => {
-    if (user) {
-      store.dispatch(userLoggedIn(user))
-    }
     render()
   }).catch((error) => {
     console.log(`error:${error}`)

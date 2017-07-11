@@ -27,7 +27,7 @@ function* doScheduleSubmit(action) {
     const studio = Studio.at(user.address)
     // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
     yield apply(studio, studio.scheduleAdded, [schedule.address, from])
-    yield put(schedulesLoad(user))
+    yield put(schedulesLoad(user.address))
     yield call(action.history.push, '/dashboard')
   } catch (error) {
     console.log(`error:${error}`)
