@@ -1,4 +1,5 @@
-import { CLASS_CREATED, CLASSES_LOADED } from './ClassesActions'
+import { CLASSES_LOADED } from './ClassesActions'
+import { CLASS_CREATED } from 'src/user/ui/class/CreateClassActions'
 import { SCHEDULES_LOADED } from './ScheduleActions'
 
 const initialState = {

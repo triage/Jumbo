@@ -1,37 +1,38 @@
 import React from 'react'
+import { Field, reduxForm } from 'redux-form'
 
 const CreateClassForm = props => {
 
   const {
-    studio,
-    onCreateClass,
-    onNameChanged,
-    onDescriptionChanged,
+    classCreate,
+    handleSubmit,
     history,
+    pristine,
+    submitting
   } = props;
 
   return (
     <form
       className="pure-form pure-form-stacked"
-      onSubmit={event => {
-        onCreateClass(event, studio, history)
-      }}
+      onSubmit={handleSubmit(values => {
+        classCreate(values.name, values.description, history)
+      })}
     >
       <fieldset>
-        <label htmlFor="name">Class Name</label>
-        <input id="name" type="text" onChange={(event) => {
-          onNameChanged(event)}
-        } placeholder="Name" />
-        <p>Description:</p>
-        <textarea id="description" onChange={(event) => {
-          onDescriptionChanged(event)}
-        } />
-        <span className="pure-form-message">This is a required field.</span>
-        <br />
-        <button type="submit" className="pure-button pure-button-primary">Sign Up</button>
+        <label htmlFor="name">Name</label>
+        <Field name="name" component="input" type="text" placeholder="Name" />
+        <label htmlFor="description">Description</label>
+        <Field name="description" component="textarea" placeholder="Description" />
+        <button
+          disabled={pristine || submitting}
+          type="submit"
+          className="pure-button pure-button-primary">Create Class</button>
       </fieldset>
     </form>
   )
 }
 
-export default CreateClassForm
+export default reduxForm({
+  // a unique name for the form
+  form: 'classCreate'
+})(CreateClassForm)

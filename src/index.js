@@ -16,7 +16,7 @@ import Home from './layouts/home/Home'
 import Dashboard from './layouts/dashboard/Dashboard'
 import SignUp from './user/layouts/signup/SignUp'
 import Profile from './user/layouts/profile/Profile'
-import ScheduleNew from './layouts/schedule/ScheduleNew'
+import ScheduleForm from './layouts/schedule/ScheduleForm'
 import ScheduleDetail from './layouts/schedule/ScheduleDetail'
 import CreateClass from './layouts/class/CreateClass'
 
@@ -37,7 +37,7 @@ function render() {
         <App>
           <Switch>
             <Route path="/dashboard" component={UserIsAuthenticated(Dashboard)} />
-            <Route path="/schedule/new" component={UserIsAuthenticated(ScheduleNew)} />
+            <Route path="/schedule/new" component={UserIsAuthenticated(ScheduleForm)} />
             <Route path="/schedule/:address" component={ScheduleDetail} />
             <Route path="/class/new" component={UserIsAuthenticated(CreateClass)} />
             <Route path="/signup" component={UserIsNotAuthenticated(SignUp)} />

@@ -20,7 +20,6 @@ const Dashboard = props => {
     studio,
     events,
     studioLoad,
-    scheduleDatesChanged,
     history,
   } = props;
 
@@ -34,8 +33,10 @@ const Dashboard = props => {
         step={15}
         selectable
         onSelectSlot={({start, end}) => {   
-          scheduleDatesChanged(start, end)
-          history.push('schedule/new')
+          history.push('schedule/new', {
+            start,
+            end
+          })
         }}
         onSelectEvent={event => { 
           history.push(`schedule/${event.address}`)

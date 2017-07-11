@@ -1,4 +1,3 @@
-//scheduleClassChanged
 import { SCHEDULE_CLASS_CHANGED, SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
 import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
 import { schedulesLoad } from 'user/model/ScheduleActions'
@@ -17,7 +16,6 @@ Schedule.setProvider(provider)
 const Studio = contract(StudioContract)
 Studio.setProvider(provider)
 
-const getSchedule = (state) => state.schedule
 const getUser = (state) => state.user
 const gas = 4700000
 const from = { from: coinbase, gas }
@@ -37,19 +35,20 @@ export function* scheduleSubmitSaga(action) {
   try {
 
     // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
-    const submission = yield select(getSchedule)
+    console.log(action)
+    const values = action.values;
     const schedule = yield apply(
       Schedule,
       Schedule.new,
       [
-        submission.class,
-        submission.instructor,
-        new Date(submission.date.start).valueOf(),
-        new Date(submission.date.end).valueOf(),
-        submission.spots.total,
-        submission.spots.reseller,
-        submission.price.individual,
-        submission.price.reseller,
+        values.class.address,
+        values.instructor,
+        new Date(values.date.start).valueOf(),
+        new Date(values.date.end).valueOf(),
+        values.spots.total,
+        values.spots.reseller,
+        values.price.individual,
+        values.price.reseller,
         from
       ]
     )
@@ -58,10 +57,10 @@ export function* scheduleSubmitSaga(action) {
     // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
     yield apply(studio, studio.scheduleAdded, [schedule.address, from])
     yield put(schedulesLoad(userObj.data))
-
     yield call(action.history.push, '/dashboard')
   } catch (error) {
     console.log(`error:${error}`)
+    debugger
     yield put (scheduleCreateError(error))
   }
 }

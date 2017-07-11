@@ -1,30 +1,12 @@
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import CreateClassForm from './CreateClassForm'
-import { classCreate } from 'src/user/model/ClassesActions'
+import { classCreate } from './CreateClassActions'
 
-let input = {}
+const mapStateToProps = state => ({})
 
-const mapStateToProps = state => ({
-    studio: state.user.data,
-})
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onCreateClass: (event, studio, history) => {
-      if(!event) {
-        return
-      }
-      event.preventDefault();
-      dispatch(classCreate(studio, input.name, input.description, history))
-    },
-    onNameChanged: (event) => {
-      input.name = event.target.value
-    },
-    onDescriptionChanged: (event) => {
-      input.description = event.target.value
-    }
-  }
+const mapDispatchToProps = {
+  classCreate
 }
 
 const CreateClassContainer = connect(

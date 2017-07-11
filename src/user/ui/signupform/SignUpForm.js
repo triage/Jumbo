@@ -1,42 +1,36 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { Field, reduxForm } from 'redux-form'
 
-class SignUpForm extends Component {
-  constructor(props) {
-    super(props)
+const SignUpForm = props => {
 
-    this.state = {
-      name: ''
-    }
-  }
+  const {
+    userSignup,
+    handleSubmit,
+    history,
+    pristine,
+    submitting
+  } = props
 
-  onInputChange(event) {
-    this.setState({ name: event.target.value })
-  }
-
-  handleSubmit(event) {
-    event.preventDefault()
-    if (this.state.name.length < 2)
-    {
-      return alert('Please fill in your name.')
-    }
-    this.props.onSignUpFormSubmit(this.state.name)
-  }
-
-  render() {
-    return(
-      <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit.bind(this)}>
-        <fieldset>
-          <label htmlFor="name">Studio Name</label>
-          <input id="name" type="text" value={this.state.name} onChange={this.onInputChange.bind(this)} placeholder="Name" />
-          <span className="pure-form-message">This is a required field.</span>
-
-          <br />
-
-          <button type="submit" className="pure-button pure-button-primary">Sign Up</button>
-        </fieldset>
-      </form>
-    )
-  }
+  return (
+    <form
+      className="pure-form pure-form-stacked"
+      onSubmit={handleSubmit(values => {
+        userSignup(values.name, history)
+      })}
+    >
+      <fieldset>
+        <label htmlFor="name">Studio Name</label>
+        <Field id="name" component="input" type="text" placeholder="Name" />
+        <button
+          disabled={pristine || submitting}
+          type="submit"
+          className="pure-button pure-button-primary">Sign Up</button>
+      </fieldset>
+    </form>
+  )
 }
 
-export default SignUpForm
+export default reduxForm({
+  // a unique name for the form
+  form: 'signup'
+})(SignUpForm)

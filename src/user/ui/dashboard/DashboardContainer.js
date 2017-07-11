@@ -21,8 +21,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = ({
-  studioLoad,
-  scheduleDatesChanged
+  studioLoad
 })
 
 const DashboardContainer = connect(

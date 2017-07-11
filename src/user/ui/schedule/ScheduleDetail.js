@@ -18,9 +18,7 @@ const style = {
 const Schedule = props => {
 
   const {
-    studio,
     schedule,
-    scheduleLoad,
     scheduleCancel,
     history,
     handleSubmit,

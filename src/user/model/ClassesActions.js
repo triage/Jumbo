@@ -13,22 +13,3 @@ export function classesLoaded(classes) {
     classes,
   }
 }
-
-export const CLASS_CREATE = 'CLASS_CREATE'
-export function classCreate(studio, name, description, history) {
-  return {
-    type: CLASS_CREATE,
-    studio,
-    name,
-    description,
-    history
-  }
-}
-
-export const CLASS_CREATED = 'CLASS_CREATED'
-export function classCreated(classObject) {
-  return {
-    type: CLASS_CREATED,
-    class: classObject
-  }
-}

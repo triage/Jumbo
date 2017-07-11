@@ -1,5 +1,5 @@
 import React from 'react'
-import ScheduleForm from 'user/ui/scheduleForm/ScheduleForm'
+import ScheduleForm from 'user/ui/scheduleForm/ScheduleFormContainer'
 
 const ScheduleNew = props => {
   return (

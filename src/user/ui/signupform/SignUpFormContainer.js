@@ -1,16 +1,11 @@
 import { connect } from 'react-redux'
 import SignUpForm from './SignUpForm'
-import { signUpUser } from './SignUpFormActions'
+import { userSignup } from './SignUpFormActions'
 
 const mapStateToProps = state => ({})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onSignUpFormSubmit: (name) => {
-      event.preventDefault()
-      dispatch(signUpUser(name))
-    }
-  }
+const mapDispatchToProps = {
+  userSignup
 }
 
 const SignUpFormContainer = connect(

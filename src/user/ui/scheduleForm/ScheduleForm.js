@@ -1,19 +1,9 @@
 import React from 'react'
-import ClassesSelector from 'src/user/ui/class/classes/ClassesSelector'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import moment from 'moment'
+import { Field, reduxForm } from 'redux-form'
 import 'react-datepicker/dist/react-datepicker.css'
-import {
-  scheduleClassChanged,
-  scheduleInstructorChanged,
-  scheduleSubmit,
-  numberSpotsChanged,
-  numberResellerSpotsChanged,
-  priceIndividualChanged,
-  priceResellerChanged
-} from './ScheduleFormActions'
+import moment from 'moment'
 import NumericInput from 'react-numeric-input';
+import ClassesSelector from 'src/user/ui/class/classes/ClassesSelector'
 
 import 'react-date-picker/index.css'
 
@@ -23,35 +13,28 @@ const ScheduleForm = props => {
 
   const {
     classes,
-    date,
-    spots,
-    instructor,
-    price,
-    scheduleClassChanged,
-    scheduleInstructorChanged,
-    numberSpotsChanged,
-    numberResellerSpotsChanged,
-    priceIndividualChanged,
-    priceResellerChanged,
     scheduleSubmit,
-    history
+    handleSubmit,
+    history,
+    location,
+    pristine,
+    submitting
   } = props;
+
+  const date = {
+    start: location.state.start,
+    end: location.state.end,
+  }
 
   return (
     <form
-      onSubmit={event => {
-        event.preventDefault()
-        scheduleSubmit(history)
-      }}>
+      className="pure-form pure-form-stacked"
+      onSubmit={handleSubmit(values => {
+        scheduleSubmit(Object.assign(values, { date }), history)
+      })}
+    >
       <h2>Class:</h2>
-      <ClassesSelector
-        classes={classes}
-        onClassSelect={event => {
-          event.preventDefault();
-          const address = event.target.selectedOptions[0].dataset.class
-          scheduleClassChanged(address, history);
-        }}
-      />
+      <Field name="class" component={ClassesSelector} classes={classes} />
 
       <h2>Starts at:</h2>
       <h4>{moment(date.start).format(format)}</h4>
@@ -60,82 +43,94 @@ const ScheduleForm = props => {
       <h4>{moment(date.end).format(format)}</h4>
 
       <h2>Instructor Name</h2>
-      <input
+      <Field
         name="instructor"
+        component="input"
         type="text"
-        onChange={event => {
-          scheduleInstructorChanged(event.target.value)
-        }}
-        value={instructor}
       />
 
-      <h2>Number of spots</h2>
-      <NumericInput
-        min={0}
-        max={100}
-        value={spots.total}
-        onChange={value => {
-          numberSpotsChanged(value)
+      <h2>Number of spots (total)</h2>
+      <Field
+        component={props => {
+          const {
+            input
+          } = props;
+          return <NumericInput
+            min={0}
+            max={20}
+            value={input.value}
+            onChange={value => {
+              input.onChange(value)
+            }} />
         }}
+        name="spots.total"
       />
 
-      <h2>Reseller spots</h2>
-      <NumericInput
-        min={0}
-        max={spots.total}
-        value={spots.reseller}
-        onChange={value => {
-          numberResellerSpotsChanged(value)
+      <h2>Number of spots (reseller)</h2>
+      <Field
+        component={props => {
+          const {
+            input
+          } = props;
+          return <NumericInput
+            min={0}
+            max={20}
+            value={input.value}
+            onChange={value => {
+              input.onChange(value)
+            }} />
         }}
+        name="spots.reseller"
       />
 
       <h2>Price (individual)</h2>
-      <input
-        type="text"
-        onChange={event => {
-          priceIndividualChanged(event.target.value)
+      <Field
+        component={props => {
+          const {
+            input
+          } = props;
+          return <NumericInput
+            min={0}
+            max={20}
+            precision={2}
+            step={0.01}
+            value={input.value}
+            onChange={value => {
+              input.onChange(value)
+            }} />
         }}
-        value={price.individual}
+        name="price.individual"
       />
 
       <h2>Price (reseller)</h2>
-      <input
-        type="text"
-        onChange={event => {
-          priceResellerChanged(event.target.value)
+      <Field
+        component={props => {
+          const {
+            input
+          } = props;
+          return <NumericInput
+            min={0}
+            max={20}
+            precision={2}
+            step={0.01}
+            value={input.value}
+            onChange={value => {
+              input.onChange(value)
+            }} />
         }}
-        value={price.reseller}
+        name="price.reseller"
       />
 
       <hr />
-      <input type="submit" />
+      <button
+          disabled={pristine || submitting}
+          type="submit"
+          className="pure-button pure-button-primary">Create Schedule</button>
     </form>
   )
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    classes: state.studio.classes || [],
-    date: state.schedule.date,
-    spots: state.schedule.spots,
-    instructor: state.schedule.instructor,
-    price: state.schedule.price
-  }
-}
-
-const mapDispatchToProps = ({
-  scheduleClassChanged,
-  scheduleInstructorChanged,
-  numberSpotsChanged,
-  numberResellerSpotsChanged,
-  priceIndividualChanged,
-  priceResellerChanged,
-  scheduleSubmit
-})
-
-const ScheduleFormContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ScheduleForm)
-
-export default withRouter(ScheduleFormContainer)
+export default reduxForm({
+  // a unique name for the form
+  form: 'schedule'
+})(ScheduleForm)
