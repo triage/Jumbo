@@ -2,6 +2,7 @@ import Web3 from 'web3'
 import ClassContract from 'contracts/Class.json'
 import StudioContract from 'contracts/Studio.json'
 import ScheduleContract from 'contracts/Schedule.json'
+import AuthenticationContract from 'contracts/Authentication.json'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)
@@ -17,3 +18,6 @@ Studio.setProvider(provider)
 
 export const Schedule = contract(ScheduleContract)
 Schedule.setProvider(provider)
+
+export const Authentication = contract(AuthenticationContract)
+Authentication.setProvider(provider)

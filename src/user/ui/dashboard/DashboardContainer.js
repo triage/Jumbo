@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import Dashboard from './Dashboard'
 import { studioLoad } from '../../model/StudioActions'
 import { withRouter } from 'react-router-dom'
-import { scheduleDatesChanged } from '../scheduleForm/ScheduleFormActions'
 
 const mapStateToProps = (state, ownProps) => {
   return {

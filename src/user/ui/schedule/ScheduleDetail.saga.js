@@ -1,23 +1,7 @@
 import { put, call, select, apply, takeEvery } from 'redux-saga/effects'
-import Web3 from 'web3'
-import ScheduleContract from 'contracts/Schedule.json'
-import StudioContract from 'contracts/Studio.json'
+import { from, Schedule, Studio } from 'src/util/eth'
 import { schedulesLoad } from 'user/model/ScheduleActions'
 import { SCHEDULE_CANCEL } from './ScheduleDetailActions'
-
-const provider = new Web3.providers.HttpProvider('http://localhost:8545')
-const web3 = new Web3(provider)
-const contract = require('truffle-contract')
-
-const coinbase = web3.eth.coinbase
-const Studio = contract(StudioContract)
-Studio.setProvider(provider)
-
-const gas = 4700000
-const from = { from: coinbase, gas }
-
-const Schedule = contract(ScheduleContract)
-Schedule.setProvider(provider)
 
 export function* doCancelSchedule(action) {
   try {

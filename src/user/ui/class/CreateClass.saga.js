@@ -1,5 +1,4 @@
 import { put, call, select, takeEvery, apply } from 'redux-saga/effects'
-import Web3 from 'web3'
 import { CLASS_CREATE, classCreated } from './CreateClassActions'
 import { from, Class, Studio } from 'src/util/eth'
 
