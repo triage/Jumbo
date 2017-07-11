@@ -3,10 +3,11 @@ import ClassContract from 'contracts/Class.json'
 import StudioContract from 'contracts/Studio.json'
 import ScheduleContract from 'contracts/Schedule.json'
 import AuthenticationContract from 'contracts/Authentication.json'
+import contract from 'truffle-contract'
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
-const web3 = new Web3(provider)
-const contract = require('truffle-contract')
+export const web3 = new Web3(provider)
+
 export const coinbase = web3.eth.coinbase
 export const from = { from: coinbase, gas: 4700000 }
 
