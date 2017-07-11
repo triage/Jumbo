@@ -13,7 +13,7 @@ Class.setProvider(provider)
 const Studio = contract(StudioContract)
 Studio.setProvider(provider)
 
-export function* classesSaga(action) {
+export function* doClassesLoad(action) {
   try {
     const studio = Studio.at(action.studio)
 
@@ -40,5 +40,5 @@ export function* classesSaga(action) {
 }
 
 export function* watchClassesLoad() {
-  yield takeEvery(CLASSES_LOAD, classesSaga)
+  yield takeEvery(CLASSES_LOAD, doClassesLoad)
 }

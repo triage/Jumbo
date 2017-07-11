@@ -15,8 +15,8 @@ export function* doCreateClass(action) {
     yield put(classCreated({
       address: classInstance.address,
       name: action.name,
-      description: action.description }
-    ))
+      description: action.description
+    }))
     yield call(
       action.history.push,
       '/schedule/new',

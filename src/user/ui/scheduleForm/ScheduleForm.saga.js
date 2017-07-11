@@ -1,4 +1,4 @@
-import { SCHEDULE_CLASS_CHANGED, SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
+import { SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
 import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
 import { schedulesLoad } from 'user/model/ScheduleActions'
 import Web3 from 'web3'
@@ -20,18 +20,7 @@ const getUser = (state) => state.user
 const gas = 4700000
 const from = { from: coinbase, gas }
 
-export function* scheduleClassChangedSaga(action) {
-  try {
-    if (!action.class) {
-      yield call(action.history.push, '/class/new')
-    }
-  } catch (error) {
-    console.log(error)
-    yield put({ type: "CLASS_CREATE_FAILED", error })
-  }
-}
-
-export function* scheduleSubmitSaga(action) {
+function* doScheduleSubmit(action) {
   try {
 
     // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
@@ -63,11 +52,6 @@ export function* scheduleSubmitSaga(action) {
   }
 }
 
-
-export function* watchScheduleClassChanged() {
-  yield takeEvery(SCHEDULE_CLASS_CHANGED, scheduleClassChangedSaga)
-}
-
 export function* watchScheduleSubmit() {
-  yield takeEvery(SCHEDULE_SUBMIT, scheduleSubmitSaga)
+  yield takeEvery(SCHEDULE_SUBMIT, doScheduleSubmit)
 }

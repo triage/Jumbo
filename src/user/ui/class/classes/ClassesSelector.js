@@ -12,7 +12,12 @@ const ClassesSelector = props => {
 
   const options = classes.map((classObject) => {
     return (
-      <option selected={classObject.address===selected} data-address={classObject.address} key={`studio_${classObject.address}`}>{classObject.name}</option>
+      <option
+        selected={classObject.address===selected}
+        data-address={classObject.address}
+        key={`studio_${classObject.address}`}>
+          {classObject.name}
+      </option>
     )
   })
 
