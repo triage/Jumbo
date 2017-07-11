@@ -13,6 +13,7 @@ Studio.setProvider(provider)
 
 function* studioInfoSaga(action) {
   try {
+    debugger
     const studio = Studio.at(action.studio)
     const name = yield call(studio.name.call)
     const contactDetails = yield call(studio.contactDetails.call)
@@ -26,15 +27,15 @@ function* studioInfoSaga(action) {
 function* studioLoadSaga(action) {
   try {
     //first load studio info
-    yield put(studioInfoLoad(action.studio))
+    yield put(studioInfoLoad(action.studio.address))
     yield take(STUDIO_INFO_LOADED)
 
     //then load all classes
-    yield put(classesLoad(action.studio))
+    yield put(classesLoad(action.studio.address))
     yield take(CLASSES_LOADED)
 
     //load all schedules
-    yield put(schedulesLoad(action.studio))
+    yield put(schedulesLoad(action.studio.address))
     yield take(SCHEDULES_LOADED)
   } catch (error) {
     console.log(`error:${error}`)

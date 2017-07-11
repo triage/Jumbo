@@ -17,6 +17,7 @@ const Studio = contract(StudioContract)
 Studio.setProvider(provider)
 
 function* schedulesLoadSaga(action) {
+  debugger
   const studio = Studio.at(action.studio)
   const schedulesCount = yield call(studio.schedulesCount.call)
 

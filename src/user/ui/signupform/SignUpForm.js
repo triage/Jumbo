@@ -1,5 +1,6 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
+import UserType from 'src/user/model/UserType'
 
 const SignUpForm = props => {
 
@@ -15,7 +16,12 @@ const SignUpForm = props => {
     <form
       className="pure-form pure-form-stacked"
       onSubmit={handleSubmit(values => {
-        userSignup(values.name, history)
+        userSignup({
+            name: values.name,
+            type: UserType.studio
+          },
+          history
+        )
       })}
     >
       <fieldset>

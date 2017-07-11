@@ -9,6 +9,7 @@ const contract = require('truffle-contract')
 
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export function userLoggedIn(user) {
+  debugger
   return {
     type: USER_LOGGED_IN,
     payload: user
@@ -38,6 +39,7 @@ export function loginUser() {
 
         return browserHistory.push('/signup')
     }).then((user) => {
+      debugger
       dispatch(userLoggedIn({"user": user}))
 
       // Used a manual redirect here as opposed to a wrapper.

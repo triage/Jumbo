@@ -5,7 +5,7 @@ import { SCHEDULE_CANCEL } from './ScheduleDetailActions'
 
 export function* doCancelSchedule(action) {
   try {
-    const studioAddress = yield select(state => state.user.data);
+    const studioAddress = yield select(state => state.user.data.address);
     
     const schedule = Schedule.at(action.schedule)
     const studio = Studio.at(studioAddress)

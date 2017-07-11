@@ -24,7 +24,7 @@ const Dashboard = props => {
   } = props;
 
   if (!studio.loaded) {
-    studioLoad(user.data)
+    studioLoad(user.data.address)
   }
   return(
     <div>
