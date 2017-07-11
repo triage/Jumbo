@@ -13,7 +13,7 @@ const ClassesSelector = props => {
   const options = classes.map((classObject) => {
     return (
       <option
-        selected={classObject.address===selected}
+        value={classObject.address}
         data-address={classObject.address}
         key={`studio_${classObject.address}`}>
           {classObject.name}
@@ -22,7 +22,9 @@ const ClassesSelector = props => {
   })
 
   return (
-    <select onChange={event => {
+    <select
+      selected={selected}
+      onChange={event => {
         if (event.target.selectedOptions[0].dataset.action === 'new') {
           history.push('/class/new', location.state)
           return

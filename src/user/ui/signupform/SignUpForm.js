@@ -20,7 +20,7 @@ const SignUpForm = props => {
     >
       <fieldset>
         <label htmlFor="name">Studio Name</label>
-        <Field id="name" component="input" type="text" placeholder="Name" />
+        <Field name="name" component="input" type="text" placeholder="Name" />
         <button
           disabled={pristine || submitting}
           type="submit"

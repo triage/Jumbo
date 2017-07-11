@@ -40,7 +40,8 @@ const ScheduleForm = props => {
         selected={location.state.class}
         history={history}
         location={location}
-        classes={classes} />
+        classes={classes}
+        defaultValue={12345} />
 
       <h2>Starts at:</h2>
       <h4>{moment(date.start).format(format)}</h4>

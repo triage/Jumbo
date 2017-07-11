@@ -7,7 +7,7 @@ import AuthenticationContract from 'contracts/Authentication.json'
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)
 const contract = require('truffle-contract')
-const coinbase = web3.eth.coinbase
+export const coinbase = web3.eth.coinbase
 export const from = { from: coinbase, gas: 4700000 }
 
 export const Class = contract(ClassContract)

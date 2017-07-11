@@ -1,24 +1,7 @@
 import { SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
 import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
 import { schedulesLoad } from 'user/model/ScheduleActions'
-import Web3 from 'web3'
-import ScheduleContract from 'contracts/Schedule.json'
-import StudioContract from 'contracts/Studio.json'
-
-const provider = new Web3.providers.HttpProvider('http://localhost:8545')
-const web3 = new Web3(provider)
-const coinbase = web3.eth.coinbase
-const contract = require('truffle-contract')
-
-const Schedule = contract(ScheduleContract)
-Schedule.setProvider(provider)
-
-const Studio = contract(StudioContract)
-Studio.setProvider(provider)
-
-const getUser = (state) => state.user
-const gas = 4700000
-const from = { from: coinbase, gas }
+import { Studio, Schedule, from } from 'src/util/eth'
 
 function* doScheduleSubmit(action) {
   try {
@@ -40,7 +23,7 @@ function* doScheduleSubmit(action) {
         from
       ]
     )
-    const userObj = yield select(getUser)
+    const userObj = yield select(state => state.user)
     const studio = Studio.at(userObj.data)
     // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
     yield apply(studio, studio.scheduleAdded, [schedule.address, from])
