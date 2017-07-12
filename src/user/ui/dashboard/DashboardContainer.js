@@ -2,8 +2,12 @@ import { connect } from 'react-redux'
 import Dashboard from './Dashboard'
 import { studioLoad } from '../../model/StudioActions'
 import { withRouter } from 'react-router-dom'
+import { defaultAccount } from 'src/util/eth/contracts'
 
-const mapStateToProps = (state, ownProps) => {
+console.log('default:')
+console.log(defaultAccount)
+
+const mapStateToProps = (state, ownProps) => {  
   return {
     user: state.user,
     studio: state.studio,

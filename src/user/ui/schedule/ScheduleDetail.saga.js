@@ -1,5 +1,5 @@
 import { put, call, select, apply, takeEvery } from 'redux-saga/effects'
-import { from, Schedule, Studio } from 'src/util/eth'
+import { from, Schedule, Studio } from 'src/util/eth/contracts'
 import { schedulesLoad } from 'user/model/ScheduleActions'
 import { SCHEDULE_CANCEL } from './ScheduleDetailActions'
 

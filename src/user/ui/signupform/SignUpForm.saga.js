@@ -1,5 +1,5 @@
 import { apply, put, call, takeEvery } from 'redux-saga/effects'
-import { from, coinbase, Authentication, Studio } from 'src/util/eth'
+import { from, coinbase, Authentication, Studio } from 'src/util/eth/contracts'
 import { USER_SIGNUP, userLoggedIn } from './SignUpFormActions'
 import UserType from 'src/user/model/UserType'
 

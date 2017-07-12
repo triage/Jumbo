@@ -5,11 +5,21 @@ import ScheduleContract from 'contracts/Schedule.json'
 import AuthenticationContract from 'contracts/Authentication.json'
 import contract from 'truffle-contract'
 
-const provider = new Web3.providers.HttpProvider('http://localhost:8545')
-export const web3 = new Web3(provider)
+if (typeof window.web3 === 'undefined') {
+  debugger
+  console.error("Please use a web3 browser");
+}
+const provider = window.web3.currentProvider
+
+export const web3 = new Web3(provider); 
+web3.eth.defaultAccount = window.web3.eth.defaultAccount;
+
+console.log(`xxx default:${window.web3.eth.defaultAccount}`)
+
+export const defaultAccount = window.web3.eth.defaultAccount
 
 export const coinbase = web3.eth.coinbase
-export const from = { from: coinbase, gas: 4700000 }
+export const from = { from: defaultAccount, gas: 4700000 }
 
 export const Class = contract(ClassContract)
 Class.setProvider(provider)

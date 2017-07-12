@@ -1,7 +1,7 @@
 import { SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
 import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
 import { schedulesLoad } from 'user/model/ScheduleActions'
-import { Studio, Schedule, from } from 'src/util/eth'
+import { Studio, Schedule, from } from 'src/util/eth/contracts'
 
 function* doScheduleSubmit(action) {
   try {
