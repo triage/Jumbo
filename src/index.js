@@ -1,11 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+// Redux Store
+import store from './store'
 import { userLoggedIn } from './user/ui/signupform/SignUpFormActions.js'
-import { start } from './util/eth/start'
+import { start } from './util/eth'
 import App from './App'
-
-
 
 let isAnonymous = false
 let isLoggedIn = false
@@ -27,12 +28,10 @@ function render() {
 }
 
 start().then(user => {
-  debugger
   isLoggedIn = true
   render()
 }).catch(error => {
-  debugger
-  console.log(`error:{error}`)
+  console.log(`error:${error}`)
   isLoggedIn = false
   render()
 })

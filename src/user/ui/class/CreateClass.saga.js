@@ -1,8 +1,12 @@
 import { put, call, select, takeEvery, apply } from 'redux-saga/effects'
 import { CLASS_CREATE, classCreated } from './CreateClassActions'
-import { from, Class, Studio } from 'src/util/eth/contracts'
+import eth from 'src/util/eth'
 
 export function* doCreateClass(action) {
+
+  const Class = eth.Class()
+  const Studio = eth.Studio()
+  const from = eth.from()
 
   try {
     //create the class

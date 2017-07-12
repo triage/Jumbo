@@ -1,9 +1,14 @@
 import { put, call, select, apply, takeEvery } from 'redux-saga/effects'
-import { from, Schedule, Studio } from 'src/util/eth/contracts'
+import eth from 'src/util/eth'
 import { schedulesLoad } from 'user/model/ScheduleActions'
 import { SCHEDULE_CANCEL } from './ScheduleDetailActions'
 
 export function* doCancelSchedule(action) {
+
+  const Schedule = eth.Schedule()
+  const Studio = eth.Studio()
+  const from = eth.from()
+
   try {
     const studioAddress = yield select(state => state.user.data.address);
     

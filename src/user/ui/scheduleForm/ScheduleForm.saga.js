@@ -1,9 +1,14 @@
 import { SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
 import { put, apply, select, call, takeEvery } from 'redux-saga/effects'
 import { schedulesLoad } from 'user/model/ScheduleActions'
-import { Studio, Schedule, from } from 'src/util/eth/contracts'
+import eth from 'src/util/eth'
 
 function* doScheduleSubmit(action) {
+
+  const Schedule = eth.Schedule()
+  const Studio = eth.Studio()
+  const from = eth.from()
+
   try {
 
     // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
