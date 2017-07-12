@@ -54,7 +54,7 @@ const eth = {
   },
 
   from: () => {
-    return { from: eth.defaultAccount(), gas: 4700000 }
+    return { from: eth.defaultAccount(), gas: 4476768 }
   }
 
 }
