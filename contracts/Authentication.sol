@@ -4,7 +4,12 @@ import './zeppelin/lifecycle/Killable.sol';
 
 contract Authentication is Killable {
 
-  mapping (address => address) private users;
+  struct User {
+		address user;
+		string userType;
+	} 
+
+  mapping (address => User) private users;
 
   uint private id; // Stores user id temporarily
 
@@ -13,15 +18,24 @@ contract Authentication is Killable {
     // If yes, return user.
     // If no, throw.
 
-    if (users[msg.sender] == 0x0)
+    if (users[msg.sender].user == 0x0)
     {
         throw;
     }
 
-    return users[msg.sender];
+    return users[msg.sender].user;
   }
 
-  function signup(address user) payable returns (bool) {
+  function userType() constant returns (string) {
+    if (users[msg.sender].user == 0x0)
+    {
+        throw;
+    }
+
+    return users[msg.sender].userType;
+  }
+
+  function signup(address user, string userType) payable returns (bool) {
     // Check if user exists.
     // If yes, return user name.
     // If no, check if name was sent.
@@ -33,9 +47,9 @@ contract Authentication is Killable {
         throw;
     }
 
-    if (users[msg.sender] == 0x0)
+    if (users[msg.sender].user == 0x0)
     {
-        users[msg.sender] = user;
+        users[msg.sender] = User(user, userType);
 
         return true;
     }

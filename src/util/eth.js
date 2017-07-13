@@ -3,6 +3,7 @@ import ClassContract from 'contracts/Class.json'
 import StudioContract from 'contracts/Studio.json'
 import ScheduleContract from 'contracts/Schedule.json'
 import AuthenticationContract from 'contracts/Authentication.json'
+import IndividualContract from 'contracts/Individual.json'
 import contract from 'truffle-contract'
 import UserType from 'src/user/model/UserType'
 
@@ -53,6 +54,12 @@ const eth = {
     return Studio
   },
 
+  Individual: () => {
+    const Individual = contract(IndividualContract)
+    Individual.setProvider(eth.provider())
+    return Individual
+  },
+
   Schedule: () => {
     const Schedule = contract(ScheduleContract)
     Schedule.setProvider(eth.provider())
@@ -69,32 +76,36 @@ export const start = callback => {
   return new Promise((fulfill, reject) => {
     window.addEventListener('load', () => {
       if (!window.web3) {
-        debugger
         reject(SigninError.unsupported)
         return
       }
       const web3 = new Web3()
       web3.provider = window.web3.currentProvider
       if (eth.defaultAccount() === null) {
-        debugger
         reject(SigninError.anonymous)
         return
       }
       
-      eth.Authentication().deployed().then(authentication => {
+      let userAddress
+      let authentication
+      eth.Authentication().deployed().then(instance => {
+        authentication = instance
         return authentication.login()
       }).then(address => {
-        const Studio = eth.Studio()
-        const studio = Studio.at(address)
-        if (studio) {
+        userAddress = address
+        return authentication.userType()
+      }).then(type => {
+        if (type === UserType.studio) {
+          const Studio = eth.Studio()
+          const studio = Studio.at(userAddress)
           studio.name.call().then(name => {
             fulfill({
               name,
               type: UserType.studio,
-              address
+              address: userAddress
             })
           })
-        } else {
+        } else if (type === UserType.Individual) {
           debugger
           fulfill()
         }

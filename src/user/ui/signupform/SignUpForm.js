@@ -18,7 +18,7 @@ const SignUpForm = props => {
       onSubmit={handleSubmit(values => {
         userSignup({
             name: values.name,
-            type: UserType.studio
+            type: values.type
           },
           history
         )
@@ -27,6 +27,12 @@ const SignUpForm = props => {
       <fieldset>
         <label htmlFor="name">Studio Name</label>
         <Field name="name" component="input" type="text" placeholder="Name" />
+        <div style={{ margin: 10 }}>
+        Studio
+        <Field name="type" component="input" type="radio" value={UserType.studio} />
+        Individual
+        <Field name="type" component="input" type="radio" value={UserType.individual} />
+        </div>
         <button
           disabled={pristine || submitting}
           type="submit"

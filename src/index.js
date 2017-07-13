@@ -44,6 +44,9 @@ start().then(user => {
     case SigninError.unsupported:
       console.log('unsupported')
     break
+    default:
+      debugger
+    break
   }
 
   store.dispatch(userPurge())
