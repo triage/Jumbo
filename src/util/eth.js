@@ -105,7 +105,6 @@ export const start = callback => {
           })
         })
       }).catch(error => {
-
         reject(SigninError.unauthorized)
       })
     })
