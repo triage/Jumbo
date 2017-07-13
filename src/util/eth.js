@@ -95,21 +95,17 @@ export const start = callback => {
         userAddress = address
         return authentication.userType()
       }).then(type => {
-        if (type === UserType.studio) {
-          const Studio = eth.Studio()
-          const studio = Studio.at(userAddress)
-          studio.name.call().then(name => {
-            fulfill({
-              name,
-              type: UserType.studio,
-              address: userAddress
-            })
+        const entity = (type === UserType.studio) ? eth.Studio() : eth.Individual()
+        const user = entity.at(userAddress)
+        user.name.call().then(name => {
+          fulfill({
+            name,
+            type: type,
+            address: userAddress
           })
-        } else if (type === UserType.Individual) {
-          debugger
-          fulfill()
-        }
+        })
       }).catch(error => {
+
         reject(SigninError.unauthorized)
       })
     })

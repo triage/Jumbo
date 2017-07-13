@@ -29,7 +29,7 @@ const SignUpForm = props => {
         <Field name="name" component="input" type="text" placeholder="Name" />
         <div style={{ margin: 10 }}>
         Studio
-        <Field name="type" component="input" type="radio" value={UserType.studio} />
+        <Field name="type" component="input" type="radio" value={UserType.studio} selected />
         Individual
         <Field name="type" component="input" type="radio" value={UserType.individual} />
         </div>
