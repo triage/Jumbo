@@ -4,7 +4,13 @@ import StudioContract from 'contracts/Studio.json'
 import ScheduleContract from 'contracts/Schedule.json'
 import AuthenticationContract from 'contracts/Authentication.json'
 import contract from 'truffle-contract'
+import UserType from 'src/user/model/UserType'
 
+export const SigninError = {
+  unsupported: 'BROWSER UNSUPPORTED',
+  anonymous: 'ANONYMOUS',
+  unauthorized: 'UNAUTHORIZED'
+}
 
 const eth = {
   provider: () => {
@@ -56,23 +62,44 @@ const eth = {
   from: () => {
     return { from: eth.defaultAccount(), gas: 4476768 }
   }
-
 }
 export default eth
 
 export const start = callback => {
   return new Promise((fulfill, reject) => {
     window.addEventListener('load', () => {
-
+      if (!window.web3) {
+        debugger
+        reject(SigninError.unsupported)
+        return
+      }
       const web3 = new Web3()
       web3.provider = window.web3.currentProvider
-
+      if (eth.defaultAccount() === null) {
+        debugger
+        reject(SigninError.anonymous)
+        return
+      }
+      
       eth.Authentication().deployed().then(authentication => {
         return authentication.login()
-      }).then(loggedIn => {
-        fulfill(loggedIn)
+      }).then(address => {
+        const Studio = eth.Studio()
+        const studio = Studio.at(address)
+        if (studio) {
+          studio.name.call().then(name => {
+            fulfill({
+              name,
+              type: UserType.studio,
+              address
+            })
+          })
+        } else {
+          debugger
+          fulfill()
+        }
       }).catch(error => {
-        reject(error)
+        reject(SigninError.unauthorized)
       })
     })
   })

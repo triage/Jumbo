@@ -5,8 +5,9 @@ import { Provider } from 'react-redux'
 // Redux Store
 import store from './store'
 import { userLoggedIn } from './user/ui/signupform/SignUpFormActions.js'
-import { start } from './util/eth'
+import { start, SigninError } from './util/eth'
 import App from './App'
+import { userPurge } from 'src/user/model/UserActions'
 
 let isAnonymous = false
 let isLoggedIn = false
@@ -29,9 +30,25 @@ function render() {
 
 start().then(user => {
   isLoggedIn = true
+  store.dispatch(userLoggedIn(user))
   render()
 }).catch(error => {
+
+  switch (error) {
+    case SigninError.unauthorized:
+      console.log('unauthorized')
+    break
+    case SigninError.anonymous:
+      console.log('anonymous')
+    break
+    case SigninError.unsupported:
+      console.log('unsupported')
+    break
+  }
+
+  store.dispatch(userPurge())
   console.log(`error:${error}`)
+  
   isLoggedIn = false
   render()
 })
