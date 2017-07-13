@@ -38,7 +38,6 @@ contract Schedule is Killable {
 
 	modifier withinDeadlineCancellation() { if (now <= dates.cancellation) _; }
 	modifier withinDeadlinePurchase() { if (now <= dates.purchase) _; }
-	// modifier onlyowner { if (msg.sender == owner) _; }
 
 	event Cancel(string reason);
 	event SpotPurchased(uint spotType, address attendee, address reseller, uint index);
@@ -88,6 +87,15 @@ contract Schedule is Killable {
 			}
 		}
 		selfdestruct(owner);
+	}
+
+	function getPriceWithUserType(string spotType) public returns (uint) {
+		if (sha3(spotType) == sha3("INDIVIDUAL")) {
+			return price[uint(SpotType.Individual)];
+		} else if (sha3(spotType) == sha3("RESELLER")) {
+			return price[uint(SpotType.Reseller)];
+		}
+		throw;
 	}
 
 	function getPrice() public returns (uint) {

@@ -7,7 +7,7 @@ let legsAss = { name: "Legs & Ass", description: "Squats, squats, squats and mor
 contract("Class", (accounts) => {
 	barrys.from = accounts[0]
 
-	it("should create class", (done) => {
+	it("should create class", done => {
 		barrys.instance = Studio.deployed()
 		Class.new(
 			barrys.instance.address,
@@ -32,7 +32,7 @@ contract("Class", (accounts) => {
 		)
 	})
 
-	it("should be able to update name, description", (done) => {
+	it("should be able to update name, description", done => {
 		barrys.instance = Studio.deployed()
 		Class.new(
 			barrys.instance.address,

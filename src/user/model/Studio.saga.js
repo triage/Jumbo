@@ -1,22 +1,15 @@
-import { put, call, take, takeEvery } from 'redux-saga/effects'
-import StudioContract from 'contracts/Studio.json'
-import Web3 from 'web3'
+import { put, call, takeEvery, take } from 'redux-saga/effects'
 import { STUDIO_INFO_LOAD, STUDIO_INFO_LOADED, STUDIO_LOAD, studioInfoLoad, studioInfoError, studioInfoLoaded } from './StudioActions'
 import { classesLoad, CLASSES_LOADED } from './ClassesActions'
 import { schedulesLoad, SCHEDULES_LOADED } from './ScheduleActions'
-
-const provider = new Web3.providers.HttpProvider('http://localhost:8545')
-const contract = require('truffle-contract')
-
-const Studio = contract(StudioContract)
-Studio.setProvider(provider)
+import eth from 'src/util/eth'
 
 function* studioInfoSaga(action) {
   try {
-    const studio = Studio.at(action.studio)
+    const studio = eth.Studio().at(action.studio)
     const name = yield call(studio.name.call)
-    const contactDetails = yield call(studio.contactDetails.call)
-    yield put(studioInfoLoaded(name, contactDetails))
+    // const contactDetails = yield call(studio.contactDetails.call)
+    yield put(studioInfoLoaded(name, null))
   } catch (error) {
     console.log(`error:${error}`)
     yield put(studioInfoError(error))

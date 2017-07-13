@@ -11,7 +11,7 @@ contract("Studio", (accounts) => {
 	barrys.from = accounts[0]
 	classpass.from = accounts[1]
 
-	beforeEach((done) => {
+	beforeEach(done => {
 		Studio.new("Barry's", { from: barrys.from}).then((instance) => {
 			barrys.instance = instance
 			return Reseller.new("Classpass", { from: classpass.from})
@@ -21,7 +21,7 @@ contract("Studio", (accounts) => {
 		})
 	})
 	
-	it("should update studio details", (done) => {
+	it("should update studio details", done => {
 		barrys.instance.updateContactDetails(
 			barrys.contactDetails, {from: barrys.from}
 		).then(() => {
@@ -32,7 +32,7 @@ contract("Studio", (accounts) => {
 		})
 	})
 
-	it("should add, then remove a class", (done) => {
+	it("should add, then remove a class", done => {
 		Class.new(barrys.instance.address, "Class name", "Class description", { from: barrys.from }).then((classInstance) => {
 			barrysClass = classInstance
 			return barrys.instance.classAdded(barrysClass.address)
@@ -47,7 +47,7 @@ contract("Studio", (accounts) => {
 		})
 	})
 
-	it("should add, then remove a schedule", (done) => {
+	it("should add, then remove a schedule", done => {
 		barrys.instance.scheduleAdded(schedule, {from: barrys.from}).then(() => {
 			return barrys.instance.schedulesCount.call()
 		}).then((count) => {
@@ -63,7 +63,7 @@ contract("Studio", (accounts) => {
 		})
 	})
 
-	it("should add, remove reseller", (done) => {
+	it("should add, remove reseller", done => {
 		barrys.instance.addReseller(
 			classpass.instance.address, {from: barrys.from}
 		).then(

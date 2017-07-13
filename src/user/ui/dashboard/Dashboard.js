@@ -19,13 +19,8 @@ const Dashboard = props => {
     user,
     studio,
     events,
-    studioLoad,
     history,
   } = props;
-
-  if (!studio.loaded) {
-    studioLoad(user.data.address)
-  }
   return(
     <div>
       <BigCalendar

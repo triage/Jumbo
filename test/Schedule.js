@@ -35,7 +35,7 @@ contract("Schedule", (accounts) => {
 	classpass.from = accounts[1]
 	jessprager.from = accounts[2]
 
-	beforeEach((done) => {
+	beforeEach(done => {
 	    Reseller.new(
 	    	"Classpass", { from: classpass.from }
 	    ).then(
@@ -84,16 +84,24 @@ contract("Schedule", (accounts) => {
 	    ).then(
 	    	(schedule) => {
 	    		legsAss12pm.instance = schedule
-	    		// schedule.SpotPurchased().watch((error, response) => {
-	    		// 	console.log("SPOT PURCHASED!")
-	    		// 	console.log(response)	
-	    		// })
 	    		done()
 	    	}
 	    )
 	})
 
-	it("should get correct reseller price, buy a spot, request a refund", (done) => {
+	it("should get the correct prices", done => {
+		legsAss12pm.instance.getPriceWithUserType.call(
+			"INDIVIDUAL", { from: barrys.from }
+		).then(price => {
+			assert.equal(price, legsAss12pm.price.individual)
+			return legsAss12pm.instance.getPriceWithUserType.call("RESELLER", { from: barrys.from })
+		}).then(price => {
+			assert.equal(price, legsAss12pm.price.reseller)
+			done()
+		})
+	})
+
+	it("should get correct reseller price, buy a spot, request a refund", done => {
 		legsAss12pm.instance.getPrice.call(
 			{ from: classpass.from }
 		).then(
@@ -133,7 +141,7 @@ contract("Schedule", (accounts) => {
 		)
 	})
 
-	it("should get correct individual price, buy a spot, request a refund", (done) => {
+	it("should get correct individual price, buy a spot, request a refund", done => {
 		legsAss12pm.instance.getPrice.call(
 			{ from: jessprager.from }
 		).then(
@@ -174,7 +182,15 @@ contract("Schedule", (accounts) => {
 	})
 
 
-	it("should cancel a class, refund all tickets", (done) => {
+	it("should complete a class", done => {
+		legsAss12pm.instance.complete.call(
+			{ from: barrys.from}
+		).then(() => {
+			done()
+		})
+	})
+
+	it("owner should cancel a class, refund all tickets", done => {
 		legsAss12pm.instance.spotPurchase(
 			jessprager.instance.address,
 			{

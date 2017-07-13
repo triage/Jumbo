@@ -16,6 +16,7 @@ export function userLoggedIn(user) {
 }
 
 export function loginUser() {
+  debugger
   return function(dispatch) {
     // Using truffle-contract we create the authentication object.
     const authentication = contract(AuthenticationContract)

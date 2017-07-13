@@ -15,6 +15,7 @@ function userUpdated(user) {
 
 export function updateUser(name) {
   return function(dispatch) {
+    debugger
     // Using truffle-contract we create the authentication object.
     const authentication = contract(AuthenticationContract)
     authentication.setProvider(provider)

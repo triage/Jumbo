@@ -1,6 +1,7 @@
 const UserType = {
   studio: 'STUDIO',
-  individual: 'INDIVIDUAL'
+  individual: 'INDIVIDUAL',
+  reseller: 'RESELLER'
 }
 
 export default UserType
