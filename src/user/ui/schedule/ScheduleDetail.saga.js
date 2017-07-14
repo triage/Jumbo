@@ -42,7 +42,7 @@ export function* doSpotPurchase(action) {
   try {
     const schedule = Schedule.at(action.schedule.address)
     const from = Object.assign({}, eth.from(), {
-      value: parseInt(action.schedule.price.individual),
+      value: parseInt(action.schedule.price.individual, 10),
     })
     yield schedule.spotPurchase.sendTransaction(action.individual, from)
     yield put(scheduleLoad(action.schedule.address))

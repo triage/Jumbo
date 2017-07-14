@@ -75,7 +75,6 @@ const UserActions = props => {
 const Schedule = props => {
 
   const {
-    user,
     address,
     schedule,
     scheduleLoad

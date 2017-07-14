@@ -5,7 +5,6 @@ const ClassesSelector = props => {
   const {
     classes,
     location,
-    selected,
     history,
     input,
   } = props;

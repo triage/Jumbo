@@ -16,8 +16,6 @@ const Event = ({ event }) => (
 const Dashboard = props => {
 
   const {
-    user,
-    studio,
     events,
     history,
   } = props;
