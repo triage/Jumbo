@@ -23,7 +23,7 @@ const ClassesSelector = props => {
 
   return (
     <select
-      selected={selected}
+      value={location.state.class}
       onChange={event => {
         if (event.target.selectedOptions[0].dataset.action === 'new') {
           history.push('/class/new', location.state)
