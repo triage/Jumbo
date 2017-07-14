@@ -82,7 +82,6 @@ const Schedule = props => {
 
   if (!schedule || schedule.reserved === undefined) {
     scheduleLoad(address)
-    console.log('loading schedule')
     return null
   }
 

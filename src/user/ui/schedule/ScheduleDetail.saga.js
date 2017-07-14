@@ -29,7 +29,7 @@ export function* doSpotCancel(action) {
   const Schedule = eth.Schedule()
   try {
     const schedule = Schedule.at(action.schedule.address)
-    yield schedule.spotCancel.sendTransaction(action.individual, eth.from())
+    yield apply(schedule, schedule.spotCancel.sendTransaction, [action.individual, eth.from()])
     yield put(scheduleLoad(action.schedule.address))
   } catch(error) {
     console.log(error)
@@ -44,7 +44,7 @@ export function* doSpotPurchase(action) {
     const from = Object.assign({}, eth.from(), {
       value: parseInt(action.schedule.price.individual, 10),
     })
-    yield schedule.spotPurchase.sendTransaction(action.individual, from)
+    yield apply(schedule, schedule.spotPurchase.sendTransaction, [action.individual, from])
     yield put(scheduleLoad(action.schedule.address))
   } catch(error) {
     console.log(error)

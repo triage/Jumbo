@@ -98,7 +98,8 @@ const ScheduleForm = props => {
           } = props;
           return <NumericInput
             min={0}
-            max={20}
+            max={300000000000000000}
+            step={300000000000000000/20}
             value={input.value}
             onChange={value => {
               input.onChange(value)
@@ -115,7 +116,8 @@ const ScheduleForm = props => {
           } = props;
           return <NumericInput
             min={0}
-            max={20}
+            max={300000000000000000}
+            step={300000000000000000/20}
             value={input.value}
             onChange={value => {
               input.onChange(value)
