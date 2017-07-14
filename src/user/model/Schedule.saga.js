@@ -17,7 +17,7 @@ function* doSchedulesLoad(action) {
     const instructor = yield call(schedule.instructor.call)
     const dates = yield call(schedule.dates.call)
     const klass = yield call(schedule.class.call)
-    const balance = yield call(eth.getBalance, address)
+    const balance = yield eth.getBalance(address)
     const price = {}
     price.individual = yield call(schedule.getPriceWithUserType.call, UserType.individual)
     price.reseller = yield call(schedule.getPriceWithUserType.call, UserType.reseller)
@@ -56,6 +56,21 @@ function* doScheduleLoad(action) {
   price.individual = yield call(schedule.getPriceWithUserType.call, UserType.individual)
   price.reseller = yield schedule.getPriceWithUserType.call(UserType.reseller)
   const reserved = yield schedule.spotIsReserved.call(user.address)
+  let nSpots = yield schedule.nSpots.call()
+  nSpots = nSpots.valueOf()
+  const attendees = []
+  for(const i = 0; i < nSpots; i++) {
+    const address = yield schedule.getSpotAtIndex.call(i)
+    const attendee = eth.Individual().at(address)
+    if (parseInt(attendee.address) === 0) {
+      continue
+    }
+    const name = yield attendee.getName.call()
+    attendees.push({
+      address,
+      name
+    })
+  }
   const classInstance = eth.Class().at(klass)
   const name = yield call(classInstance.name.call)
   const description = yield call(classInstance.description.call)
@@ -67,10 +82,12 @@ function* doScheduleLoad(action) {
 
   const scheduleObj = {
     address,
+    attendees,
     balance,
     instructor,
     price,
     reserved,
+    nSpots,
     dates: {
       /* eslint-disable radix */
       start: moment.unix(parseInt(dates[0].valueOf()) / 1000).toDate(),

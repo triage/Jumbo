@@ -30,6 +30,9 @@ const ScheduleForm = props => {
     <form
       className="pure-form pure-form-stacked"
       onSubmit={handleSubmit(values => {
+        if(!values.class && location.state.class) {
+          values.class = location.state.class
+        }
         scheduleSubmit(Object.assign(values, { date }), history)
       })}
     >
@@ -41,7 +44,9 @@ const ScheduleForm = props => {
         history={history}
         location={location}
         classes={classes}
-        defaultValue={12345} />
+        defaultValue={location.state.class}
+        value={location.state.class}
+        />
 
       <h2>Starts at:</h2>
       <h4>{moment(date.start).format(format)}</h4>

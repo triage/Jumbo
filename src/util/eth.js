@@ -33,14 +33,13 @@ const eth = {
 
   getBalance: address => {
     return new Promise((fulfill, reject) => {
-      eth.web3().eth.getBalance(address, balance => {
-        if (balance) {
-          fulfill(balance.valueOf())
-        } else {
+      eth.web3().eth.getBalance(address, (error, balance) => {
+        if (error) {
           fulfill(0)
+        } else {
+          fulfill(balance.valueOf())
         }
       })
-      fulfill(0)
     })
   },
 

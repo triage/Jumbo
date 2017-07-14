@@ -72,18 +72,30 @@ const UserActions = props => {
   }
 }
 
-const Schedule = props => {
-
+const Attendees = props => {
   const {
-    address,
     schedule,
-    scheduleLoad
-  } = props;
+    user
+  } = props
 
-  if (!schedule || schedule.reserved === undefined) {
-    scheduleLoad(address)
+  if (user.type === UserType.individual) {
     return null
   }
+  const attendees = schedule.attendees.map(attendee => (
+    <div>{attendee.name}</div>
+  ))
+  return (
+    <div>
+      <p>Attendees:</p>
+      {attendees}
+    </div>
+  )
+}
+
+const ScheduleInfo = props => {
+  const {
+    schedule,
+  } = props
 
   const url = `https://etherscan.io/address/${schedule.address}`
   const start = moment(schedule.dates.start).format(format)
@@ -97,6 +109,27 @@ const Schedule = props => {
         </span>
       <h3>{schedule.instructor}</h3>
       <h4>{start} - {end}</h4>
+      <Attendees {...props} />
+    </div>
+  )
+}
+
+const Schedule = props => {
+
+  const {
+    schedule,
+    scheduleLoad,
+    address
+  } = props;
+
+  if (!schedule || schedule.reserved === undefined) {
+    scheduleLoad(address)
+    return null
+  }
+
+  return (
+    <div>
+      <ScheduleInfo {...props} />
       <ClassInfo {...props} />
       <hr />
       <UserActions {...props} />

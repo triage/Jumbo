@@ -8,4 +8,8 @@ contract Individual is Killable {
 		name = _name;
 		owner = msg.sender;
 	}
+
+	function getName() public returns (string) {
+		return name;
+	}
 }
