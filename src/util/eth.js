@@ -22,18 +22,26 @@ const eth = {
   },
 
   defaultAccount: () => {
-    const defaultAccount =  window.web3 ? window.web3.eth.defaultAccount : null
+    const defaultAccount =  window.web3 ? window.web3.eth.accounts[0] : null
     console.log(`defaultAccount:${defaultAccount}`)
     return defaultAccount
   },
 
   web3: () => {
-    const web3 =  new Web3(eth.provider())
-    web3.defaultAccount = eth.defaultAccount()
+    return window.web3
   },
 
-  coinbase: () => {
-    return eth.web3().eth.coinbase
+  getBalance: address => {
+    return new Promise((fulfill, reject) => {
+      eth.web3().eth.getBalance(address, balance => {
+        if (balance) {
+          fulfill(balance.valueOf())
+        } else {
+          fulfill(0)
+        }
+      })
+      fulfill(0)
+    })
   },
 
   Authentication: () => {
@@ -95,6 +103,7 @@ export const start = callback => {
         userAddress = address
         return authentication.userType()
       }).then(type => {
+        console.log(`type for ${userAddress}: ${type}`)
         const entity = (type === UserType.studio) ? eth.Studio() : eth.Individual()
         const user = entity.at(userAddress)
         user.name.call().then(name => {
