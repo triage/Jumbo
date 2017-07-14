@@ -2,20 +2,24 @@ import { connect } from 'react-redux'
 import ScheduleDetail from './ScheduleDetail'
 import { scheduleLoad } from '../../model/ScheduleActions'
 import { scheduleCancel } from './ScheduleDetailActions'
+import { spotPurchase, spotCancel } from './ScheduleDetailActions'
+import UserType from 'src/user/model/UserType'
 
 const mapStateToProps = (state, ownProps) => ({
   user: state.user.data,
-  schedule: state.studio.schedules.find(found => {
+  address: ownProps.match.params.address,
+  schedule: state.schedules.find(found => {
     if (found.address === ownProps.match.params.address) {
       return found
     }
-    return false
   })
 })
 
 const mapDispatchToProps = {
   scheduleLoad,
-  scheduleCancel
+  scheduleCancel,
+  spotPurchase,
+  spotCancel
 }
 
 const ScheduleDetailContainer = connect(

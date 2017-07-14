@@ -13,7 +13,6 @@ export function* doCreateClass(action) {
     const studioAddress = yield select(state => state.user.data.address)
     const classInstance = yield apply(Class, Class.new, [studioAddress, action.name, action.description, from])
     const studioInstance = Studio.at(studioAddress)
-
     //add the class to the studio
     yield apply(studioInstance, studioInstance.classAdded, [classInstance.address, from])
     yield put(classCreated({

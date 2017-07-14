@@ -10,7 +10,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     user: state.user,
     studio: state.studio,
-    events: state.studio.schedules.map(schedule => {
+    events: state.schedules.map(schedule => {
       return {
         address: schedule.address,
         start: new Date(schedule.dates.start),

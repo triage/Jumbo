@@ -1,7 +1,7 @@
 import { put, call, select, apply, takeEvery } from 'redux-saga/effects'
 import eth from 'src/util/eth'
-import { schedulesLoad } from 'user/model/ScheduleActions'
-import { SCHEDULE_CANCEL } from './ScheduleDetailActions'
+import { schedulesLoad, scheduleLoad } from 'user/model/ScheduleActions'
+import { SCHEDULE_CANCEL, SPOT_PURCHASE, SPOT_CANCEL } from './ScheduleDetailActions'
 
 export function* doCancelSchedule(action) {
 
@@ -25,6 +25,34 @@ export function* doCancelSchedule(action) {
   }
 }
 
+export function* doSpotCancel(action) {
+  const Schedule = eth.Schedule()
+  try {
+    const schedule = Schedule.at(action.schedule.address)
+    yield schedule.spotCancel.sendTransaction(action.individual, eth.from())
+    yield put(scheduleLoad(action.schedule.address))
+  } catch(error) {
+    console.log(error)
+    debugger
+  }
+}
+
+export function* doSpotPurchase(action) {
+  const Schedule = eth.Schedule()
+  try {
+    const schedule = Schedule.at(action.schedule.address)
+    const from = Object.assign({}, eth.from(), {
+      value: parseInt(action.schedule.price.individual),
+    })
+    yield schedule.spotPurchase.sendTransaction(action.individual, from)
+    yield put(scheduleLoad(action.schedule.address))
+  } catch(error) {
+    console.log(error)
+  }
+}
+
 export function* watchScheduleCancel() {
   yield takeEvery(SCHEDULE_CANCEL, doCancelSchedule)
+  yield takeEvery(SPOT_PURCHASE, doSpotPurchase)
+  yield takeEvery(SPOT_CANCEL, doSpotCancel)
 }

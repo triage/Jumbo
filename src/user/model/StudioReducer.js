@@ -8,7 +8,6 @@ const initialState = {
   loading: false,
   loaded: false,
   classes: null,
-  schedules: [],
   name: null,
   contactDetails: null
 }
@@ -35,9 +34,7 @@ const studioReducer = (state = initialState, action) => {
       classes: action.classes
     })
   } else if (action.type === SCHEDULES_LOADED) {
-    debugger
     return Object.assign({}, state, {
-      schedules: action.schedules,
       loaded: true,
       loading: false
     })

@@ -9,6 +9,7 @@ import { start, SigninError } from './util/eth'
 import App from './App'
 import { userPurge } from 'src/user/model/UserActions'
 import { studioLoad } from './user/model/StudioActions'
+import UserType from './user/model/UserType'
 
 let isAnonymous = false
 let isLoggedIn = false
@@ -31,8 +32,11 @@ function render() {
 
 start().then(user => {
   isLoggedIn = true
+  console.log(user)
   store.dispatch(userLoggedIn(user))
-  store.dispatch(studioLoad(user.address))
+  if (user.type === UserType.studio) {
+    store.dispatch(studioLoad(user.address))
+  }
   render()
 }).catch(error => {
   switch (error) {

@@ -4,6 +4,12 @@ export const scheduleLoad = address => ({
     address
 })
 
+export const SCHEDULE_LOADED = 'SCHEDULE_LOADED'
+export const scheduleLoaded = schedule => ({
+    type: SCHEDULE_LOADED,
+    schedule
+})
+
 export const SCHEDULES_LOADED = 'STUDIO_SCHEDULES_LOADED'
 export const schedulesLoaded = schedules => ({
     type: SCHEDULES_LOADED,

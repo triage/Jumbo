@@ -16,6 +16,17 @@ const style = {
   }
 }
 
+const ClassInfo = props => {
+  const {
+    user,
+    schedule
+  } = props
+  if (user.type === UserType.studio) {
+    return null
+  }
+  return <p>{schedule.class.description}</p>
+}
+
 const UserActions = props => {
   const {
     user,
@@ -24,7 +35,9 @@ const UserActions = props => {
     pristine,
     submitting,
     scheduleCancel,
-    schedule
+    spotPurchase,
+    spotCancel,
+    schedule,
   } = props;
 
   if (user.type === UserType.studio) {
@@ -34,15 +47,28 @@ const UserActions = props => {
           scheduleCancel(schedule.address, values.reason, history)
         })}
       >
+        <div>Balance: ${schedule.balance}</div>
         <span style={style.cancel}>Cancel:</span>
         <Field name="reason" component="input" type="text" placeholder="cancellation reason" />
         <input disabled={pristine || submitting} type="submit" value="Cancel" />
       </form>
     )
   } else if (user.type === UserType.individual) {
-    return (
-      <button onClick={event => console.log('hi!')} value={`Buy class for ${schedule.price.individual}`} />
-    )
+    if (schedule.reserved) {
+      return (
+        <button type="button" onClick={event => spotCancel(schedule, user.address, history)}>
+          Cancel and refund
+        </button>
+      )
+    } else {
+      return (
+        <button type="button" onClick={event => {
+          spotPurchase(schedule, user.address, history)
+          }}>
+          {`Buy class for ${schedule.price.individual}`}
+        </button>
+      )
+    }
   }
 }
 
@@ -50,13 +76,15 @@ const Schedule = props => {
 
   const {
     user,
-    schedule
+    address,
+    schedule,
+    scheduleLoad
   } = props;
 
-  if (!schedule) {
-    return (
-      <p>Not Found</p>
-    )
+  if (!schedule || schedule.reserved === undefined) {
+    scheduleLoad(address)
+    console.log('loading schedule')
+    return null
   }
 
   const url = `https://etherscan.io/address/${schedule.address}`
@@ -71,11 +99,7 @@ const Schedule = props => {
         </span>
       <h3>{schedule.instructor}</h3>
       <h4>{start} - {end}</h4>
-      <hr />
-      <span style={style.balance}>${schedule.balance}</span>
-      <div id="attendees">
-        attendees ...
-        </div>
+      <ClassInfo {...props} />
       <hr />
       <UserActions {...props} />
     </div>
