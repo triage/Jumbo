@@ -1,12 +1,11 @@
 pragma solidity ^0.4.0;
 import {Studio} from "./Studio.sol";
 import {Class} from "./Class.sol";
-import {User} from "./User.sol";
+import "./zeppelin/lifecycle/Killable.sol";
 
-contract Schedule {
+contract Schedule is Killable {
 
 	string public instructor;
-	address private owner;
 	address public class;
 
 	struct Dates {
@@ -39,7 +38,6 @@ contract Schedule {
 
 	modifier withinDeadlineCancellation() { if (now <= dates.cancellation) _; }
 	modifier withinDeadlinePurchase() { if (now <= dates.purchase) _; }
-	modifier onlyowner { if (msg.sender == owner) _; }
 
 	event Cancel(string reason);
 	event SpotPurchased(uint spotType, address attendee, address reseller, uint index);
@@ -66,12 +64,12 @@ contract Schedule {
 
 	function() payable { }
 
-	function complete() onlyowner {
+	function complete() onlyOwner {
 		//class has completed. Balance should sent to the owner
 		selfdestruct(owner);
 	}
 
-	function cancel(string reason) onlyowner {
+	function cancel(string reason) onlyOwner {
 		//studio needs to cancel this schedule. Refund all spots, notify all attendees of the reason.
 		Cancel(reason);
 
@@ -79,15 +77,43 @@ contract Schedule {
 		for(uint spotIndex = 0; spotIndex < nSpots; spotIndex ++) {
 			Spot spot = spots[spotIndex];
 			if(spot.reseller != 0x0) {
-		        if (!spot.reseller.send(0)) {
-		            throw;
-		        }
+				if (!spot.reseller.send(price[uint(SpotType.Reseller)])) {
+						throw;
+				}
 			} else {
-		        if (!spot.attendee.send(0)) {	
-		            throw;
-		        }
+				if (spot.attendee != 0x0 && !spot.attendee.send(price[uint(SpotType.Individual)])) {	
+						throw;
+				}
 			}
 		}
+		selfdestruct(owner);
+	}
+
+	function getPriceWithUserType(string spotType) public returns (uint) {
+		if (sha3(spotType) == sha3("INDIVIDUAL")) {
+			return price[uint(SpotType.Individual)];
+		} else if (sha3(spotType) == sha3("RESELLER")) {
+			return price[uint(SpotType.Reseller)];
+		}
+		throw;
+	}
+
+	function getNumberOfAttendees() onlyOwner returns (uint) {
+		uint nSpots = 0;
+		for(uint spotIndex = 0; spotIndex < nSpots; spotIndex++) {
+			if(spots[spotIndex].attendee != 0x0) {
+				nSpots ++;
+			}
+		}
+		return nSpots;
+	}
+
+	function getSpotAtIndex(uint index) onlyOwner returns (address) {
+		return spots[index].attendee;
+	}
+
+	function getAttendeeAtIndex(uint index) onlyOwner returns (address) {
+		return spots[index].attendee;
 	}
 
 	function getPrice() public returns (uint) {
@@ -115,7 +141,7 @@ contract Schedule {
 				address reseller = studio.resellerWithSender(msg.sender);
 				spot = Spot(spotType, attendee, reseller);
 			} else {
-				if(User(attendee).owner() != msg.sender) {
+				if(Ownable(attendee).owner() != msg.sender) {
 					throw;
 				}
 				spot = Spot(spotType, attendee, 0x0);

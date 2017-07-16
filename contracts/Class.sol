@@ -1,18 +1,11 @@
 pragma solidity ^0.4.0;
+import "./zeppelin/lifecycle/Killable.sol";
 
-contract Class {
+contract Class is Killable {
 	string public name;
 	string public description;
 	address public studio;
 	address public owner;
-
-	modifier onlyowner {
-		if (msg.sender == owner) {
-			_;
-		} else {
-			throw;
-		}
-	}
 
 	function Class(address _studio, string _name, string _description) {
 		owner = msg.sender;
@@ -21,11 +14,11 @@ contract Class {
 		description = _description;
 	}
 
-	function setName(string _name) public onlyowner {
+	function setName(string _name) public onlyOwner {
 		name = _name;
 	}
 
-	function setDescription(string _description) public onlyowner {
+	function setDescription(string _description) public onlyOwner {
 		description = _description;
 	}
 }

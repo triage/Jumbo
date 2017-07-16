@@ -1,12 +1,16 @@
 pragma solidity ^0.4.0;
-import {User} from "./User.sol";
+import "./zeppelin/lifecycle/Killable.sol";
 
-contract Studio is User("name") {
+contract Studio is Killable {
+	string public name;
 	string public contactDetails;
 	address[] public resellers;
 	address[] public schedules;
+	address[] public classes;
 
 	event ScheduleAdded(address indexed schedule);
+	event ScheduleRemoved(address indexed schedule);
+	event ClassAdded(address indexed class);
 	event ContactDetailsUpdated(string contactDetails);
 
 	function Studio(string _name) {
@@ -14,26 +18,59 @@ contract Studio is User("name") {
 		owner = msg.sender;
 	}
 
-	function updateContactDetails(string _contactDetails) onlyowner returns (bool) {
+	function updateContactDetails(string _contactDetails) public onlyOwner {
 		contactDetails = _contactDetails;
 		ContactDetailsUpdated(contactDetails);
-		return true;
 	}
 
-	function scheduleAdded(address schedule) onlyowner {
+	function classesCount() returns (uint) {
+		return classes.length;
+	}
+
+	function classAtIndex(uint index) returns (address) {
+		return classes[index];
+	}
+
+	function classAdded(address class) onlyOwner {
+		classes.push(class);
+		ClassAdded(class);
+	}
+
+	function schedulesCount() returns (uint) {
+		return schedules.length;
+	}
+
+	function scheduleAtIndex(uint index) returns (address) {
+		return schedules[index];
+	}
+
+	function scheduleAdded(address schedule) onlyOwner {
 		schedules.push(schedule);
 		ScheduleAdded(schedule);
 	}
 
-	function addReseller(address reseller) onlyowner returns (bool) {
+	function scheduleRemoved(address schedule) onlyOwner {
+		for(uint i = 0; i < schedules.length; i++) {
+			if(schedules[i] == schedule) {
+				if(i < schedules.length - 1) {
+					schedules[i] = schedules[i+1];
+				}
+				delete schedules[schedules.length - 1];
+				schedules.length--;
+				ScheduleRemoved(schedule);
+				break;
+			}
+		}
+	}
+
+	function addReseller(address reseller) public onlyOwner {
 		if(isAuthorizedReseller(reseller)) {
 			throw;
 		}
 		resellers.push(reseller);
-		return true;
 	}
 
-	function removeReseller(address reseller) onlyowner returns (bool) {
+	function removeReseller(address reseller) onlyOwner returns (bool) {
 		if(!isAuthorizedReseller(reseller)) {
 			throw;
 		}
@@ -60,7 +97,7 @@ contract Studio is User("name") {
 	function resellerWithSender(address sender) returns (address) {
 		address reseller = 0x0;
 		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(User(resellers[resellerIndex]).owner() == sender) {
+			if(Ownable(resellers[resellerIndex]).owner() == sender) {
 				reseller = address(resellers[resellerIndex]);
 				break;
 			}
@@ -71,7 +108,7 @@ contract Studio is User("name") {
 	function isSenderAuthorizedReseller(address sender) returns (bool) {
 		bool isReseller = false;
 		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(User(resellers[resellerIndex]).owner() == sender) {
+			if(Ownable(resellers[resellerIndex]).owner() == sender) {
 				isReseller = true;
 				break;
 			}

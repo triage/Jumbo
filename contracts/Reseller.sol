@@ -1,7 +1,9 @@
 pragma solidity ^0.4.0;
-import {User} from "./User.sol";
+import "./zeppelin/lifecycle/Killable.sol";
 
-contract Reseller is User("name") {
+contract Reseller is Killable {
+  string public name;
+  
 	function Reseller(string _name) {
 		name = _name;
 		owner = msg.sender;
