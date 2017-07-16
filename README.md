@@ -19,3 +19,5 @@ A decentralized smart contract-backed booking platform for the studio fitness in
     testrpc &
     npm start &
     ```
+3. Use
+    Requires a web3-capable browser. Recommend MetaMask (https://metamask.io) for Chrome to manage wallet/identities.
