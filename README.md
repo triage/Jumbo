@@ -2,7 +2,7 @@
 
 Jumbo Unites Mind-Body like Organizations
 
-A smart contract platform for the studio fitness industry.
+A decentralized smart contract-backed booking platform for the studio fitness industry.
 
 ## Installation
 
