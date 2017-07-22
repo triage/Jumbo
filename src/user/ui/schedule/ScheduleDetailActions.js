@@ -22,3 +22,16 @@ export const spotCancel = (schedule, individual, history) => ({
     history
 })
 
+export const SPOT_PURCHASED = 'SPOT_PURCHASED'
+export const spotPurchased = (schedule, history) => ({
+    type: SPOT_PURCHASED,
+    schedule,
+    history
+})
+
+export const SPOT_CANCELLED = 'SPOT_CANCELLED'
+export const spotCancelled = (schedule, history) => ({
+    type: SPOT_CANCEL,
+    schedule,
+    history
+})

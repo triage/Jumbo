@@ -1,7 +1,7 @@
 import { put, call, select, apply, takeEvery } from 'redux-saga/effects'
 import eth from 'src/util/eth'
 import { schedulesLoad, scheduleLoad } from 'user/model/ScheduleActions'
-import { SCHEDULE_CANCEL, SPOT_PURCHASE, SPOT_CANCEL } from './ScheduleDetailActions'
+import { SCHEDULE_CANCEL, SPOT_PURCHASE, SPOT_CANCEL, spotPurchased, spotCancelled } from './ScheduleDetailActions'
 
 export function* doCancelSchedule(action) {
 
@@ -30,7 +30,7 @@ export function* doSpotCancel(action) {
   try {
     const schedule = Schedule.at(action.schedule.address)
     yield apply(schedule, schedule.spotCancel.sendTransaction, [action.individual, eth.from()])
-    yield put(scheduleLoad(action.schedule.address))
+    yield put(spotCancelled(action.schedule.address, action.history))
   } catch(error) {
     console.log(error)
     debugger
@@ -45,7 +45,7 @@ export function* doSpotPurchase(action) {
       value: parseInt(action.schedule.price.individual, 10),
     })
     yield apply(schedule, schedule.spotPurchase.sendTransaction, [action.individual, from])
-    yield put(scheduleLoad(action.schedule.address))
+    yield put(spotPurchased(action.schedule.address, action.history))
   } catch(error) {
     console.log(error)
   }

@@ -110,7 +110,7 @@ export const start = callback => {
         authentication = instance
         return authentication.login()
       }).then(address => {
-        if (parseInt(address, 10) === 0) {
+        if (parseInt(address, 16) === 0) {
           reject(SigninError.unauthorized)
           return
         }

@@ -31,7 +31,7 @@ const ScheduleForm = props => {
       className="pure-form pure-form-stacked"
       onSubmit={handleSubmit(values => {
         if(!values.class && location.state.class) {
-          values.class = location.state.class
+          values.class = { address: location.state.class }
         }
         scheduleSubmit(Object.assign(values, { date }), history)
       })}

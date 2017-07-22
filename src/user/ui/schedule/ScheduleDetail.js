@@ -1,7 +1,8 @@
 import moment from 'moment'
-import React from 'react'
+import React, { PureComponent } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import UserType from 'src/user/model/UserType'
+import eth from 'src/util/eth'
 
 const format = 'ddd, MMM D, H:mm a'
 const style = {
@@ -47,7 +48,7 @@ const UserActions = props => {
           scheduleCancel(schedule.address, values.reason, history)
         })}
       >
-        <div>Balance: ${schedule.balance}</div>
+        <div>Balance: {eth.web3().fromWei(schedule.balance)} eth</div>
         <span style={style.cancel}>Cancel:</span>
         <Field name="reason" component="input" type="text" placeholder="cancellation reason" />
         <input disabled={pristine || submitting} type="submit" value="Cancel" />
@@ -65,7 +66,7 @@ const UserActions = props => {
         <button type="button" onClick={event => {
           spotPurchase(schedule, user.address, history)
           }}>
-          {`Buy class for ${schedule.price.individual}`}
+          {`Buy class for ${eth.web3().fromWei(schedule.price.individual)}`}
         </button>
       )
     }
@@ -82,7 +83,7 @@ const Attendees = props => {
     return null
   }
   const attendees = schedule.attendees.map(attendee => (
-    <div>{attendee.name}</div>
+    <div key={attendee.name}>{attendee.name}</div>
   ))
   return (
     <div>
@@ -114,28 +115,39 @@ const ScheduleInfo = props => {
   )
 }
 
-const Schedule = props => {
+class Schedule extends PureComponent {
 
-  const {
-    schedule,
-    scheduleLoad,
-    address
-  } = props;
-
-  if (!schedule || schedule.reserved === undefined) {
-    scheduleLoad(address)
-    return null
+  componentWillMount() {
+    console.log('componentWillMount')
+    const {
+      address,
+      scheduleLoad
+    } = this.props;
+    scheduleLoad(address);
   }
 
-  return (
-    <div>
-      <ScheduleInfo {...props} />
-      <ClassInfo {...props} />
-      <hr />
-      <UserActions {...props} />
-    </div>
+  render() {
+    const {
+      schedule,
+      scheduleLoad,
+      address
+    } = this.props;
 
-  )
+    if (!schedule || schedule.reserved === undefined) {
+      scheduleLoad(address)
+      return null
+    }
+
+    return (
+      <div>
+        <ScheduleInfo {...this.props} />
+        <ClassInfo {...this.props} />
+        <hr />
+        <UserActions {...this.props} />
+      </div>
+
+    )
+  }
 }
 
 export default reduxForm({
