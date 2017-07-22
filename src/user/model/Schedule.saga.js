@@ -19,6 +19,7 @@ function* doSchedulesLoad(action) {
     const klass = yield call(schedule.class.call)
     const balance = yield eth.getBalance(address)
     const price = {}
+    // debugger
     price.individual = yield call(schedule.getPriceWithUserType.call, UserType.individual)
     price.reseller = yield call(schedule.getPriceWithUserType.call, UserType.reseller)
     schedules.push({
@@ -59,7 +60,7 @@ function* doScheduleLoad(action) {
   let nSpots = yield schedule.nSpots.call()
   nSpots = nSpots.valueOf()
   const attendees = []
-  for(const i = 0; i < nSpots; i++) {
+  for(let i = 0; i < nSpots; i++) {
     const address = yield schedule.getSpotAtIndex.call(i)
     const attendee = eth.Individual().at(address)
     if (parseInt(attendee.address) === 0) {
