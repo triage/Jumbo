@@ -19,13 +19,20 @@ const Dashboard = props => {
     events,
     history,
   } = props;
+
+  const earliestSchedulableClassHoursBefore = 1
+
   return(
     <div>
       <BigCalendar
         events={events}
         step={15}
         selectable
-        onSelectSlot={({start, end}) => {   
+        onSelectSlot={({start, end}) => {
+          const earliest = new Date().valueOf() - earliestSchedulableClassHoursBefore * 60 * 60 * 1000
+          if (new Date(start).valueOf() <= earliest) {
+            return
+          }
           history.push('schedule/new', {
             start,
             end

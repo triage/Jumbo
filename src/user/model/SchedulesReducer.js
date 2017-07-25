@@ -1,5 +1,5 @@
 import { SCHEDULE_LOADED, SCHEDULES_LOADED } from './ScheduleActions'
-import { SPOT_PURCHASED, SPOT_CANCELLED } from 'user/ui/schedule/ScheduleDetailActions'
+import { SPOT_PURCHASED, SPOT_CANCELLED, SCHEDULE_COMPLETED } from 'user/ui/schedule/ScheduleDetailActions'
 
 const initialState = []
 
@@ -25,6 +25,8 @@ const studioReducer = (state = initialState, action) => {
 
   } else if (action.type === SPOT_CANCELLED) {
 
+  } else if (action.type === SCHEDULE_COMPLETED) {
+    return Array.from(state).filter(schedule => schedule.address !== action.schedule)
   }
   return state
 }

@@ -10,7 +10,6 @@ function* doScheduleSubmit(action) {
   const from = eth.from()
 
   try {
-    debugger
     // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
     const values = action.values;
     const schedule = yield apply(

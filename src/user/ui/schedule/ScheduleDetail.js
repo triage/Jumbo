@@ -36,24 +36,37 @@ const UserActions = props => {
     pristine,
     submitting,
     scheduleCancel,
+    scheduleComplete,
     spotPurchase,
     spotCancel,
     schedule,
   } = props;
 
   if (user.type === UserType.studio) {
-    return (
-      <form
-        onSubmit={handleSubmit(values => {
-          scheduleCancel(schedule.address, values.reason, history)
-        })}
-      >
-        <div>Balance: {eth.web3().fromWei(schedule.balance)} eth</div>
-        <span style={style.cancel}>Cancel:</span>
-        <Field name="reason" component="input" type="text" placeholder="cancellation reason" />
-        <input disabled={pristine || submitting} type="submit" value="Cancel" />
-      </form>
-    )
+    const balance = eth.web3().fromWei(schedule.balance)
+    //studio can only cancel if current date is before class
+    if (new Date() < new Date(schedule.dates.start)) {
+      return (
+        <form
+          onSubmit={handleSubmit(values => {
+            scheduleCancel(schedule.address, values.reason, history)
+          })}
+        >
+          <div>Balance: {balance} eth</div>
+          <span style={style.cancel}>Cancel:</span>
+          <Field name="reason" component="input" type="text" placeholder="cancellation reason" />
+          <input disabled={pristine || submitting} type="submit" value="Cancel" />
+        </form>
+      )
+    } else {
+      //studio can complete contract
+      return (
+        <button onClick={event => {
+        console.log('clicked')
+        scheduleComplete(schedule.address, history)
+        }}>Complete class and withdraw ${balance}</button>
+      )
+    }
   } else if (user.type === UserType.individual) {
     if (schedule.reserved) {
       return (

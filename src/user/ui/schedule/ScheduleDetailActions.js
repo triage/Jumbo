@@ -6,6 +6,21 @@ export const scheduleCancel = (schedule, reason, history) => ({
     history
 })
 
+export const SCHEDULE_COMPLETE = 'SCHEDULE_COMPLETE'
+export const scheduleComplete = (schedule, history) => ({
+    type: SCHEDULE_COMPLETE,
+    schedule,
+    history
+})
+
+export const SCHEDULE_COMPLETED = 'SCHEDULE_COMPLETED'
+export const scheduleCompleted = (schedule, history) => ({
+    type: SCHEDULE_COMPLETED,
+    schedule,
+    history
+})
+
+
 export const SPOT_PURCHASE = 'SPOT_PURCHASE'
 export const spotPurchase = (schedule, individual, history) => ({
     type: SPOT_PURCHASE,

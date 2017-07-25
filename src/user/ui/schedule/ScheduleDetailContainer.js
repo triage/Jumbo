@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import ScheduleDetail from './ScheduleDetail'
 import { scheduleLoad } from '../../model/ScheduleActions'
-import { scheduleCancel } from './ScheduleDetailActions'
+import { scheduleCancel, scheduleComplete } from './ScheduleDetailActions'
 import { spotPurchase, spotCancel } from './ScheduleDetailActions'
 
 const mapStateToProps = (state, ownProps) => ({
@@ -13,6 +13,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   scheduleLoad,
   scheduleCancel,
+  scheduleComplete,
   spotPurchase,
   spotCancel
 }
