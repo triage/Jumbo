@@ -22,9 +22,23 @@ const studioReducer = (state = initialState, action) => {
   } else if (action.type === SCHEDULES_LOADED) {
     return action.schedules
   } else if (action.type === SPOT_PURCHASED) {
-
+    const schedules = Array.from(state).map(schedule => {
+      if (schedule.address === action.schedule.address) {
+        schedule.reserved = true
+      }
+      return schedule
+    })
+    return schedules
   } else if (action.type === SPOT_CANCELLED) {
-
+    const schedules = Array.from(state).map(schedule => {
+      debugger
+      if (schedule.address === action.schedule.address) {
+        debugger
+        schedule.reserved = false
+      }
+      return schedule
+    })
+    return schedules
   } else if (action.type === SCHEDULE_COMPLETED) {
     return Array.from(state).filter(schedule => schedule.address !== action.schedule)
   }

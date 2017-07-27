@@ -32,20 +32,6 @@ export function* doScheduleCancel(action) {
     yield put({ type: "SCHEDULE_CANCEL_FAILED", error })
   }
 }
-
-export function* doSpotCancel(action) {
-  debugger
-  const Schedule = eth.Schedule()
-  try {
-    const schedule = Schedule.at(action.schedule.address)
-    yield apply(schedule, schedule.spotCancel.sendTransaction, [action.individual, eth.from()])
-    yield put(spotCancelled(action.schedule.address, action.history))
-  } catch(error) {
-    console.log(error)
-    debugger
-  }
-}
-
 function* doScheduleComplete(action) {
   const Schedule = eth.Schedule()
   const Studio = eth.Studio()
@@ -65,15 +51,30 @@ function* doScheduleComplete(action) {
   }
 }
 
-export function* doSpotPurchase(action) {
+function* doSpotCancel(action) {
   const Schedule = eth.Schedule()
   try {
+    const schedule = Schedule.at(action.schedule.address)
+    yield apply(schedule, schedule.spotCancel.sendTransaction, [action.individual, eth.from()])
+    yield put(spotCancelled(action.schedule.address, action.history))
+    debugger
+  } catch(error) {
+    console.log(error)
+    debugger
+  }
+}
+
+function* doSpotPurchase(action) {
+  const Schedule = eth.Schedule()
+  try {
+    debugger
     const schedule = Schedule.at(action.schedule.address)
     const from = Object.assign({}, eth.from(), {
       value: parseInt(action.schedule.price.individual, 10),
     })
     yield apply(schedule, schedule.spotPurchase.sendTransaction, [action.individual, from])
     yield put(spotPurchased(action.schedule, action.history))
+    
   } catch(error) {
     console.log(error)
   }

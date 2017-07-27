@@ -26,6 +26,13 @@ const ScheduleForm = props => {
     end: location.state.end,
   }
 
+  const priceProps = {
+    min: 0.0,
+    max: 0.3,
+    step: 0.3 / 20,
+    precision: 2,
+  }
+
   return (
     <form
       className="pure-form pure-form-stacked"
@@ -102,9 +109,7 @@ const ScheduleForm = props => {
             input
           } = props;
           return <NumericInput
-            min={0}
-            max={300000000000000000}
-            step={300000000000000000/20}
+            {...priceProps}
             value={input.value}
             onChange={value => {
               input.onChange(value)
@@ -120,9 +125,7 @@ const ScheduleForm = props => {
             input
           } = props;
           return <NumericInput
-            min={0}
-            max={300000000000000000}
-            step={300000000000000000/20}
+            {...priceProps}
             value={input.value}
             onChange={value => {
               input.onChange(value)

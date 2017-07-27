@@ -31,6 +31,7 @@ const ClassInfo = props => {
 const UserActions = props => {
   const {
     user,
+    location,
     history,
     handleSubmit,
     pristine,
@@ -70,14 +71,14 @@ const UserActions = props => {
   } else if (user.type === UserType.individual) {
     if (schedule.reserved) {
       return (
-        <button type="button" onClick={event => spotCancel(schedule, user.address, history)}>
+        <button type="button" onClick={event => spotCancel(schedule, user.address, history, location)}>
           Cancel and refund
         </button>
       )
     } else {
       return (
         <button type="button" onClick={event => {
-          spotPurchase(schedule, user.address, history)
+          spotPurchase(schedule, user.address, history, location)
           }}>
           {`Buy class for ${eth.web3().fromWei(schedule.price.individual)}`}
         </button>

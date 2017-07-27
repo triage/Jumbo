@@ -19,7 +19,6 @@ function* doSchedulesLoad(action) {
     const klass = yield call(schedule.class.call)
     const balance = yield eth.getBalance(address)
     const price = {}
-    // debugger
     price.individual = yield call(schedule.getPriceWithUserType.call, UserType.individual)
     price.reseller = yield call(schedule.getPriceWithUserType.call, UserType.reseller)
     schedules.push({
