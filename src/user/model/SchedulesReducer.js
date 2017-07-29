@@ -24,17 +24,19 @@ const studioReducer = (state = initialState, action) => {
   } else if (action.type === SPOT_PURCHASED) {
     const schedules = Array.from(state).map(schedule => {
       if (schedule.address === action.schedule.address) {
-        schedule.reserved = true
+        return Object.assign({}, schedule, {
+          reserved: true
+        })
       }
       return schedule
     })
     return schedules
   } else if (action.type === SPOT_CANCELLED) {
     const schedules = Array.from(state).map(schedule => {
-      debugger
       if (schedule.address === action.schedule.address) {
-        debugger
-        schedule.reserved = false
+        return Object.assign({}, schedule, {
+          reserved: false
+        })
       }
       return schedule
     })

@@ -25,7 +25,7 @@ const SignUpForm = props => {
       })}
     >
       <fieldset>
-        <label htmlFor="name">Studio Name</label>
+        <label htmlFor="name">Name</label>
         <Field name="name" component="input" type="text" placeholder="Name" />
         <div style={{ margin: 10 }}>
         Studio

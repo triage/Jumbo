@@ -56,8 +56,7 @@ function* doSpotCancel(action) {
   try {
     const schedule = Schedule.at(action.schedule.address)
     yield apply(schedule, schedule.spotCancel.sendTransaction, [action.individual, eth.from()])
-    yield put(spotCancelled(action.schedule.address, action.history))
-    debugger
+    yield put(spotCancelled(action.schedule, action.history))
   } catch(error) {
     console.log(error)
     debugger
@@ -67,7 +66,6 @@ function* doSpotCancel(action) {
 function* doSpotPurchase(action) {
   const Schedule = eth.Schedule()
   try {
-    debugger
     const schedule = Schedule.at(action.schedule.address)
     const from = Object.assign({}, eth.from(), {
       value: parseInt(action.schedule.price.individual, 10),
