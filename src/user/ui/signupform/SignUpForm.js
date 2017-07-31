@@ -12,6 +12,8 @@ const SignUpForm = props => {
     submitting
   } = props
 
+  document.title = 'Sign up!'
+
   return (
     <form
       className="pure-form pure-form-stacked"

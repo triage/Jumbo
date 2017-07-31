@@ -12,6 +12,7 @@ const format = 'ddd, MMM D, H:mm a'
 const ScheduleForm = props => {
 
   const {
+    user,
     classes,
     scheduleSubmit,
     handleSubmit,
@@ -20,6 +21,8 @@ const ScheduleForm = props => {
     pristine,
     submitting
   } = props;
+
+  document.title = `${user.data.name} - Create a Schedule`
 
   const date = {
     start: location.state.start,

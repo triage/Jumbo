@@ -1,6 +1,7 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
+import UserType from 'src/user/model/UserType'
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
@@ -13,14 +14,26 @@ const Event = ({ event }) => (
   </span>
 )
 
-const Dashboard = props => {
+const EventAgenda = ({event}) => (
+  <div>
+    <strong>{event.name}</strong><br />
+    {event.instructor}
+  </div>
+)
 
+const Dashboard = props => {
   const {
+    user,
     events,
     history,
   } = props;
 
+  document.title = `JUMBO - ${user.data.name}`
+
   const earliestSchedulableClassHoursBefore = 1
+  const defaultView = user.data.type === UserType.studio ? 'week' : 'agenda'
+  const views = user.data.type === UserType.studio ? ['week', 'day', 'agenda'] : ['agenda']
+  const toolbar = user.data.type === UserType.studio ? true : false
 
   return(
     <div>
@@ -42,12 +55,17 @@ const Dashboard = props => {
           history.push(`schedule/${event.address}`)
         }}
         components={{
-          event: Event
+          event: Event,
+          agenda: {
+            event: EventAgenda
+          }
         }}
         min={moment({hour: 5}).toDate()}
         max={moment({hour: 21}).toDate()}
         timeslots={4}
-        defaultView={'week'}
+        toolbar={toolbar}
+        views={views}
+        defaultView={defaultView}
         defaultDate={new Date()} />
     </div>
   )

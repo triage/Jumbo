@@ -70,19 +70,31 @@ const UserActions = props => {
     }
   } else if (user.type === UserType.individual) {
     if (schedule.reserved) {
-      return (
-        <button type="button" onClick={event => spotCancel(schedule, user.address, history, location)}>
-          Cancel and refund
-        </button>
-      )
+      if (new Date().valueOf() < new Date(schedule.date.cancellation).valueOf()) {
+        return (
+          <button type="button" onClick={event => spotCancel(schedule, user.address, history, location)}>
+            Cancel and refund
+          </button>
+        )
+      } else {
+        return (
+          <span>The cancellation window of this class has expired.</span>
+        )
+      }
     } else {
-      return (
-        <button type="button" onClick={event => {
-          spotPurchase(schedule, user.address, history, location)
-          }}>
-          {`Buy class for ${eth.web3().fromWei(schedule.price.individual)}`}
-        </button>
-      )
+      if (new Date().valueOf() < new Date(schedule.date.purchase).valueOf()) {
+        return (
+          <button type="button" onClick={event => {
+            spotPurchase(schedule, user.address, history, location)
+            }}>
+            {`Buy class for ${eth.web3().fromWei(schedule.price.individual)}`}
+          </button>
+        )
+      } else {
+        return (
+          <span>The purchase window of this class has expired.</span>
+        )
+      }
     }
   }
 }
@@ -131,26 +143,32 @@ const ScheduleInfo = props => {
 
 class Schedule extends PureComponent {
 
-  componentWillMount() {
-    console.log('componentWillMount')
-    const {
-      address,
-      scheduleLoad
-    } = this.props;
-    scheduleLoad(address);
-  }
+  // componentWillMount() {
+  //   const {
+  //     user,
+  //     address,
+  //     scheduleLoad
+  //   } = this.props;
+  //   scheduleLoad(address);
+  // }
 
-  render() {
+  render() {    
+
     const {
+      user,
       schedule,
       scheduleLoad,
       address
     } = this.props;
 
-    if (!schedule || schedule.reserved === undefined) {
-      scheduleLoad(address)
+    if (!schedule ||
+      (user.type === UserType.individual && schedule.reserved === undefined) ||
+      (user.type === UserType.studio && schedule.attendees === undefined)) {
+        scheduleLoad(address)
       return null
     }
+
+    document.title = `${schedule.class.name}`
 
     return (
       <div>
