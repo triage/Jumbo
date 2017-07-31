@@ -22,8 +22,8 @@ function* doScheduleSubmit(action) {
         new Date(values.date.end).valueOf(),
         values.spots.total,
         values.spots.reseller,
-        values.price.individual,
-        values.price.reseller,
+        eth.web3().toWei(values.price.individual),
+        eth.web3().toWei(values.price.reseller),
         from
       ]
     )

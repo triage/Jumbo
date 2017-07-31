@@ -15,7 +15,7 @@ export function* doUserSignup(action) {
     const user = yield apply(entity, entity.new, [data.name, eth.from()])
     const authentication = yield call(eth.Authentication().deployed)
     yield apply(authentication, authentication.signup, [user.address, data.type, eth.from()])
-    yield apply(authentication, authentication.login, [eth.defaultAccount(), eth.from()])
+    yield apply(authentication, authentication.login, [eth.defaultAccount, eth.from()])
     yield put(userLoggedIn(
       Object.assign({}, data, {
         address: user.address

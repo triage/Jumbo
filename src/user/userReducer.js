@@ -1,8 +1,10 @@
 import { USER_LOGGED_IN} from 'src/user/ui/signupform/SignUpFormActions'
 import { USER_PURGE } from 'src/user/model/UserActions'
+import { SPOT_PURCHASED, SPOT_CANCELLED } from 'src/user/ui/schedule/ScheduleDetailActions'
 
 const initialState = {
-  data: null
+  data: null,
+  date: new Date()
 }
 
 const userReducer = (state = initialState, action) => {
@@ -10,21 +12,19 @@ const userReducer = (state = initialState, action) => {
     return Object.assign({}, state, {
       data: null
     })
-  }
-  else if (action.type === USER_LOGGED_IN || action.type === 'USER_UPDATED')
-  {
+  } else if (action.type === USER_LOGGED_IN || action.type === 'USER_UPDATED') {
     return Object.assign({}, state, {
       data: action.data
     })
-  }
-
-  if (action.type === 'USER_LOGGED_OUT')
-  {
+  } else if (action.type === SPOT_PURCHASED || action.type === SPOT_CANCELLED) {
+    return Object.assign({}, state, {
+      date: new Date()
+    })
+  } else if (action.type === 'USER_LOGGED_OUT') {
     return Object.assign({}, state, {
       data: null
     })
   }
-
   return state
 }
 

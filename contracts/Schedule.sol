@@ -112,10 +112,6 @@ contract Schedule is Killable {
 		return spots[index].attendee;
 	}
 
-	function getAttendeeAtIndex(uint index) onlyOwner returns (address) {
-		return spots[index].attendee;
-	}
-
 	function getPrice() public returns (uint) {
 		SpotType spotType = spotTypeWithSender(msg.sender);
 		return price[uint(spotType)];

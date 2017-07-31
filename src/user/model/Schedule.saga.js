@@ -11,6 +11,7 @@ function* doSchedulesLoad(action) {
   const classes = yield select(state => state.studio.classes);
   let schedules = []
 
+  // todo: don't totally wipe out the schedules here ... only replace if necessary so as to prevent a refresh
   for (let i = 0; i < schedulesCount; i++) {
     const address = yield call(studio.scheduleAtIndex.call, i)
     const schedule = eth.Schedule().at(address)
@@ -59,7 +60,7 @@ function* doScheduleLoad(action) {
   let nSpots = yield schedule.nSpots.call()
   nSpots = nSpots.valueOf()
   const attendees = []
-  for(const i = 0; i < nSpots; i++) {
+  for(let i = 0; i < nSpots; i++) {
     const address = yield schedule.getSpotAtIndex.call(i)
     const attendee = eth.Individual().at(address)
     if (parseInt(attendee.address) === 0) {

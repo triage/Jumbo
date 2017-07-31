@@ -12,6 +12,7 @@ const format = 'ddd, MMM D, H:mm a'
 const ScheduleForm = props => {
 
   const {
+    user,
     classes,
     scheduleSubmit,
     handleSubmit,
@@ -21,9 +22,18 @@ const ScheduleForm = props => {
     submitting
   } = props;
 
+  document.title = `${user.data.name} - Create a Schedule`
+
   const date = {
     start: location.state.start,
     end: location.state.end,
+  }
+
+  const priceProps = {
+    min: 0.0,
+    max: 0.3,
+    step: 0.3 / 20,
+    precision: 2,
   }
 
   return (
@@ -31,7 +41,7 @@ const ScheduleForm = props => {
       className="pure-form pure-form-stacked"
       onSubmit={handleSubmit(values => {
         if(!values.class && location.state.class) {
-          values.class = location.state.class
+          values.class = { address: location.state.class }
         }
         scheduleSubmit(Object.assign(values, { date }), history)
       })}
@@ -102,9 +112,7 @@ const ScheduleForm = props => {
             input
           } = props;
           return <NumericInput
-            min={0}
-            max={300000000000000000}
-            step={300000000000000000/20}
+            {...priceProps}
             value={input.value}
             onChange={value => {
               input.onChange(value)
@@ -120,9 +128,7 @@ const ScheduleForm = props => {
             input
           } = props;
           return <NumericInput
-            min={0}
-            max={300000000000000000}
-            step={300000000000000000/20}
+            {...priceProps}
             value={input.value}
             onChange={value => {
               input.onChange(value)

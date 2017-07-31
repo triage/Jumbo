@@ -28,6 +28,6 @@ const enhancer = composeEnhancers(
 );
 const store = createStore(reducer, undefined, enhancer);
 sagaMiddleware.run(rootSaga)
-persistStore(store)
+persistStore(store).purge()
 
 export default store

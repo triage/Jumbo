@@ -4,6 +4,7 @@ import ScheduleForm from './ScheduleForm'
 import { scheduleSubmit } from './ScheduleFormActions'
 
 const mapStateToProps = state => ({
+  user: state.user,
   classes: state.studio.classes || []
 })
 

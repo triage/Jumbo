@@ -10,7 +10,8 @@ import UserType from 'src/user/model/UserType'
 export const SigninError = {
   unsupported: 'BROWSER UNSUPPORTED',
   anonymous: 'ANONYMOUS',
-  unauthorized: 'UNAUTHORIZED'
+  unauthorized: 'UNAUTHORIZED',
+  general: 'GENERAL'
 }
 
 const eth = {
@@ -21,10 +22,23 @@ const eth = {
     return window.web3 ? window.web3.currentProvider : new Web3.providers.HttpProvider('http://localhost:8545')
   },
 
-  defaultAccount: () => {
-    const defaultAccount =  window.web3 ? window.web3.eth.accounts[0] : null
-    console.log(`defaultAccount:${defaultAccount}`)
-    return defaultAccount
+  defaultAccount: null,
+
+  getDefaultAccount: () => {
+    return new Promise((fulfill, reject) => {
+      window.web3.eth.getAccounts((error, accounts) => {
+        if (error) {
+          reject(SigninError.general)
+        } else {
+          if (accounts.length > 0) {
+            eth.defaultAccount = accounts[0]
+            fulfill(accounts[0])
+          } else {
+            reject(SigninError.anonymous)
+          }
+        }
+      })
+    })
   },
 
   web3: () => {
@@ -74,7 +88,7 @@ const eth = {
   },
 
   from: () => {
-    return { from: eth.defaultAccount(), gas: 4476768 }
+    return { from: eth.defaultAccount, gas: 4476768 }
   }
 }
 export default eth
@@ -86,19 +100,20 @@ export const start = callback => {
         reject(SigninError.unsupported)
         return
       }
-      const web3 = new Web3()
-      web3.provider = window.web3.currentProvider
-      if (eth.defaultAccount() === null) {
-        reject(SigninError.anonymous)
-        return
-      }
       
       let userAddress
       let authentication
-      eth.Authentication().deployed().then(instance => {
+
+      eth.getDefaultAccount().then(account => {
+        return eth.Authentication().deployed()
+      }).then(instance => {
         authentication = instance
         return authentication.login()
       }).then(address => {
+        if (parseInt(address, 16) === 0) {
+          reject(SigninError.unauthorized)
+          return
+        }
         userAddress = address
         return authentication.userType()
       }).then(type => {
