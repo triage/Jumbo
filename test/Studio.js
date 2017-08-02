@@ -56,8 +56,6 @@ contract("Studio", (accounts) => {
 		}).then(() => {
 			return barrys.instance.schedulesCount.call()
 		}).then((count) => {
-			console.log('omfg')
-			console.log(count)
 			assert.equal(count, 0, "should have 0 classes after cancellation")
 			done()
 		})

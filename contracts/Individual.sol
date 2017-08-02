@@ -6,6 +6,15 @@ contract Individual is Killable {
 	mapping (address => address[]) public schedules;
 	mapping (address => string) public image;
 
+	function create(string _name, string _image) {
+		name[msg.sender] = _name;
+		image[msg.sender] = _image;
+	}
+
+	function login() public returns (bool) {
+		return bytes(name[msg.sender]).length > 0;
+	}
+
 	function getName(address addr) public returns (string) {
 		return name[addr];
 	}
