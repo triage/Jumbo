@@ -9,6 +9,7 @@ import { start, SigninError } from './util/eth'
 import App from './App'
 import { userPurge } from 'src/user/model/UserActions'
 import { studioLoad } from './user/model/StudioActions'
+import { individualLoad } from './user/model/IndividualActions'
 import UserType from './user/model/UserType'
 
 let isAnonymous = false
@@ -36,6 +37,8 @@ start().then(user => {
   store.dispatch(userLoggedIn(user))
   if (user.type === UserType.studio) {
     store.dispatch(studioLoad(user.address))
+  } else {
+    store.dispatch(individualLoad(user.address))
   }
   render()
 }).catch(error => {

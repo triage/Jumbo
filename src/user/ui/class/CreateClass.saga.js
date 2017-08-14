@@ -23,7 +23,7 @@ export function* doCreateClass(action) {
     yield call(
       action.history.push,
       '/schedule/new',
-      Object.assign(action.location.state,{ class: classInstance.address })
+      Object.assign({}, action.location.state,{ class: classInstance.address })
     )
 
   } catch (error) {

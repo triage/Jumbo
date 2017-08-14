@@ -46,59 +46,63 @@ function* doSchedulesLoad(action) {
 }
 
 function* doScheduleLoad(action) {
-  const user = yield select(state => state.user.data)
-  const address = action.address
-  const schedule = eth.Schedule().at(address)
-  const instructor = yield call(schedule.instructor.call)
-  const dates = yield call(schedule.dates.call)
-  const klass = yield call(schedule.class.call)
-  const balance = yield call(eth.getBalance, action.address)
-  const price = {}
-  price.individual = yield call(schedule.getPriceWithUserType.call, UserType.individual)
-  price.reseller = yield schedule.getPriceWithUserType.call(UserType.reseller)
-  const reserved = yield schedule.spotIsReserved.call(user.address)
-  let nSpots = yield schedule.nSpots.call()
-  nSpots = nSpots.valueOf()
-  const attendees = []
-  for(let i = 0; i < nSpots; i++) {
-    const address = yield schedule.getSpotAtIndex.call(i)
-    const attendee = eth.Individual().at(address)
-    if (parseInt(attendee.address) === 0) {
-      continue
+  try {
+    const user = yield select(state => state.user.data)
+    const address = action.address
+    const schedule = eth.Schedule().at(address)
+    const instructor = yield call(schedule.instructor.call)
+    const dates = yield call(schedule.dates.call)
+    const klass = yield call(schedule.class.call)
+    const balance = yield call(eth.getBalance, action.address)
+    const price = {}
+    price.individual = yield call(schedule.getPriceWithUserType.call, UserType.individual)
+    price.reseller = yield schedule.getPriceWithUserType.call(UserType.reseller)
+    const reserved = yield schedule.spotIsReserved.call(user.address)
+    let nSpots = yield schedule.nSpots.call()
+    nSpots = nSpots.valueOf()
+    const attendees = []
+    for (let i = 0; i < nSpots; i++) {
+      const address = yield schedule.getSpotAtIndex.call(i)
+      const attendee = eth.Individual().at(address)
+      if (parseInt(attendee.address) === 0) {
+        continue
+      }
+      const name = yield attendee.getName.call()
+      attendees.push({
+        address,
+        name
+      })
     }
-    const name = yield attendee.getName.call()
-    attendees.push({
-      address,
-      name
-    })
-  }
-  const classInstance = eth.Class().at(klass)
-  const name = yield call(classInstance.name.call)
-  const description = yield call(classInstance.description.call)
-  const classObject = {
-    address: klass,
-    name,
-    description,
-  }
+    const classInstance = eth.Class().at(klass)
+    const name = yield call(classInstance.name.call)
+    const description = yield call(classInstance.description.call)
+    const classObject = {
+      address: klass,
+      name,
+      description,
+    }
 
-  const scheduleObj = {
-    address,
-    attendees,
-    balance,
-    instructor,
-    price,
-    reserved,
-    nSpots,
-    dates: {
-      /* eslint-disable radix */
-      start: moment.unix(parseInt(dates[0].valueOf()) / 1000).toDate(),
-      end: moment.unix(parseInt(dates[1].valueOf()) / 1000).toDate(),
-      cancellation: moment.unix(parseInt(dates[2].valueOf()) / 1000).toDate(),
-      purchase: moment.unix(parseInt(dates[3].valueOf()) / 1000).toDate(),
-    },
-    class: classObject
+    const scheduleObj = {
+      address,
+      attendees,
+      balance,
+      instructor,
+      price,
+      reserved,
+      nSpots,
+      dates: {
+        /* eslint-disable radix */
+        start: moment.unix(parseInt(dates[0].valueOf()) / 1000).toDate(),
+        end: moment.unix(parseInt(dates[1].valueOf()) / 1000).toDate(),
+        cancellation: moment.unix(parseInt(dates[2].valueOf()) / 1000).toDate(),
+        purchase: moment.unix(parseInt(dates[3].valueOf()) / 1000).toDate(),
+      },
+      class: classObject
+    }
+    yield put(scheduleLoaded(scheduleObj))
+  } catch (error) {
+    console.log(`error:${error}`)
   }
-  yield put(scheduleLoaded(scheduleObj))
 }
 
 export function* watchSchedulesLoad() {

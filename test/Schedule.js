@@ -154,6 +154,12 @@ contract("Schedule", (accounts) => {
 			}
 		).then(
 			() => {
+				return jessprager.instance.getSchedulesCount.call()
+		}).then((count) => {
+				assert.equal(count, 1, "count must be equal");
+				return jessprager.instance.getSchedule.call(0, { from: jessprager.from })
+		}).then(address => {
+				assert.equal(address, legsAss12pm.instance.address)
 				return legsAss12pm.instance.spotIsReserved.call(
 					jessprager.instance.address,
 					{ from: jessprager.from })

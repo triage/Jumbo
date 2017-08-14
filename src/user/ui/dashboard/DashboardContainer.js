@@ -1,26 +1,28 @@
 import { connect } from 'react-redux'
 import Dashboard from './Dashboard'
 import { studioLoad } from '../../model/StudioActions'
+import { individualLoad } from '../../model/IndividualActions'
 import { withRouter } from 'react-router-dom'
 
-const mapStateToProps = (state, ownProps) => {  
-  return {
-    user: state.user,
-    studio: state.studio,
-    events: state.schedules.map(schedule => {
-      return {
-        address: schedule.address,
-        start: new Date(schedule.dates.start),
-        end: new Date(schedule.dates.end),
-        name: schedule.class ? schedule.class.name : 'n/a',
-        instructor: schedule.instructor
-      }
-    })
-  }
-}
+const mapStateToProps = (state, ownProps) => ({
+  user: state.user,
+  studio: state.studio,
+  events: state.schedules.map(schedule => {
+    const obj = {
+      address: schedule.address,
+      start: new Date(schedule.dates.start),
+      end: new Date(schedule.dates.end),
+      name: schedule.class ? schedule.class.name : 'n/a',
+      instructor: schedule.instructor,
+      studio: schedule.class.studio || state.studio,
+    }
+    return obj
+  })
+})
 
 const mapDispatchToProps = ({
-  studioLoad
+  studioLoad,
+  individualLoad
 })
 
 const DashboardContainer = connect(

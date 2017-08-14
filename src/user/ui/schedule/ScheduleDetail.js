@@ -70,7 +70,7 @@ const UserActions = props => {
     }
   } else if (user.type === UserType.individual) {
     if (schedule.reserved) {
-      if (new Date().valueOf() < new Date(schedule.date.cancellation).valueOf()) {
+      if (new Date().valueOf() < new Date(schedule.dates.cancellation).valueOf()) {
         return (
           <button type="button" onClick={event => spotCancel(schedule, user.address, history, location)}>
             Cancel and refund
@@ -82,7 +82,7 @@ const UserActions = props => {
         )
       }
     } else {
-      if (new Date().valueOf() < new Date(schedule.date.purchase).valueOf()) {
+      if (new Date().valueOf() < new Date(schedule.dates.purchase).valueOf()) {
         return (
           <button type="button" onClick={event => {
             spotPurchase(schedule, user.address, history, location)

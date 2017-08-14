@@ -51,7 +51,8 @@ const Dashboard = props => {
             end
           })
         }}
-        onSelectEvent={event => { 
+        onSelectEvent={event => {
+          debugger
           history.push(`schedule/${event.address}`)
         }}
         components={{

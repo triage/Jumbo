@@ -1,6 +1,7 @@
 pragma solidity ^0.4.0;
 import {Studio} from "./Studio.sol";
 import {Class} from "./Class.sol";
+import {Individual} from "./Individual.sol";
 import "./zeppelin/lifecycle/Killable.sol";
 
 contract Schedule is Killable {
@@ -75,7 +76,7 @@ contract Schedule is Killable {
 
 		//process withdrawals
 		for(uint spotIndex = 0; spotIndex < nSpots; spotIndex ++) {
-			Spot spot = spots[spotIndex];
+			Spot storage spot = spots[spotIndex];
 			if(spot.reseller != 0x0) {
 				if (!spot.reseller.send(price[uint(SpotType.Reseller)])) {
 						throw;
@@ -141,6 +142,7 @@ contract Schedule is Killable {
 					throw;
 				}
 				spot = Spot(spotType, attendee, 0x0);
+				Individual(attendee).scheduleAdded();
 			}
 
 			spots[index] = spot;
@@ -183,7 +185,7 @@ contract Schedule is Killable {
 		}
 
 		for(uint spotIndex = 0; spotIndex < nSpots; spotIndex++) {
-			Spot spot = spots[spotIndex];
+			Spot storage spot = spots[spotIndex];
 			bool foundEmptySpot = false;
 			if(spot.spotType == SpotType.Available) {
 				if(spot.attendee == 0x0) {
@@ -197,7 +199,7 @@ contract Schedule is Killable {
 	function nSpotsResellerReserved() private returns (uint) {
 		uint nSpotsResellerFound = 0;
 		for(uint spotIndex = 0; spotIndex < nSpots; spotIndex++) {
-			Spot spot = spots[spotIndex];
+			Spot storage spot = spots[spotIndex];
 			if(spot.spotType == SpotType.Reseller) {
 				nSpotsResellerFound++;
 			}
@@ -233,6 +235,7 @@ contract Schedule is Killable {
 		}
 
 		uint price = getPriceWithSender(msg.sender);
+		Individual(attendee).scheduleRemoved();
 
 		if(!msg.sender.send(price)) {
 			throw;

@@ -43,7 +43,7 @@ const ScheduleForm = props => {
         if(!values.class && location.state.class) {
           values.class = { address: location.state.class }
         }
-        scheduleSubmit(Object.assign(values, { date }), history)
+        scheduleSubmit(Object.assign({}, values, { date }), history)
       })}
     >
       <h2>Class:</h2>
