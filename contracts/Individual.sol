@@ -1,42 +1,44 @@
 pragma solidity ^0.4.0;
 import "./zeppelin/lifecycle/Killable.sol";
+import { Schedule } from './Schedule.sol';
+import { Authentication } from './Authentication.sol';
 
 contract Individual is Killable {
-  string public name;
-  address[] public schedules;
+  mapping(address => string) public name;
+  mapping(address => address[]) public schedules;
 
-	function Individual(string _name) {
-		name = _name;
-		owner = msg.sender;
+	function signup(string _name, address authentication) {
+		assert(sha3(name[msg.sender]) == sha3(""));
+		Authentication(authentication).signup(msg.sender, "INDIVIDUAL");
+		name[msg.sender] = _name;
 	}
 
-	function getName() public returns (string) {
-		return name;
-	}
-
-	function scheduleAdded() {
-		//called only from the Schedule
-		//todo: refactor ... should call spotPurchase from Individual, which should be an onlyOwner
-		schedules.push(msg.sender);
+	function getName(address individual) public returns (string) {
+		return name[individual];
 	}
 
 	function getSchedulesCount() returns (uint) {
-		return schedules.length;
+		return schedules[msg.sender].length;
 	}
 
 	function getSchedule(uint index) returns (address) {
-		return schedules[index];
+		return schedules[msg.sender][index];
 	}
 
-	function scheduleRemoved() onlyOwner {
-		//called only from the Schedule. Refactor.
-		for(uint i = 0; i < schedules.length; i++) {
-			if(schedules[i] == msg.sender) {
-				if(i < schedules.length - 1) {
-					schedules[i] = schedules[i+1];
+	function scheduleAdded(address individual) external {
+		//called only from the Schedule
+		schedules[individual].push(msg.sender);
+	}
+
+	function scheduleCancelled(address individual) external {
+		//called only from the Schedule contract when the studio cancels the class
+		for (uint i = 0; i < schedules[individual].length; i++) {
+			if (schedules[individual][i] == msg.sender) {
+				if (i < schedules[individual].length - 1) {
+					schedules[individual][i] = schedules[individual][i+1];
 				}
-				delete schedules[schedules.length - 1];
-				schedules.length--;
+				delete schedules[individual][schedules[individual].length - 1];
+				schedules[individual].length--;
 				break;
 			}
 		}

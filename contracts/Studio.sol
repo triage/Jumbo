@@ -2,61 +2,56 @@ pragma solidity ^0.4.0;
 import "./zeppelin/lifecycle/Killable.sol";
 
 contract Studio is Killable {
-	string public name;
-	string public contactDetails;
-	address[] public resellers;
-	address[] public schedules;
-	address[] public classes;
+	mapping(address => string) public name;
+	mapping(address => string) public contactDetails;
+	mapping(address => address[]) public resellers;
+	mapping(address => address[]) public schedules;
+	mapping(address => address[]) public classes;
 
 	event ScheduleAdded(address indexed schedule);
 	event ScheduleRemoved(address indexed schedule);
 	event ClassAdded(address indexed class);
 	event ContactDetailsUpdated(string contactDetails);
 
-	function Studio(string _name) {
-		name = _name;
-		owner = msg.sender;
-	}
-
 	function updateContactDetails(string _contactDetails) public onlyOwner {
-		contactDetails = _contactDetails;
-		ContactDetailsUpdated(contactDetails);
+		contactDetails[msg.sender] = _contactDetails;
+		ContactDetailsUpdated(contactDetails[msg.sender]);
 	}
 
 	function classesCount() returns (uint) {
-		return classes.length;
+		return classes[msg.sender].length;
 	}
 
 	function classAtIndex(uint index) returns (address) {
-		return classes[index];
+		return classes[msg.sender][index];
 	}
 
 	function classAdded(address class) onlyOwner {
-		classes.push(class);
+		classes[msg.sender].push(class);
 		ClassAdded(class);
 	}
 
 	function schedulesCount() returns (uint) {
-		return schedules.length;
+		return schedules[msg.sender].length;
 	}
 
 	function scheduleAtIndex(uint index) returns (address) {
-		return schedules[index];
+		return schedules[msg.sender][index];
 	}
 
 	function scheduleAdded(address schedule) onlyOwner {
-		schedules.push(schedule);
+		schedules[msg.sender].push(schedule);
 		ScheduleAdded(schedule);
 	}
 
 	function scheduleRemoved(address schedule) onlyOwner {
-		for(uint i = 0; i < schedules.length; i++) {
-			if(schedules[i] == schedule) {
-				if(i < schedules.length - 1) {
-					schedules[i] = schedules[i+1];
+		for(uint i = 0; i < schedules[msg.sender].length; i++) {
+			if(schedules[msg.sender][i] == schedule) {
+				if(i < schedules[msg.sender].length - 1) {
+					schedules[msg.sender][i] = schedules[msg.sender][i+1];
 				}
-				delete schedules[schedules.length - 1];
-				schedules.length--;
+				delete schedules[msg.sender][schedules[msg.sender].length - 1];
+				schedules[msg.sender].length--;
 				ScheduleRemoved(schedule);
 				break;
 			}
@@ -64,19 +59,15 @@ contract Studio is Killable {
 	}
 
 	function addReseller(address reseller) public onlyOwner {
-		if(isAuthorizedReseller(reseller)) {
-			throw;
-		}
-		resellers.push(reseller);
+		assert(isAuthorizedReseller(reseller) == false);
+		resellers[msg.sender].push(reseller);
 	}
 
 	function removeReseller(address reseller) onlyOwner returns (bool) {
-		if(!isAuthorizedReseller(reseller)) {
-			throw;
-		}
-		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(resellers[resellerIndex] == reseller) {
-				delete(resellers[resellerIndex]);
+		assert(isAuthorizedReseller(reseller));
+		for(uint resellerIndex = 0; resellerIndex < resellers[msg.sender].length; resellerIndex++) {
+			if(resellers[msg.sender][resellerIndex] == reseller) {
+				delete(resellers[msg.sender][resellerIndex]);
 				return true;
 			}
 		}
@@ -85,8 +76,8 @@ contract Studio is Killable {
 
 	function isAuthorizedReseller(address reseller) returns (bool) {
 		bool isReseller = false;
-		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(resellers[resellerIndex] == reseller) {
+		for(uint resellerIndex = 0; resellerIndex < resellers[msg.sender].length; resellerIndex++) {
+			if(resellers[msg.sender][resellerIndex] == reseller) {
 				isReseller = true;
 				break;
 			}
@@ -96,9 +87,9 @@ contract Studio is Killable {
 
 	function resellerWithSender(address sender) returns (address) {
 		address reseller = 0x0;
-		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(Ownable(resellers[resellerIndex]).owner() == sender) {
-				reseller = address(resellers[resellerIndex]);
+		for(uint resellerIndex = 0; resellerIndex < resellers[msg.sender].length; resellerIndex++) {
+			if(Ownable(resellers[msg.sender][resellerIndex]).owner() == sender) {
+				reseller = address(resellers[msg.sender][resellerIndex]);
 				break;
 			}
 		}
@@ -107,8 +98,8 @@ contract Studio is Killable {
 
 	function isSenderAuthorizedReseller(address sender) returns (bool) {
 		bool isReseller = false;
-		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(Ownable(resellers[resellerIndex]).owner() == sender) {
+		for(uint resellerIndex = 0; resellerIndex < resellers[msg.sender].length; resellerIndex++) {
+			if(Ownable(resellers[msg.sender][resellerIndex]).owner() == sender) {
 				isReseller = true;
 				break;
 			}

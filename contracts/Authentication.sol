@@ -13,44 +13,21 @@ contract Authentication is Killable {
 
   uint private id; // Stores user id temporarily
 
-  function login() constant returns (address) {
-    // Check if user exists.
-    // If yes, return user.
-    // If no, throw.
-
-    if (users[msg.sender].user == 0x0)
-    {
-        throw;
-    }
-
-    return users[msg.sender].user;
+  function login(address sender) constant returns (address) {
+    assert (users[sender].user != 0x0);
+    return users[sender].user;
   }
 
-  function userType() constant returns (string) {
-    if (users[msg.sender].user == 0x0)
-    {
-        throw;
-    }
-
-    return users[msg.sender].userType;
+  function userType(address sender) constant returns (string) {
+    assert(users[sender].user != 0x0);
+    return users[sender].userType;
   }
 
-  function signup(address user, string userType) payable returns (bool) {
-    // Check if user exists.
-    // If yes, return user name.
-    // If no, check if name was sent.
-    // If yes, create and return user.
-    // If no, throw.
-
-    if (user == 0x0)
-    {
-        throw;
-    }
-
-    if (users[msg.sender].user == 0x0)
-    {
-        users[msg.sender] = User(user, userType);
-
+  function signup(address sender, string userType) external returns (bool) {
+    //called from Individual or Studio
+    assert (sender != 0x0);
+    if (users[sender].user == 0x0) {
+        users[sender] = User(sender, userType);
         return true;
     }
 
