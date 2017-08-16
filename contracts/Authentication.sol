@@ -7,7 +7,7 @@ contract Authentication is Killable {
   struct User {
 		address user;
 		string userType;
-	} 
+	}
 
   mapping (address => User) private users;
 

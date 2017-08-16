@@ -1,6 +1,5 @@
 pragma solidity ^0.4.4;
 
-
 /*
  * Ownable
  *
@@ -20,7 +19,9 @@ contract Ownable {
   }
 
   function transferOwnership(address newOwner) onlyOwner {
-    if (newOwner != address(0)) owner = newOwner;
+    if (newOwner != address(0)) {
+      owner = newOwner;
+    }
   }
 
 }
