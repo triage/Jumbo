@@ -36,12 +36,12 @@ contract("Schedule", (accounts) => {
 	jessprager.from = accounts[2]
 
 	beforeEach(done => {
-	    Reseller.new(
+	    Reseller.deployed().signup(
 	    	"Classpass", { from: classpass.from }
 	    ).then(
 	    	(reseller) => {
 	    		classpass.instance = reseller
-	    		return Individual.new("Jess Prager", {from: jessprager.from})
+	    		return Individual.deployed().signup("Jess Prager", {from: jessprager.from})
 	    	}
 	    ).then(
 	    	(individual) => {
@@ -108,14 +108,14 @@ contract("Schedule", (accounts) => {
 			(price) => {
 				assert.equal(price.valueOf(), legsAss12pm.price.reseller)
 				return legsAss12pm.instance.spotPurchase(
-					jessprager.instance.address,
+					jessprager.from,
 					{ from: classpass.from, value: price }
 				)
 			}
 		).then(
 			() => {
 				return legsAss12pm.instance.spotIsReserved.call(
-					jessprager.instance.address, { from: classpass.from }
+					jessprager.from, { from: classpass.from }
 				)
 			}
 
@@ -123,14 +123,14 @@ contract("Schedule", (accounts) => {
 			(found) => {
 				assert.isTrue(found)
 				return legsAss12pm.instance.spotCancel(
-					jessprager.instance.address,
+					jessprager.from,
 					{ from: classpass.from }
 				)
 			}
 		).then(
 			() => {
 				return legsAss12pm.instance.spotIsReserved.call(
-					jessprager.instance.address, { from: classpass.from }
+					jessprager.from, { from: classpass.from }
 				)
 			}
 		).then(
@@ -148,7 +148,7 @@ contract("Schedule", (accounts) => {
 			(price) => {
 				assert.equal(price.valueOf(), legsAss12pm.price.individual)
 				return legsAss12pm.instance.spotPurchase(
-					jessprager.instance.address,
+					jessprager.from,
 					{ from: jessprager.from, value: price }
 				)
 			}
@@ -161,7 +161,7 @@ contract("Schedule", (accounts) => {
 		}).then(address => {
 				assert.equal(address, legsAss12pm.instance.address)
 				return legsAss12pm.instance.spotIsReserved.call(
-					jessprager.instance.address,
+					jessprager.from,
 					{ from: jessprager.from })
 			}
 
@@ -169,14 +169,14 @@ contract("Schedule", (accounts) => {
 			(found) => {
 				assert.isTrue(found)
 				return legsAss12pm.instance.spotCancel(
-					jessprager.instance.address,
+					jessprager.from,
 					{ from: jessprager.from }
 				)
 			}
 		).then(
 			() => {
 				return legsAss12pm.instance.spotIsReserved.call(
-					jessprager.instance.address, { from: jessprager.from }
+					jessprager.from, { from: jessprager.from }
 				)
 			}
 		).then(
@@ -198,7 +198,7 @@ contract("Schedule", (accounts) => {
 
 	it("owner should cancel a class, refund all tickets", done => {
 		legsAss12pm.instance.spotPurchase(
-			jessprager.instance.address,
+			jessprager.from,
 			{
 				from: jessprager.from,
 				value: legsAss12pm.price.individual
@@ -206,7 +206,7 @@ contract("Schedule", (accounts) => {
 		).then(
 			() => {
 				return legsAss12pm.instance.spotPurchase(
-					jessprager.instance.address,
+					jessprager.from,
 					{
 						from: classpass.from,
 						value: legsAss12pm.price.reseller

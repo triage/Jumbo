@@ -12,7 +12,7 @@ contract("Studio", (accounts) => {
 	classpass.from = accounts[1]
 
 	beforeEach(done => {
-		Studio.new("Barry's", { from: barrys.from}).then((instance) => {
+		Studio.deployed().signup("Barry's", { from: barrys.from}).then((instance) => {
 			barrys.instance = instance
 			return Reseller.new("Classpass", { from: classpass.from})
 		}).then((instance) => {
