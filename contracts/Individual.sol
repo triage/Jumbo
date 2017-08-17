@@ -6,8 +6,13 @@ import { Authentication } from './Authentication.sol';
 contract Individual is Killable {
   mapping(address => string) public name;
   mapping(address => address[]) public schedules;
+	address private authentication;
 
-	function signup(string _name, address authentication) {
+	function setAuthentication(address _authentication) onlyOwner {
+		authentication = _authentication;
+	}
+
+	function signup(string _name) {
 		require(sha3(name[msg.sender]) == sha3(""));
 		name[msg.sender] = _name;
 		if (!Authentication(authentication).signup(msg.sender, "INDIVIDUAL")) {
@@ -28,6 +33,7 @@ contract Individual is Killable {
 	}
 
 	function scheduleAdded() external {
+		require(sha3(name[tx.origin]) != sha3(""));
 		//called only from the Schedule
 		//tx.origin is the Individual
 		schedules[tx.origin].push(msg.sender);

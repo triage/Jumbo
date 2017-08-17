@@ -13,10 +13,14 @@ contract Studio is Killable {
 	event ScheduleRemoved(address indexed schedule);
 	event ClassAdded(address indexed klass);
 	event ContactDetailsUpdated(address indexed studio, string contactDetails);
-
 	modifier signedUp() {if (sha3(name[msg.sender]) != sha3("")) _;}
 
-	function signup(string _name, address authentication) {
+	address private authentication;
+	function setAuthentication(address _authentication) onlyOwner {
+		authentication = _authentication;
+	}
+
+	function signup(string _name) {
 		require(sha3(name[msg.sender]) == sha3(""));
 		name[msg.sender] = _name;
 		if (!Authentication(authentication).signup(msg.sender, "STUDIO")) {

@@ -8,6 +8,7 @@ contract Schedule is Killable {
 
 	string public instructor;
 	address public klass;
+	address individual;
 
 	struct Dates {
 		uint start;
@@ -61,6 +62,10 @@ contract Schedule is Killable {
 					0x0
 				);
 		}
+	}
+
+	function setIndividual(address _individual) onlyOwner {
+		individual = _individual;
 	}
 
 	function complete() onlyOwner {
@@ -134,9 +139,8 @@ contract Schedule is Killable {
 				address reseller = studio.resellerWithSender(msg.sender);
 				spot = Spot(spotType, attendee, reseller);
 			} else {
-				require(Ownable(attendee).owner() == msg.sender);
 				spot = Spot(spotType, attendee, 0x0);
-				Individual(attendee).scheduleAdded();
+				Individual(individual).scheduleAdded();
 			}
 			spots[index] = spot;
 			SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index);
@@ -208,7 +212,7 @@ contract Schedule is Killable {
 		return (Spot(SpotType.Unavailable, 0x0, 0x0), false, 0);
 	}
 
-	function spotCancel(address attendee, address individual) withinDeadlineCancellation {
+	function spotCancel(address attendee) withinDeadlineCancellation {
 		var (, found, index) = spotFindReserved(msg.sender, attendee);
 		require(found == true);
 
