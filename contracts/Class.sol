@@ -7,9 +7,9 @@ contract Class is Killable {
 	address public studio;
 	address public owner;
 
-	function Class(address _studio, string _name, string _description) {
+	function Class(string _name, string _description) {
 		owner = msg.sender;
-		studio = _studio;
+		studio = msg.sender;
 		name = _name;
 		description = _description;
 	}

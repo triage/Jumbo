@@ -3,6 +3,7 @@ import "./zeppelin/lifecycle/Killable.sol";
 import { Authentication } from "./Authentication.sol";
 
 contract Studio is Killable {
+	
 	mapping(address => string) public name;
 	mapping(address => string) public contactDetails;
 	mapping(address => address[]) public resellers;
@@ -13,9 +14,9 @@ contract Studio is Killable {
 	event ScheduleRemoved(address indexed schedule);
 	event ClassAdded(address indexed klass);
 	event ContactDetailsUpdated(address indexed studio, string contactDetails);
-	modifier signedUp() {if (sha3(name[msg.sender]) != sha3("")) _;}
+	modifier authenticated() {if (bytes(name[msg.sender]).length > 0) _;}
 
-	address private authentication;
+	address public authentication;
 	function setAuthentication(address _authentication) onlyOwner {
 		authentication = _authentication;
 	}
@@ -28,16 +29,20 @@ contract Studio is Killable {
 		}
 	}
 
-	function updateContactDetails(string _contactDetails) signedUp public {
+	function getName(address studio) public constant returns (string) {
+		return name[studio];
+	}
+
+	function updateContactDetails(string _contactDetails) authenticated public {
 		contactDetails[msg.sender] = _contactDetails;
 		ContactDetailsUpdated(msg.sender, contactDetails[msg.sender]);
 	}
 
-	function classesCount() returns (uint) {
+	function classesCount() constant returns (uint) {
 		return classes[msg.sender].length;
 	}
 
-	function classAtIndex(uint index) returns (address) {
+	function classAtIndex(uint index) constant returns (address) {
 		return classes[msg.sender][index];
 	}
 
@@ -46,11 +51,11 @@ contract Studio is Killable {
 		ClassAdded(klass);
 	}
 
-	function schedulesCount() returns (uint) {
+	function schedulesCount() constant returns (uint) {
 		return schedules[msg.sender].length;
 	}
 
-	function scheduleAtIndex(uint index) returns (address) {
+	function scheduleAtIndex(uint index) constant returns (address) {
 		return schedules[msg.sender][index];
 	}
 
@@ -59,7 +64,7 @@ contract Studio is Killable {
 		ScheduleAdded(schedule);
 	}
 
-	function scheduleRemoved(address schedule) onlyOwner {
+	function scheduleRemoved(address schedule) authenticated {
 		for (uint i = 0; i < schedules[msg.sender].length; i++) {
 			if (schedules[msg.sender][i] == schedule) {
 				if (i < schedules[msg.sender].length - 1) {
@@ -73,13 +78,13 @@ contract Studio is Killable {
 		}
 	}
 
-	function addReseller(address reseller) public onlyOwner {
-		assert(isAuthorizedReseller(reseller) == false);
+	function addReseller(address reseller) public authenticated {
+		require(isAuthorizedReseller(msg.sender, reseller) == false);
 		resellers[msg.sender].push(reseller);
 	}
 
-	function removeReseller(address reseller) onlyOwner returns (bool) {
-		assert(isAuthorizedReseller(reseller));
+	function removeReseller(address reseller) authenticated returns (bool) {
+		assert(isAuthorizedReseller(msg.sender, reseller));
 		for (uint resellerIndex = 0; resellerIndex < resellers[msg.sender].length; resellerIndex++) {
 			if (resellers[msg.sender][resellerIndex] == reseller) {
 				delete(resellers[msg.sender][resellerIndex]);
@@ -89,32 +94,10 @@ contract Studio is Killable {
 		return false;
 	}
 
-	function isAuthorizedReseller(address reseller) returns (bool) {
+	function isAuthorizedReseller(address studio, address reseller) public constant returns (bool) {
 		bool isReseller = false;
-		for (uint resellerIndex = 0; resellerIndex < resellers[msg.sender].length; resellerIndex++) {
-			if (resellers[msg.sender][resellerIndex] == reseller) {
-				isReseller = true;
-				break;
-			}
-		}
-		return isReseller;
-	}
-
-	function resellerWithSender(address sender) returns (address) {
-		address reseller = 0x0;
-		for (uint resellerIndex = 0; resellerIndex < resellers[msg.sender].length; resellerIndex++) {
-			if (Ownable(resellers[msg.sender][resellerIndex]).owner() == sender) {
-				reseller = address(resellers[msg.sender][resellerIndex]);
-				break;
-			}
-		}
-		return reseller;
-	}
-
-	function isSenderAuthorizedReseller(address sender) returns (bool) {
-		bool isReseller = false;
-		for (uint resellerIndex = 0; resellerIndex < resellers[msg.sender].length; resellerIndex++) {
-			if (Ownable(resellers[msg.sender][resellerIndex]).owner() == sender) {
+		for (uint resellerIndex = 0; resellerIndex < resellers[studio].length; resellerIndex++) {
+			if (resellers[studio][resellerIndex] == reseller) {
 				isReseller = true;
 				break;
 			}

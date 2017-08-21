@@ -16,36 +16,41 @@ contract Reseller is Killable {
 
   mapping(address => string) public name;
   mapping(address => Studio[]) private studios;
-	address private authentication;
+	address public authentication;
 
-	modifier signedUp() {if (sha3(name[msg.sender]) != sha3("")) _;}
+	modifier authenticated() {if (sha3(name[msg.sender]) != sha3("")) _;}
 
 	function setAuthentication(address _authentication) onlyOwner {
 		authentication = _authentication;
 	}
 
 	function signup(string _name) {
-		require(sha3(name[msg.sender]) == sha3(""));
+		require(bytes(name[msg.sender]).length == 0);
 		name[msg.sender] = _name;
+		assert(authentication != 0x0);
 		if (!Authentication(authentication).signup(msg.sender, "INDIVIDUAL")) {
 			revert();
 		}
 	}
 
-	function getName(address individual) public returns (string) {
-		return name[individual];
+	function signedUp() constant returns (bool) {
+		return sha3(name[msg.sender]) != sha3("");
 	}
 
-	function getStudiosCount() signedUp returns (uint) {
+	function getName(address reseller) public constant returns (string) {
+		return name[reseller];
+	}
+
+	function getStudiosCount() authenticated constant returns (uint) {
 		return studios[msg.sender].length;
 	}
 
-	function getStudio(uint index) signedUp returns (address) {
+	function getStudio(uint index) authenticated constant returns (address) {
 		require(studios[msg.sender].length > 0);
 		return studios[msg.sender][index].studio;
 	}
 
-	function getStudioState(uint index) signedUp returns (uint) {
+	function getStudioState(uint index) authenticated constant returns (uint) {
 		require(studios[msg.sender].length > 0);
 		return uint(studios[msg.sender][index].state);
 	}

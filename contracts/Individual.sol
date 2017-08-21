@@ -6,7 +6,7 @@ import { Authentication } from './Authentication.sol';
 contract Individual is Killable {
   mapping(address => string) public name;
   mapping(address => address[]) public schedules;
-	address private authentication;
+	address public authentication;
 
 	function setAuthentication(address _authentication) onlyOwner {
 		authentication = _authentication;
@@ -20,15 +20,15 @@ contract Individual is Killable {
 		}
 	}
 
-	function getName(address individual) public returns (string) {
+	function getName(address individual) public constant returns (string) {
 		return name[individual];
 	}
 
-	function getSchedulesCount() returns (uint) {
+	function getSchedulesCount() constant returns (uint) {
 		return schedules[msg.sender].length;
 	}
 
-	function getSchedule(uint index) returns (address) {
+	function getSchedule(uint index) constant returns (address) {
 		return schedules[msg.sender][index];
 	}
 
