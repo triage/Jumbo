@@ -213,38 +213,30 @@ contract("Schedule", (accounts) => {
 		})
 	})
 
-	/*
-
 	it("owner should cancel a class, refund all tickets", done => {
 		legsAss12pm.instance.spotPurchase(
 			jessprager.from,
 			{
 				from: jessprager.from,
 				value: legsAss12pm.price.individual
-			}
-		).then(
-			() => {
-				return legsAss12pm.instance.spotPurchase(
-					jessprager.from,
-					{
-						from: classpass.from,
-						value: legsAss12pm.price.reseller
-					}
-				)
-			}
-		).then(
-			() => {
-				return legsAss12pm.instance.cancel(
-					"instructor unable to attend",
-					{
-						from: classpass.from
-					}
-				)
-			}
-		).then(
-			() => {
+		}).then(() => {
+			return legsAss12pm.instance.spotPurchase(
+				jessprager.from,
+				{
+					from: classpass.from,
+					value: legsAss12pm.price.reseller
+				}
+			)
+		}).then(() => {
+			return legsAss12pm.instance.cancel(
+				"instructor unable to attend",
+				{
+					from: classpass.from
+				}
+			)
+		}).then(() => {
 				done()
 			}
 		)
-	})*/
+	})
 })
