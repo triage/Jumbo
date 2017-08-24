@@ -39,7 +39,8 @@ contract Individual is Killable {
 		schedules[tx.origin].push(msg.sender);
 	}
 
-	function scheduleRemoved(address individual) external {
+	function scheduleRemoved() external {
+		address individual = tx.origin;
 		//called only from the Schedule contract when the studio cancels the class
 		for (uint i = 0; i < schedules[individual].length; i++) {
 			if (schedules[individual][i] == msg.sender) {

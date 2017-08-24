@@ -8,7 +8,7 @@ contract Schedule is Killable {
 
 	string public instructor;
 	address public klass;
-	address individual;
+	
 	address studio;
 
 	struct Dates {
@@ -39,16 +39,18 @@ contract Schedule is Killable {
 
 	mapping(uint => uint) private price;
 	Studio private studioContract;
+	Individual private individualContract;
 
 	modifier withinDeadlineCancellation() {if (block.timestamp <= dates.cancellation) _;}
 	modifier withinDeadlinePurchase() {if (block.timestamp <= dates.purchase) _; }
 
 	event Cancel(string reason);
 	event SpotPurchased(uint spotType, address attendee, address reseller, uint index);
-	event SpotPurchaseAttempt(uint priceRequired, uint valueSent, uint spotType);
+	event SpotCancelled(uint spotType, address attendee, address reseller);
 
-	function Schedule(address _studioContract, address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {
+	function Schedule(address _studioContract, address _individualContract, address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {
 		studioContract = Studio(_studioContract);
+		individualContract = Individual(_individualContract);
 		require(studioContract.userExists(msg.sender));
 		dates = Dates(_dateStart, _dateEnd, _dateStart - 60 * 60 * 10, _dateStart - 60 * 60);
 		klass = _class;
@@ -67,10 +69,6 @@ contract Schedule is Killable {
 					0x0
 				);
 		}
-	}
-
-	function setIndividual(address _individual) onlyOwner {
-		individual = _individual;
 	}
 
 	function complete() onlyOwner {
@@ -139,17 +137,14 @@ contract Schedule is Killable {
 			spot = Spot(spotType, attendee, msg.sender);
 		} else {
 			spot = Spot(spotType, attendee, 0x0);
-			Individual(individual).scheduleAdded();
+			individualContract.scheduleAdded();
 		}
 		spots[index] = spot;
 		SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index);
 	}
 
 	modifier sentRequiredFunds() {
-		SpotPurchaseAttempt(0, msg.value, 5);
 		SpotType spotType = spotTypeWithSender(msg.sender);
-		SpotPurchaseAttempt(price[uint(spotType)], msg.value, 5);
-		SpotPurchaseAttempt(price[uint(spotType)], msg.value, uint(spotType));
 		if (msg.value == price[uint(spotType)]) {
 			_;
 		}
@@ -215,15 +210,19 @@ contract Schedule is Killable {
 	}
 
 	function spotCancel(address attendee) withinDeadlineCancellation {
-		var (, found, index) = spotFindReserved(msg.sender, attendee);
+		var (spot, found, index) = spotFindReserved(msg.sender, attendee);
 		require(found == true);
+		if (spot.spotType == SpotType.Individual) {
+			require(attendee == msg.sender);
+		}
 
 		uint spotPrice = getPriceWithSender(msg.sender);
-		Individual(individual).scheduleRemoved(attendee);
+		individualContract.scheduleRemoved();
 
 		spots[index] = Spot(SpotType.Available, 0x0, 0x0);
 		if (!msg.sender.send(spotPrice)) {
 			revert();
 		}
+		SpotCancelled(uint(spot.spotType), attendee, msg.sender);
 	}
 }

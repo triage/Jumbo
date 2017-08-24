@@ -48,7 +48,7 @@ contract("Schedule", (accounts) => {
 	classpass.from = accounts[2]
 	jessprager.from = accounts[3]
 
-	beforeEach(done => {
+	before(done => {
 			Reseller.deployed().then(deployed => {
 				reseller.deployed = deployed
 				return Individual.deployed()
@@ -109,6 +109,7 @@ contract("Schedule", (accounts) => {
 				legsAss.instance = classInstance;
 				return Schedule.new(
 					studio.deployed.address,
+					individual.deployed.address,
 					legsAss.instance.address, //address _class,
 					legsAss12pm.instructor, //string _instructor
 					legsAss12pm.date.start, //uint _dateStart
@@ -139,90 +140,71 @@ contract("Schedule", (accounts) => {
 		})
 	})
 	
-	// it("should get correct reseller price, buy a spot, request a refund", done => {
-	// 	console.log("GET THE DAMN RESELLER PRICE");
-	// 	done()
-		// legsAss12pm.instance.getPrice.call(
-		// 	{ from: classpass.from }
-		// ).then(price => {
-		// 	console.log(`price:${price}`)
-		// 	assert.equal(price.valueOf(), legsAss12pm.price.reseller)
-		// 	return legsAss12pm.instance.spotPurchase(
-		// 		jessprager.from,
-		// 		{ from: classpass.from, value: price }
-		// 	)
-		// }).then(() => {
-		// 	console.log('x22222')
-		// 	return legsAss12pm.instance.spotIsReserved.call(
-		// 		jessprager.from, { from: classpass.from }
-		// 	)
-		// }).then(found => {
+	it("should get correct reseller price, buy a spot, request a refund", done => {
+		legsAss12pm.instance.getPrice.call(
+			{ from: classpass.from }
+		).then(price => {
+			assert.equal(price.valueOf(), legsAss12pm.price.reseller)
+			return legsAss12pm.instance.spotPurchase(
+				jessprager.from,
+				{ from: classpass.from, value: price }
+			)
+		}).then(() => {
+			return legsAss12pm.instance.spotIsReserved.call(
+				jessprager.from, { from: classpass.from }
+			)
+		}).then(found => {
 			
-		// 	console.log('x33333')
-		// 	assert.isTrue(found)
-		// 	return legsAss12pm.instance.spotCancel(
-		// 		jessprager.from,
-		// 		{ from: classpass.from }
-		// 	)
-		// }).then(() => {
-		// 	console.log('x44444')
-		// 	return legsAss12pm.instance.spotIsReserved.call(
-		// 		jessprager.from, { from: classpass.from }
-		// 	)
-		// }).then(found => {
-		// 	console.log('x5555')
-		// 	assert.isFalse(found)
-		// 	done()
-		// })
-	// })
-
-	/*
+			assert.isTrue(found)
+			return legsAss12pm.instance.spotCancel(
+				jessprager.from,
+				{ from: classpass.from }
+			)
+		}).then(() => {
+			return legsAss12pm.instance.spotIsReserved.call(
+				jessprager.from, { from: classpass.from }
+			)
+		}).then(found => {
+			assert.isFalse(found)
+			done()
+		})
+	})
+	
 	it("should get correct individual price, buy a spot, request a refund", done => {
-		console.log('get an individual spot')
 		legsAss12pm.instance.getPrice.call(
 			{ from: jessprager.from }
-		).then(
-			(price) => {
-				assert.equal(price.valueOf(), legsAss12pm.price.individual)
-				return legsAss12pm.instance.spotPurchase(
-					jessprager.from,
-					{ from: jessprager.from, value: price }
-				)
-			}
-		).then(
-			() => {
-				return individual.deployed.getSchedulesCount.call({ from: jessprager.from })
+		).then(price => {
+			assert.equal(price.valueOf(), legsAss12pm.price.individual)
+			return legsAss12pm.instance.spotPurchase(
+				jessprager.from,
+				{ from: jessprager.from, value: price }
+			)
+		}).then(() => {
+			return individual.deployed.getSchedulesCount.call({ from: jessprager.from })
 		}).then((count) => {
-				assert.equal(count, 1, "count must be equal");
-				return ndividual.deployed.getSchedule.call(0, { from: jessprager.from })
+			return individual.deployed.getSchedule.call(0, { from: jessprager.from })
 		}).then(address => {
-				assert.equal(address, legsAss12pm.instance.address)
-				return legsAss12pm.instance.spotIsReserved.call(
-					{ from: jessprager.from })
-			}
-
-		).then(
-			(found) => {
-				assert.isTrue(found)
-				return legsAss12pm.instance.spotCancel(
-					{ from: jessprager.from }
-				)
-			}
-		).then(
-			() => {
-				return legsAss12pm.instance.spotIsReserved.call(
-					jessprager.from, { from: jessprager.from }
-				)
-			}
-		).then(
-			(found) => {
-				assert.isFalse(found)
-				done()
-			}
-		)
+			assert.equal(address, legsAss12pm.instance.address)
+			return legsAss12pm.instance.spotIsReserved.call(
+				jessprager.from,
+				{ from: jessprager.from })
+		}).then(found => {
+			assert.isTrue(found)
+			return legsAss12pm.instance.spotCancel(
+				jessprager.from,
+				{ from: jessprager.from }
+			)
+		}).then(() => {
+			return legsAss12pm.instance.spotIsReserved.call(
+				jessprager.from,
+				{ from: jessprager.from }
+			)
+		}).then(found => {
+			assert.isFalse(found)
+			done()
+		})
 	})
-
-
+	
 	it("should complete a class", done => {
 		legsAss12pm.instance.complete.call(
 			{ from: barrys.from}
@@ -230,6 +212,8 @@ contract("Schedule", (accounts) => {
 			done()
 		})
 	})
+
+	/*
 
 	it("owner should cancel a class, refund all tickets", done => {
 		legsAss12pm.instance.spotPurchase(
