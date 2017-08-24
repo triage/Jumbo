@@ -29,6 +29,10 @@ contract Studio is Killable {
 		}
 	}
 
+	function userExists(address user) public constant returns (bool) {
+		return bytes(name[user]).length > 0;
+	}
+
 	function getName(address studio) public constant returns (string) {
 		return name[studio];
 	}

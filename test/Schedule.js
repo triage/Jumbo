@@ -108,6 +108,7 @@ contract("Schedule", (accounts) => {
 	    }).then((classInstance) => {
 				legsAss.instance = classInstance;
 				return Schedule.new(
+					studio.deployed.address,
 					legsAss.instance.address, //address _class,
 					legsAss12pm.instructor, //string _instructor
 					legsAss12pm.date.start, //uint _dateStart
@@ -125,7 +126,7 @@ contract("Schedule", (accounts) => {
 	    	}
 	    )
 	})
-/*
+
 	it("should get the correct prices", done => {
 		legsAss12pm.instance.getPriceWithUserType.call(
 			"INDIVIDUAL", { from: barrys.from }
@@ -137,45 +138,43 @@ contract("Schedule", (accounts) => {
 			done()
 		})
 	})
-	*/
 	
-	it("should get correct reseller price, buy a spot, request a refund", done => {
-		legsAss12pm.instance.getPrice.call(
-			{ from: classpass.from }
-		).then(price => {
-			console.log(`price:${price}`)
-			assert.equal(price.valueOf(), legsAss12pm.price.reseller)
-			return legsAss12pm.instance.spotPurchase(
-				jessprager.from,
-				{ from: classpass.from, value: price }
-			)
-		}).then(() => {
-			done()
-		})
-		/*
-			console.log('x22222')
-			return legsAss12pm.instance.spotIsReserved.call(
-				jessprager.from, { from: classpass.from }
-			)
-		}).then(found => {
+	// it("should get correct reseller price, buy a spot, request a refund", done => {
+	// 	console.log("GET THE DAMN RESELLER PRICE");
+	// 	done()
+		// legsAss12pm.instance.getPrice.call(
+		// 	{ from: classpass.from }
+		// ).then(price => {
+		// 	console.log(`price:${price}`)
+		// 	assert.equal(price.valueOf(), legsAss12pm.price.reseller)
+		// 	return legsAss12pm.instance.spotPurchase(
+		// 		jessprager.from,
+		// 		{ from: classpass.from, value: price }
+		// 	)
+		// }).then(() => {
+		// 	console.log('x22222')
+		// 	return legsAss12pm.instance.spotIsReserved.call(
+		// 		jessprager.from, { from: classpass.from }
+		// 	)
+		// }).then(found => {
 			
-			console.log('x33333')
-			assert.isTrue(found)
-			return legsAss12pm.instance.spotCancel(
-				jessprager.from,
-				{ from: classpass.from }
-			)
-		}).then(() => {
-			console.log('x44444')
-			return legsAss12pm.instance.spotIsReserved.call(
-				jessprager.from, { from: classpass.from }
-			)
-		}).then(found => {
-			console.log('x5555')
-			assert.isFalse(found)
-			done()
-		})*/
-	})
+		// 	console.log('x33333')
+		// 	assert.isTrue(found)
+		// 	return legsAss12pm.instance.spotCancel(
+		// 		jessprager.from,
+		// 		{ from: classpass.from }
+		// 	)
+		// }).then(() => {
+		// 	console.log('x44444')
+		// 	return legsAss12pm.instance.spotIsReserved.call(
+		// 		jessprager.from, { from: classpass.from }
+		// 	)
+		// }).then(found => {
+		// 	console.log('x5555')
+		// 	assert.isFalse(found)
+		// 	done()
+		// })
+	// })
 
 	/*
 	it("should get correct individual price, buy a spot, request a refund", done => {

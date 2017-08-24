@@ -38,15 +38,18 @@ contract Schedule is Killable {
 	uint public nSpots;
 
 	mapping(uint => uint) private price;
+	Studio private studioContract;
 
 	modifier withinDeadlineCancellation() {if (block.timestamp <= dates.cancellation) _;}
-	modifier withinDeadlinePurchase() {if (block.timestamp <= dates.purchase) _;}
+	modifier withinDeadlinePurchase() {if (block.timestamp <= dates.purchase) _; }
 
 	event Cancel(string reason);
 	event SpotPurchased(uint spotType, address attendee, address reseller, uint index);
 	event SpotPurchaseAttempt(uint priceRequired, uint valueSent, uint spotType);
 
-	function Schedule(address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {
+	function Schedule(address _studioContract, address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {
+		studioContract = Studio(_studioContract);
+		require(studioContract.userExists(msg.sender));
 		dates = Dates(_dateStart, _dateEnd, _dateStart - 60 * 60 * 10, _dateStart - 60 * 60);
 		klass = _class;
 		owner = msg.sender;
@@ -127,18 +130,11 @@ contract Schedule is Killable {
 		SpotType spotType = spotTypeWithSender(sender);
 		return price[uint(spotType)];	
 	}
-	//reserve a spot for the user
-	event Log(string message, address addy);
-	function spotPurchase(address attendee) payable {
-		//if msg.sender is reseller
-		SpotType spotType = this.spotTypeWithSender(msg.sender);
-		Studio studio = Studio(Class(klass).studio());
-		Log("studio address:", Class(klass).studio());
-		/*
 
+	function spotPurchase(address attendee) payable {
 		var (spot, found, index) = spotFindPurchasable(msg.sender, attendee);
 		require(found == true);
-		// spot.spotType = spotType;
+		SpotType spotType = this.spotTypeWithSender(msg.sender);
 		if (spotType == SpotType.Reseller) {
 			spot = Spot(spotType, attendee, msg.sender);
 		} else {
@@ -146,7 +142,7 @@ contract Schedule is Killable {
 			Individual(individual).scheduleAdded();
 		}
 		spots[index] = spot;
-		SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index);*/
+		SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index);
 	}
 
 	modifier sentRequiredFunds() {
@@ -161,8 +157,7 @@ contract Schedule is Killable {
 
 	function spotTypeWithSender(address sender) constant returns (SpotType) {
 		address studio = Class(klass).studio();
-		Studio studioContract = Studio(studioContract);
-		if (studio.isAuthorizedReseller(studio, sender)) {
+		if (studioContract.isAuthorizedReseller(studio, sender)) {
 			//valid reseller
 			return SpotType.Reseller;
 		} else {
