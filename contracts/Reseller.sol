@@ -26,9 +26,9 @@ contract Reseller is Killable {
 
 	function signup(string _name) {
 		require(bytes(name[msg.sender]).length == 0);
-		name[msg.sender] = _name;
 		assert(authentication != 0x0);
-		if (!Authentication(authentication).signup(msg.sender, "INDIVIDUAL")) {
+		name[msg.sender] = _name;
+		if (!Authentication(authentication).signup(msg.sender, "RESELLER")) {
 			revert();
 		}
 	}

@@ -49,9 +49,12 @@ contract Schedule is Killable {
 	event SpotCancelled(uint spotType, address attendee, address reseller);
 
 	function Schedule(address _studioContract, address _individualContract, address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {
+		require(_studioContract != 0x0);
+		require(_individualContract != 0x0);
 		studioContract = Studio(_studioContract);
-		individualContract = Individual(_individualContract);
 		require(studioContract.userExists(msg.sender));
+		
+		individualContract = Individual(_individualContract);
 		dates = Dates(_dateStart, _dateEnd, _dateStart - 60 * 60 * 10, _dateStart - 60 * 60);
 		klass = _class;
 		owner = msg.sender;
@@ -64,10 +67,10 @@ contract Schedule is Killable {
 
 		for (uint i = 0; i < nSpots; i++) {
 			spots[i] = Spot(
-					SpotType.Available,
-					0x0,
-					0x0
-				);
+				SpotType.Available,
+				0x0,
+				0x0
+			);
 		}
 	}
 
@@ -85,11 +88,11 @@ contract Schedule is Killable {
 			Spot storage spot = spots[spotIndex];
 			if (spot.reseller != 0x0) {
 				if (!spot.reseller.send(price[uint(SpotType.Reseller)])) {
-						revert();
+					revert();
 				}
 			} else {
 				if (spot.attendee != 0x0 && !spot.attendee.send(price[uint(SpotType.Individual)])) {	
-						revert();
+					revert();
 				}
 			}
 		}

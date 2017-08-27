@@ -97,35 +97,33 @@ contract("Schedule", (accounts) => {
 					{ from: barrys.from }
 				)
 	    }).then(() => {
-				return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
-			}).then(isAuthorized => {
-				assert.equal(isAuthorized, true, `${classpass.name} (${classpass.from})  is not authorized reseller for ${barrys.name} (${barrys.from})`)
-				return Class.new(
-					legsAss.name,
-					legsAss.description,
-					{ from: barrys.from }
-				)
-	    }).then((classInstance) => {
-				legsAss.instance = classInstance;
-				return Schedule.new(
-					studio.deployed.address,
-					individual.deployed.address,
-					legsAss.instance.address, //address _class,
-					legsAss12pm.instructor, //string _instructor
-					legsAss12pm.date.start, //uint _dateStart
-					legsAss12pm.date.end, //uint _dateEnd,
-					legsAss12pm.spots.total, //uint nSpots,
-					legsAss12pm.spots.reseller, //uint _nSpotsReseller
-					legsAss12pm.price.individual, //uint priceIndividual
-					legsAss12pm.price.reseller, //uint priceReseller
-					{ from: barrys.from }
-				)
-	    }).then(
-	    	(schedule) => {
-	    		legsAss12pm.instance = schedule
-	    		done()
-	    	}
-	    )
+			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
+		}).then(isAuthorized => {
+			assert.equal(isAuthorized, true, `${classpass.name} (${classpass.from})  is not authorized reseller for ${barrys.name} (${barrys.from})`)
+			return Class.new(
+				legsAss.name,
+				legsAss.description,
+				{ from: barrys.from }
+			)
+	    }).then(classInstance => {
+			legsAss.instance = classInstance;
+			return Schedule.new(
+				studio.deployed.address,
+				individual.deployed.address,
+				legsAss.instance.address, //address _class,
+				legsAss12pm.instructor, //string _instructor
+				legsAss12pm.date.start, //uint _dateStart
+				legsAss12pm.date.end, //uint _dateEnd,
+				legsAss12pm.spots.total, //uint nSpots,
+				legsAss12pm.spots.reseller, //uint _nSpotsReseller
+				legsAss12pm.price.individual, //uint priceIndividual
+				legsAss12pm.price.reseller, //uint priceReseller
+				{ from: barrys.from }
+			)
+	    }).then(schedule => {
+			legsAss12pm.instance = schedule
+			done()
+	    })
 	})
 
 	it("should get the correct prices", done => {
@@ -154,7 +152,6 @@ contract("Schedule", (accounts) => {
 				jessprager.from, { from: classpass.from }
 			)
 		}).then(found => {
-			
 			assert.isTrue(found)
 			return legsAss12pm.instance.spotCancel(
 				jessprager.from,
@@ -235,8 +232,7 @@ contract("Schedule", (accounts) => {
 				}
 			)
 		}).then(() => {
-				done()
-			}
-		)
+			done()
+		})
 	})
 })
