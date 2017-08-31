@@ -14,8 +14,8 @@ contract Reseller is Killable {
 		State state;
 	}
 
-  mapping(address => string) public name;
-  mapping(address => Studio[]) private studios;
+  	mapping(address => string) public name;
+  	mapping(address => Studio[]) private studios;
 	address public authentication;
 
 	modifier authenticated() {if (sha3(name[msg.sender]) != sha3("")) _;}
@@ -28,9 +28,7 @@ contract Reseller is Killable {
 		require(bytes(name[msg.sender]).length == 0);
 		assert(authentication != 0x0);
 		name[msg.sender] = _name;
-		if (!Authentication(authentication).signup(msg.sender, "RESELLER")) {
-			revert();
-		}
+		Authentication(authentication).signup(msg.sender, "RESELLER");
 	}
 
 	function signedUp() constant returns (bool) {

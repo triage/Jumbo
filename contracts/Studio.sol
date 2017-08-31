@@ -23,11 +23,8 @@ contract Studio is Killable {
 
 	function signup(string _name) {
 		require(sha3(name[msg.sender]) == sha3(""));
-		assert(authentication != 0x0);
 		name[msg.sender] = _name;
-		if (!Authentication(authentication).signup(msg.sender, "STUDIO")) {
-			revert();
-		}
+		Authentication(authentication).signup(msg.sender, "STUDIO");
 	}
 
 	function userExists(address user) public constant returns (bool) {

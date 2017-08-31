@@ -25,14 +25,11 @@ export function loginUser() {
     // Declaring this for later so we can chain functions on Authentication.
     var authenticationInstance
 
-    // Get current ethereum wallet.
-    var coinbase = web3.eth.coinbase;
-
-    authentication.deployed().then((instance) => {
+    authentication.deployed().then(instance => {
       authenticationInstance = instance
 
       // Attempt to login user.
-      return authenticationInstance.login({ from: coinbase })
+      return authenticationInstance.login()
     }).catch((result) => {
         // If error, go to signup page.
         console.log('Wallet ' + coinbase + ' does not have an account!')

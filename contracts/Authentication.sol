@@ -9,27 +9,40 @@ contract Authentication is Killable {
         string userType;
     }
 
+    address private studio;
+    address private individual;
+    address private reseller;
+
     mapping (address => User) private users;
 
     uint private id; // Stores user id temporarily
+    
 
-    function login(address sender) constant returns (address) {
-        assert (users[sender].user != 0x0);
-        return users[sender].user;
+    modifier trusted() {if (msg.sender == studio || msg.sender == individual || msg.sender == reseller) _;}
+
+    function setStudio(address _studio) public onlyOwner {
+        studio = _studio;
     }
 
-    function userType(address sender) constant returns (string) {
-        assert(users[sender].user != 0x0);
-        return users[sender].userType;
+    function setIndividual(address _individual) public onlyOwner {
+        individual = _individual;
     }
 
-    function signup(address sender, string userType) external returns (bool) {
-    //called from Individual or Studio
-        assert (sender != 0x0);
-        if (users[sender].user == 0x0) {
-            users[sender] = User(sender, userType);
-            return true;
-        }
-        return false;
+    function setReseller(address _reseller) public onlyOwner {
+        reseller = _reseller;
+    }
+
+    function login() constant returns (bool) {
+        return users[msg.sender].user != 0x0;
+    }
+
+    function userType() constant returns (string) {
+        return users[msg.sender].userType;
+    }
+
+    function signup(address user, string userType) trusted external {
+        //called from Individual or Studio contract (trusted)
+        require(users[user].user == 0x0);
+        users[user] = User(user, userType);
     }
 }

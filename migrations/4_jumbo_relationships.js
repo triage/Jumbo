@@ -27,5 +27,11 @@ module.exports = function(deployer) {
     return Studio.at(studio).setAuthentication(authentication)
   }).then(() => {
     return Reseller.at(reseller).setAuthentication(authentication)
+  }).then(() => {
+    return Authentication.at(authentication).setIndividual(individual)
+  }).then(() => {
+    return Authentication.at(authentication).setStudio(studio)
+  }).then(() => {
+    return Authentication.at(authentication).setReseller(reseller)
   })
 };

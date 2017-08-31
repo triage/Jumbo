@@ -4,8 +4,8 @@ import { Schedule } from './Schedule.sol';
 import { Authentication } from './Authentication.sol';
 
 contract Individual is Killable {
-  mapping(address => string) public name;
-  mapping(address => address[]) public schedules;
+  	mapping(address => string) public name;
+  	mapping(address => address[]) public schedules;
 	address public authentication;
 
 	function setAuthentication(address _authentication) onlyOwner {
@@ -15,9 +15,7 @@ contract Individual is Killable {
 	function signup(string _name) {
 		require(sha3(name[msg.sender]) == sha3(""));
 		name[msg.sender] = _name;
-		if (!Authentication(authentication).signup(msg.sender, "INDIVIDUAL")) {
-			revert();
-		}
+		Authentication(authentication).signup(msg.sender, "INDIVIDUAL");
 	}
 
 	function getName(address individual) public constant returns (string) {
@@ -33,6 +31,7 @@ contract Individual is Killable {
 	}
 
 	function scheduleAdded() external {
+		//todo: GET RID OF TX.ORIGIN
 		require(sha3(name[tx.origin]) != sha3(""));
 		//called only from the Schedule
 		//tx.origin is the Individual

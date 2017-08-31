@@ -75,8 +75,9 @@ contract Schedule is Killable {
 	}
 
 	function complete() onlyOwner {
-		//class has completed. Balance should sent to the owner
+		//class has completed. 
 		selfdestruct(owner);
+		//todo: don't do this http://solidity.readthedocs.io/en/latest/frequently-asked-questions.html#are-mappings-iterable
 	}
 
 	function cancel(string reason) onlyOwner {
