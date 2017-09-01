@@ -32,7 +32,7 @@ contract Individual is Killable {
 
 	function spotPurchase(address schedule) payable {
 		require(sha3(name[msg.sender]) != sha3(""));
-		Schedule(schedule).spotPurchase.value(msg.value)(msg.sender);
+		Schedule(schedule).spotPurchase.value(msg.value)(msg.sender, 0);
 		schedules[msg.sender].push(schedule);
 	}
 

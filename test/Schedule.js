@@ -137,7 +137,7 @@ contract("Schedule", (accounts) => {
 		})
 	})
 	
-	it("should get correct reseller price, buy a spot, request a refund", done => {
+	it.skip("should get correct reseller price, buy a spot, request a refund", done => {
 		legsAss12pm.instance.getPrice.call(
 			{ from: classpass.from }
 		).then(price => {
@@ -182,8 +182,7 @@ contract("Schedule", (accounts) => {
 		}).then(address => {
 			assert.equal(address, legsAss12pm.instance.address)
 			return legsAss12pm.instance.spotIsReserved.call(
-				jessprager.from,
-				{ from: jessprager.from })
+				jessprager.from)
 		}).then(found => {
 			assert.isTrue(found)
 			return individual.deployed.spotCancel(

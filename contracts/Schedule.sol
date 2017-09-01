@@ -133,13 +133,14 @@ contract Schedule is Killable {
 		return price[uint(spotType)];	
 	}
 
-	function spotPurchase(address attendee) payable external {
-		//sender is the msg.sender sent to the original calling methoed
-		var (spot, found, index) = spotFindPurchasable(attendee);
+	function spotPurchase(address attendee, address reseller) payable external {
+		require(attendee != 0x0);
+		//sender is the msg.sender sent to the original calling method
+		var (spot, found, index) = spotFindPurchasable(attendee, reseller);
 		require(found == true);
-		SpotType spotType = this.spotTypeWithSender(msg.sender);
+		SpotType spotType = this.spotTypeWithSender(reseller != 0x0 ? reseller : attendee);
 		//todo: address of reseller
-		spot = Spot(spotType, attendee, msg.sender, 0x0);
+		spot = Spot(spotType, attendee, msg.sender, reseller);
 		spots[index] = spot;
 		SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index);
 	}
@@ -149,7 +150,7 @@ contract Schedule is Killable {
 		require(found == true);
 		require(spot.sender == msg.sender);
 
-		uint spotPrice = getPriceWithSender(msg.sender);
+		uint spotPrice = getPriceWithSender(spot.reseller != 0x0 ? spot.reseller : spot.attendee);
 
 		spots[index] = Spot(SpotType.Available, 0x0, 0x0, 0x0);
 		if (!attendee.send(spotPrice)) {
@@ -176,11 +177,11 @@ contract Schedule is Killable {
 		}
 	}
 
-	function spotFindPurchasable(address attendee) private constant returns (Spot, bool, uint) {
+	function spotFindPurchasable(address attendee, address reseller) private constant returns (Spot, bool, uint) {
 		var (, found, ) = spotFindReserved(attendee);
 		require(found == false);
 
-		if (nSpotsResellerReserved() == nSpotsReseller) {
+		if (nSpotsResellerReserved() == nSpotsReseller && reseller != 0x0) {
 			return (Spot(SpotType.Unavailable, 0x0, 0x0, 0x0), false, 0);
 		}
 
