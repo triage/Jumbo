@@ -30,24 +30,24 @@ contract Individual is Killable {
 		return schedules[msg.sender][index];
 	}
 
-	function scheduleAdded() external {
-		//todo: GET RID OF TX.ORIGIN
-		require(sha3(name[tx.origin]) != sha3(""));
-		//called only from the Schedule
-		//tx.origin is the Individual
-		schedules[tx.origin].push(msg.sender);
+	function spotPurchase(address schedule) payable {
+		require(sha3(name[msg.sender]) != sha3(""));
+		Schedule(schedule).spotPurchase.value(msg.value)(msg.sender);
+		schedules[msg.sender].push(schedule);
 	}
 
-	function scheduleRemoved() external {
-		address individual = tx.origin;
+	function spotCancel(address schedule) {
+		require(sha3(name[msg.sender]) != sha3(""));
+		Schedule(schedule).spotCancel(msg.sender);
+
 		//called only from the Schedule contract when the studio cancels the class
-		for (uint i = 0; i < schedules[individual].length; i++) {
-			if (schedules[individual][i] == msg.sender) {
-				if (i < schedules[individual].length - 1) {
-					schedules[individual][i] = schedules[individual][i+1];
+		for (uint i = 0; i < schedules[msg.sender].length; i++) {
+			if (schedules[msg.sender][i] == schedule) {
+				if (i < schedules[msg.sender].length - 1) {
+					schedules[msg.sender][i] = schedules[msg.sender][i+1];
 				}
-				delete schedules[individual][schedules[individual].length - 1];
-				schedules[individual].length--;
+				delete schedules[msg.sender][schedules[msg.sender].length - 1];
+				schedules[msg.sender].length--;
 				break;
 			}
 		}

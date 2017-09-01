@@ -49,53 +49,53 @@ contract("Schedule", (accounts) => {
 	jessprager.from = accounts[3]
 
 	before(done => {
-			Reseller.deployed().then(deployed => {
-				reseller.deployed = deployed
-				return Individual.deployed()
-			}).then(deployed => {
-				individual.deployed = deployed
-				return Studio.deployed()
-			}).then(deployed => {
-				studio.deployed = deployed
-				return Authentication.deployed()
-			}).then(deployed => {
-				authentication.deployed = deployed
-				return reseller.deployed.setAuthentication(authentication.deployed.address)
-			}).then(() => {
-				return reseller.deployed.authentication.call()
-			}).then(resellerAuthentication => {
-				assert.equal(resellerAuthentication, authentication.deployed.address, "reseller authetication not correctly set")
-				return individual.deployed.setAuthentication(authentication.deployed.address)
-			}).then(() => {
-				return individual.deployed.authentication.call()
-			}).then(individualAuthentication => {
-				assert.equal(individualAuthentication, authentication.deployed.address, "individual authetication not correctly set")
-				return studio.deployed.setAuthentication(authentication.deployed.address)
-			}).then(() => {
-				return studio.deployed.authentication.call()
-			}).then(studioAuthentication => {
-				assert.equal(studioAuthentication, authentication.deployed.address, "studio authetication not correctly set")
-				return reseller.deployed.signup(
-					"Classpass", { from: classpass.from }
-				)
-			}).then(() => {
-				return reseller.deployed.getName.call(classpass.from)
-			}).then(name => {
-				assert.equal(classpass.name, name, "reseller name not correctly set");
-	    	return individual.deployed.signup(jessprager.name, { from: jessprager.from })
-	    }).then(() => {
-				return individual.deployed.getName.call(jessprager.from)
-			}).then(name => {
-				assert.equal(jessprager.name, name, "individual name not correctly set");
-	    	return studio.deployed.signup(barrys.name, { from: barrys.from })
-	    }).then(() => {
-				return studio.deployed.getName.call(barrys.from)
-			}).then(name => {
-				assert.equal(barrys.name, name, "studio name not correctly set");
-				return studio.deployed.addReseller(
-					classpass.from,
-					{ from: barrys.from }
-				)
+		Reseller.deployed().then(deployed => {
+			reseller.deployed = deployed
+			return Individual.deployed()
+		}).then(deployed => {
+			individual.deployed = deployed
+			return Studio.deployed()
+		}).then(deployed => {
+			studio.deployed = deployed
+			return Authentication.deployed()
+		}).then(deployed => {
+			authentication.deployed = deployed
+			return reseller.deployed.setAuthentication(authentication.deployed.address)
+		}).then(() => {
+			return reseller.deployed.authentication.call()
+		}).then(resellerAuthentication => {
+			assert.equal(resellerAuthentication, authentication.deployed.address, "reseller authetication not correctly set")
+			return individual.deployed.setAuthentication(authentication.deployed.address)
+		}).then(() => {
+			return individual.deployed.authentication.call()
+		}).then(individualAuthentication => {
+			assert.equal(individualAuthentication, authentication.deployed.address, "individual authetication not correctly set")
+			return studio.deployed.setAuthentication(authentication.deployed.address)
+		}).then(() => {
+			return studio.deployed.authentication.call()
+		}).then(studioAuthentication => {
+			assert.equal(studioAuthentication, authentication.deployed.address, "studio authetication not correctly set")
+			return reseller.deployed.signup(
+				"Classpass", { from: classpass.from }
+			)
+		}).then(() => {
+			return reseller.deployed.getName.call(classpass.from)
+		}).then(name => {
+			assert.equal(classpass.name, name, "reseller name not correctly set");
+			return individual.deployed.signup(jessprager.name, { from: jessprager.from })
+		}).then(() => {
+			return individual.deployed.getName.call(jessprager.from)
+		}).then(name => {
+			assert.equal(jessprager.name, name, "individual name not correctly set");
+			return studio.deployed.signup(barrys.name, { from: barrys.from })
+		}).then(() => {
+			return studio.deployed.getName.call(barrys.from)
+		}).then(name => {
+			assert.equal(barrys.name, name, "studio name not correctly set");
+			return studio.deployed.addReseller(
+				classpass.from,
+				{ from: barrys.from }
+			)
 	    }).then(() => {
 			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
 		}).then(isAuthorized => {
@@ -109,7 +109,6 @@ contract("Schedule", (accounts) => {
 			legsAss.instance = classInstance;
 			return Schedule.new(
 				studio.deployed.address,
-				individual.deployed.address,
 				legsAss.instance.address, //address _class,
 				legsAss12pm.instructor, //string _instructor
 				legsAss12pm.date.start, //uint _dateStart
@@ -172,13 +171,13 @@ contract("Schedule", (accounts) => {
 			{ from: jessprager.from }
 		).then(price => {
 			assert.equal(price.valueOf(), legsAss12pm.price.individual)
-			return legsAss12pm.instance.spotPurchase(
-				jessprager.from,
+			return individual.deployed.spotPurchase(
+				legsAss12pm.instance.address,
 				{ from: jessprager.from, value: price }
 			)
 		}).then(() => {
 			return individual.deployed.getSchedulesCount.call({ from: jessprager.from })
-		}).then((count) => {
+		}).then(count => {
 			return individual.deployed.getSchedule.call(0, { from: jessprager.from })
 		}).then(address => {
 			assert.equal(address, legsAss12pm.instance.address)
@@ -187,8 +186,8 @@ contract("Schedule", (accounts) => {
 				{ from: jessprager.from })
 		}).then(found => {
 			assert.isTrue(found)
-			return legsAss12pm.instance.spotCancel(
-				jessprager.from,
+			return individual.deployed.spotCancel(
+				legsAss12pm.instance.address,
 				{ from: jessprager.from }
 			)
 		}).then(() => {
@@ -211,24 +210,16 @@ contract("Schedule", (accounts) => {
 	})
 
 	it("owner should cancel a class, refund all tickets", done => {
-		legsAss12pm.instance.spotPurchase(
-			jessprager.from,
+		individual.deployed.spotPurchase(
+			legsAss12pm.instance.address,
 			{
 				from: jessprager.from,
 				value: legsAss12pm.price.individual
 		}).then(() => {
-			return legsAss12pm.instance.spotPurchase(
-				jessprager.from,
-				{
-					from: classpass.from,
-					value: legsAss12pm.price.reseller
-				}
-			)
-		}).then(() => {
 			return legsAss12pm.instance.cancel(
 				"instructor unable to attend",
 				{
-					from: classpass.from
+					from: barrys.from
 				}
 			)
 		}).then(() => {
