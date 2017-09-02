@@ -12,6 +12,8 @@ contract Individual is Killable {
 		authentication = _authentication;
 	}
 
+	modifier authenticated() {if (sha3(name[msg.sender]) != sha3("")) _;}
+
 	function signup(string _name) {
 		require(sha3(name[msg.sender]) == sha3(""));
 		name[msg.sender] = _name;
@@ -30,15 +32,13 @@ contract Individual is Killable {
 		return schedules[msg.sender][index];
 	}
 
-	function spotPurchase(address schedule) payable {
-		require(sha3(name[msg.sender]) != sha3(""));
-		Schedule(schedule).spotPurchase.value(msg.value)(msg.sender, 0);
+	function spotPurchase(address schedule) authenticated payable {
+		Schedule(schedule).spotPurchase.value(msg.value)(msg.sender, 0x0);
 		schedules[msg.sender].push(schedule);
 	}
 
-	function spotCancel(address schedule) {
-		require(sha3(name[msg.sender]) != sha3(""));
-		Schedule(schedule).spotCancel(msg.sender);
+	function spotCancel(address schedule) authenticated {
+		Schedule(schedule).spotCancel(msg.sender, 0x0);
 
 		//called only from the Schedule contract when the studio cancels the class
 		for (uint i = 0; i < schedules[msg.sender].length; i++) {

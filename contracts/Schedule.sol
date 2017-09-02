@@ -145,15 +145,14 @@ contract Schedule is Killable {
 		SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index);
 	}
 
-	function spotCancel(address attendee) withinDeadlineCancellation external {
+	function spotCancel(address attendee, address reseller) withinDeadlineCancellation external {
 		var (spot, found, index) = spotFindReserved(attendee);
 		require(found == true);
 		require(spot.sender == msg.sender);
-
 		uint spotPrice = getPriceWithSender(spot.reseller != 0x0 ? spot.reseller : spot.attendee);
-
 		spots[index] = Spot(SpotType.Available, 0x0, 0x0, 0x0);
-		if (!attendee.send(spotPrice)) {
+		address destination = reseller != 0x0 ? reseller : attendee;
+		if (!destination.send(spotPrice)) {
 			revert();
 		}
 		SpotCancelled(uint(spot.spotType), attendee, 0x0);

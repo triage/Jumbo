@@ -53,28 +53,13 @@ contract Reseller is Killable {
 		return uint(studios[msg.sender][index].state);
 	}
 
-	// function spotPurchase(address schedule) payable {
-	// 	require(sha3(name[msg.sender]) != sha3(""));
-	// 	Schedule(schedule).spotPurchase.value(msg.value)(msg.sender, 0);
-	// 	schedules[msg.sender].push(schedule);
-	// }
+	function spotPurchase(address schedule, address individual) authenticated payable {
+		Schedule(schedule).spotPurchase.value(msg.value)(individual, msg.sender);
+	}
 
-	// function spotCancel(address schedule) {
-	// 	require(sha3(name[msg.sender]) != sha3(""));
-	// 	Schedule(schedule).spotCancel(msg.sender);
-
-	// 	//called only from the Schedule contract when the studio cancels the class
-	// 	for (uint i = 0; i < schedules[msg.sender].length; i++) {
-	// 		if (schedules[msg.sender][i] == schedule) {
-	// 			if (i < schedules[msg.sender].length - 1) {
-	// 				schedules[msg.sender][i] = schedules[msg.sender][i+1];
-	// 			}
-	// 			delete schedules[msg.sender][schedules[msg.sender].length - 1];
-	// 			schedules[msg.sender].length--;
-	// 			break;
-	// 		}
-	// 	}
-	// }
+	function spotCancel(address schedule, address individual) authenticated {
+		Schedule(schedule).spotCancel(individual, msg.sender);
+	}
 
 	function resellerStateChanged(address studio, uint state) external {
 		require(sha3(name[studio]) == sha3(""));

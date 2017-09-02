@@ -137,12 +137,13 @@ contract("Schedule", (accounts) => {
 		})
 	})
 	
-	it.skip("should get correct reseller price, buy a spot, request a refund", done => {
+	it("should get correct reseller price, buy a spot, request a refund", done => {
 		legsAss12pm.instance.getPrice.call(
 			{ from: classpass.from }
 		).then(price => {
 			assert.equal(price.valueOf(), legsAss12pm.price.reseller)
-			return legsAss12pm.instance.spotPurchase(
+			return reseller.deployed.spotPurchase(
+				legsAss12pm.instance.address,
 				jessprager.from,
 				{ from: classpass.from, value: price }
 			)
@@ -152,7 +153,8 @@ contract("Schedule", (accounts) => {
 			)
 		}).then(found => {
 			assert.isTrue(found)
-			return legsAss12pm.instance.spotCancel(
+			return reseller.deployed.spotCancel(
+				legsAss12pm.instance.address,
 				jessprager.from,
 				{ from: classpass.from }
 			)
