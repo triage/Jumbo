@@ -5,15 +5,15 @@ import UserType from 'src/user/model/UserType'
 import { schedulesLoaded, scheduleLoaded, SCHEDULES_LOAD, SCHEDULE_LOAD } from './ScheduleActions'
 
 function* doSchedulesLoad(action) {
-  const studio = eth.Studio().at(action.studio)
-  const schedulesCount = yield call(studio.schedulesCount.call)
+  const studio = eth.Studio().deployed()
+  const schedulesCount = yield studio.schedulesCount.call(eth.from())
 
   const classes = yield select(state => state.studio.classes);
   let schedules = []
 
   // todo: don't totally wipe out the schedules here ... only replace if necessary so as to prevent a refresh
   for (let i = 0; i < schedulesCount; i++) {
-    const address = yield call(studio.scheduleAtIndex.call, i)
+    const address = yield studio.scheduleAtIndex.call(i, eth.from())
     const schedule = eth.Schedule().at(address)
     const instructor = yield call(schedule.instructor.call)
     const dates = yield call(schedule.dates.call)

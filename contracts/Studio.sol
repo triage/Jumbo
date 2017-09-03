@@ -1,6 +1,7 @@
 pragma solidity ^0.4.0;
 import "./zeppelin/lifecycle/Killable.sol";
 import { Authentication } from "./Authentication.sol";
+import { Class } from "./Class.sol";
 
 contract Studio is Killable {
 	
@@ -19,6 +20,12 @@ contract Studio is Killable {
 	address public authentication;
 	function setAuthentication(address _authentication) onlyOwner {
 		authentication = _authentication;
+	}
+
+	function classCreate(string name, string description) {
+		Class class = new Class(name, description);
+		class.transferOwnership(msg.sender);
+		classes[msg.sender].push(class);
 	}
 
 	function signup(string _name) {
@@ -50,11 +57,6 @@ contract Studio is Killable {
 
 	function classAtIndex(uint index) constant returns (address) {
 		return classes[msg.sender][index];
-	}
-
-	function classAdded(address klass) {
-		classes[msg.sender].push(klass);
-		ClassAdded(klass);
 	}
 
 	function schedulesCount() constant returns (uint) {

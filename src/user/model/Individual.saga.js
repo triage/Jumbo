@@ -10,11 +10,11 @@ function* doIndividualLoad(action) {
   const Schedule = eth.Schedule()
   const Studio = eth.Studio()
   try {
-    const individual = Individual.at(action.individual)
-    let count = yield individual.getSchedulesCount.call()
+    const individual = Individual.deployed()
+    let count = yield individual.getSchedulesCount.call(eth.from())
     const schedules = []
     for (let i = 0; i < parseInt(count.valueOf()); i++) {
-      const address = yield individual.getSchedule.call(i)
+      const address = yield individual.getSchedule.call(i, eth.from())
       const schedule = Schedule.at(address)
       const dates = yield schedule.dates.call()
       const instructor = yield schedule.instructor.call()
@@ -22,9 +22,9 @@ function* doIndividualLoad(action) {
       const klass = Class.at(classAddress)
       const name = yield klass.name.call()
       const studioAddress = yield klass.studio.call()
-      const studio = Studio.at(studioAddress)
-      const studioName = yield studio.name.call()
-      const studioContactDetails = yield studio.contactDetails.call()
+      const studio = yield Studio.deployed()
+      const studioName = yield studio.name.call(studioAddress)
+      const studioContactDetails = yield studio.contactDetails.call(studioAddress)
 
       schedules.push({
         address: schedule.address,

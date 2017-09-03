@@ -39,7 +39,7 @@ contract("Studio", (accounts) => {
 	})
 
 	it("should add, then remove a class", done => {
-		Class.new("Class name", "Class description", { from: barrys.from }).then((classInstance) => {
+		studio.deployed.classCreate("Class name", "Class description", { from: barrys.from }).then((classInstance) => {
 			barrysClass = classInstance
 			return studio.deployed.classAdded(barrysClass.address, { from: barrys.from })
 		}).then(() => {

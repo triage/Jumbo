@@ -12,13 +12,19 @@ contract("Class", (accounts) => {
 		Studio.deployed().then(instance => {
 			studio.instance = instance
 		}).then(() => {
-			return Class.new(
+			return studio.instance.classCreate(
 				legsAss.name,
 				legsAss.description,
 				{ from: barrys.from }
 			)
+		}).then(() => {
+			return studio.instance.classesCount({ from: barrys.from })
+		}).then(count => {
+			console.log(`count:${count}`)
+			return studio.instance.classAtIndex(count - 1, { from: barrys.from })
 		}).then(address => {
-			legsAss.instance = address
+			console.log(`got address:${address}`)
+			legsAss.instance = Class.at(address);
 			return legsAss.instance.name.call()
 		}).then(name => {
 			assert.equal(name, legsAss.name)
@@ -33,13 +39,17 @@ contract("Class", (accounts) => {
 		Studio.deployed().then(instance => {
 			studio.instance = instance
 		}).then(() => {
-			return Class.new(
+			return studio.instance.classCreate(
 				legsAss.name,
 				legsAss.description,
 				{ from: barrys.from }
 			)	
+		}).then(() => {
+			return studio.instance.classesCount({ from: barrys.from })
+		}).then(count => {
+			return studio.instance.classAtIndex(count - 1, { from: barrys.from })
 		}).then(address => {
-			legsAss.instance = address
+			legsAss.instance = Class.at(address);
 			return legsAss.instance.setName(legsAss.name, { from: barrys.from })
 		}).then(() => {
 			return legsAss.instance.name.call()

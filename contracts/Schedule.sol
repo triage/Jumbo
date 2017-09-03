@@ -8,8 +8,6 @@ contract Schedule is Killable {
 
 	string public instructor;
 	address public klass;
-	
-	address studio;
 
 	struct Dates {
 		uint start;
@@ -120,7 +118,7 @@ contract Schedule is Killable {
 	}
 
 	function getPrice() public returns (uint) {
-		SpotType spotType = spotTypeWithSender(msg.sender);
+		SpotType spotType = spotTypeWithSender(0x123);
 		return price[uint(spotType)];
 	}
 
@@ -162,9 +160,9 @@ contract Schedule is Killable {
 	}
 
 	function spotTypeWithSender(address sender) constant returns (SpotType) {
-		address studio = Class(klass).studio();
-		if (studioContract.isAuthorizedReseller(studio, sender)) {
-			//valid reseller
+		address studio = Class(klass).owner();
+		if (studioContract.isAuthorizedReseller(studio, sender) == true) {
+			//valid resellers
 			return SpotType.Reseller;
 		} else {
 			//else if is individual

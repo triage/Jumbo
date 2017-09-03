@@ -99,16 +99,30 @@ contract("Schedule", (accounts) => {
 	    }).then(() => {
 			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
 		}).then(isAuthorized => {
-			assert.equal(isAuthorized, true, `${classpass.name} (${classpass.from})  is not authorized reseller for ${barrys.name} (${barrys.from})`)
-			return Class.new(
+			assert.equal(isAuthorized, true)
+			return studio.deployed.isAuthorizedReseller.call(barrys.from, jessprager.from)
+		}).then(isAuthorized => {
+			assert.equal(isAuthorized, false)
+			return studio.deployed.classCreate(
 				legsAss.name,
 				legsAss.description,
 				{ from: barrys.from }
 			)
-	    }).then(classInstance => {
-			legsAss.instance = classInstance;
+		}).then(() => {
+			return studio.deployed.classesCount({ from: barrys.from })
+		}).then(count => {
+			return studio.deployed.classAtIndex(count - 1, { from: barrys.from })
+		}).then(address => {
+			legsAss.instance = Class.at(address);
+			console.log(`class at:${address}`)
+			return legsAss.instance.name()
+		}).then(name => {
+			assert.equal(name, legsAss.name);
+			return legsAss.instance.owner();
+		}).then(owner => {
+			assert.equal(owner, barrys.from)
+			done()
 			return Schedule.new(
-				studio.deployed.address,
 				legsAss.instance.address, //address _class,
 				legsAss12pm.instructor, //string _instructor
 				legsAss12pm.date.start, //uint _dateStart
@@ -121,8 +135,18 @@ contract("Schedule", (accounts) => {
 			)
 	    }).then(schedule => {
 			legsAss12pm.instance = schedule
+			return legsAss12pm.instance.spotTypeWithSender.call(jessprager.from)
+		}).then(type => {
+			assert.equal(type.valueOf(), 1)
+			return legsAss12pm.instance.spotTypeWithSender.call(classpass.from)
+		}).then(type => {
+			assert.equal(type.valueOf(), 2)
 			done()
 	    })
+	})
+
+	it.only("foo", done => {
+		done()
 	})
 
 	it("should get the correct prices", done => {

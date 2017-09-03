@@ -6,15 +6,14 @@ export function* doCreateClass(action) {
 
   const Class = eth.Class()
   const Studio = eth.Studio()
-  const from = eth.from()
 
   try {
     //create the class
     const studio = yield Studio.deployed()
-    const classInstance = yield apply(Class, Class.new, [action.name, action.description, from])
+    const classInstance = yield apply(Class, Class.new, [action.name, action.description, eth.from()])
     
     //add the class to the studio
-    yield apply(studio, studio.classAdded, [classInstance.address, from])
+    yield apply(studio, studio.classAdded, [classInstance.address, eth.from()])
     yield put(classCreated({
       address: classInstance.address,
       name: action.name,

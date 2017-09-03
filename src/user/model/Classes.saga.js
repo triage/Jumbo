@@ -15,15 +15,15 @@ Studio.setProvider(provider)
 
 export function* doClassesLoad(action) {
   try {
-    const studio = Studio.at(action.studio)
+    const studio = yield Studio.deployed()
 
-    const classesCount = yield call(studio.classesCount.call)
+    const classesCount = yield studio.classesCount.call(eth.from())
     let classes = []
     for(let classIndex = 0; classIndex < classesCount.toNumber(); classIndex++) {
-      const address = yield call(studio.classAtIndex.call, classIndex)
+      const address = yield studio.classAtIndex.call(classIndex, eth.from())
       const instance = Class.at(address)
-      const name = yield call(instance.name.call)
-      const description = yield call(instance.description.call)
+      const name = yield instance.name.call()
+      const description = yield instance.description.call()
       const classObject = {
         address,
         name,
