@@ -5,44 +5,48 @@ import UserType from 'src/user/model/UserType'
 import { schedulesLoaded, scheduleLoaded, SCHEDULES_LOAD, SCHEDULE_LOAD } from './ScheduleActions'
 
 function* doSchedulesLoad(action) {
-  const studio = eth.Studio().deployed()
-  const schedulesCount = yield studio.schedulesCount.call(eth.from())
+  try {
+    const studio = yield eth.Studio().deployed()
+    const schedulesCount = yield studio.schedulesCount.call(eth.from())
 
-  const classes = yield select(state => state.studio.classes);
-  let schedules = []
+    const classes = yield select(state => state.studio.classes);
+    let schedules = []
 
-  // todo: don't totally wipe out the schedules here ... only replace if necessary so as to prevent a refresh
-  for (let i = 0; i < schedulesCount; i++) {
-    const address = yield studio.scheduleAtIndex.call(i, eth.from())
-    const schedule = eth.Schedule().at(address)
-    const instructor = yield call(schedule.instructor.call)
-    const dates = yield call(schedule.dates.call)
-    const klass = yield call(schedule.class.call)
-    const balance = yield eth.getBalance(address)
-    const price = {}
-    price.individual = yield call(schedule.getPriceWithUserType.call, UserType.individual)
-    price.reseller = yield call(schedule.getPriceWithUserType.call, UserType.reseller)
-    schedules.push({
-      address,
-      balance,
-      instructor,
-      price,
-      dates: {
-        /* eslint-disable radix */
-        start: moment.unix(parseInt(dates[0].valueOf()) / 1000).toDate(),
-        end: moment.unix(parseInt(dates[1].valueOf()) / 1000).toDate(),
-        cancellation: moment.unix(parseInt(dates[2].valueOf()) / 1000).toDate(),
-        purchase: moment.unix(parseInt(dates[3].valueOf()) / 1000).toDate(),
-      },
-      class: classes.find(found => {
-        if (found.address === klass) {
-          return found;
-        }
-        return undefined;
-      }),
-    })
+    // todo: don't totally wipe out the schedules here ... only replace if necessary so as to prevent a refresh
+    for (let i = 0; i < schedulesCount; i++) {
+      const address = yield studio.scheduleAtIndex.call(i, eth.from())
+      const schedule = eth.Schedule().at(address)
+      const instructor = yield call(schedule.instructor.call)
+      const dates = yield call(schedule.dates.call)
+      const klass = yield call(schedule.class.call)
+      const balance = yield eth.getBalance(address)
+      const price = {}
+      price.individual = yield call(schedule.getPriceWithUserType.call, UserType.individual)
+      price.reseller = yield call(schedule.getPriceWithUserType.call, UserType.reseller)
+      schedules.push({
+        address,
+        balance,
+        instructor,
+        price,
+        dates: {
+          /* eslint-disable radix */
+          start: moment.unix(parseInt(dates[0].valueOf()) / 1000).toDate(),
+          end: moment.unix(parseInt(dates[1].valueOf()) / 1000).toDate(),
+          cancellation: moment.unix(parseInt(dates[2].valueOf()) / 1000).toDate(),
+          purchase: moment.unix(parseInt(dates[3].valueOf()) / 1000).toDate(),
+        },
+        class: classes.find(found => {
+          if (found.address === klass) {
+            return found;
+          }
+          return undefined;
+        }),
+      })
+    }
+    yield put(schedulesLoaded(schedules))
+  } catch (error) {
+    console.log(`error:${error}`)
   }
-  yield put(schedulesLoaded(schedules))
 }
 
 function* doScheduleLoad(action) {

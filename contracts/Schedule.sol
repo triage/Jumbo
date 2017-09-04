@@ -68,6 +68,31 @@ contract Schedule is Killable {
 		}
 	}
 
+	function spotPurchase(address attendee, address reseller) payable external {
+		require(attendee != 0x0);
+		//sender is the msg.sender sent to the original calling method
+		var (spot, found, index) = spotFindPurchasable(attendee, reseller);
+		require(found == true);
+		SpotType spotType = this.spotTypeWithSender(reseller != 0x0 ? reseller : attendee);
+		//todo: address of reseller
+		spot = Spot(spotType, attendee, msg.sender, reseller);
+		spots[index] = spot;
+		SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index);
+	}
+
+	function spotCancel(address attendee, address reseller) withinDeadlineCancellation external {
+		var (spot, found, index) = spotFindReserved(attendee);
+		require(found == true);
+		require(spot.sender == msg.sender);
+		uint spotPrice = getPriceWithSender(spot.reseller != 0x0 ? spot.reseller : spot.attendee);
+		spots[index] = Spot(SpotType.Available, 0x0, 0x0, 0x0);
+		address destination = reseller != 0x0 ? reseller : attendee;
+		if (!destination.send(spotPrice)) {
+			revert();
+		}
+		SpotCancelled(uint(spot.spotType), attendee, 0x0);
+	}
+
 	function complete() onlyOwner {
 		//class has completed. 
 		selfdestruct(owner);
@@ -94,7 +119,14 @@ contract Schedule is Killable {
 		selfdestruct(owner);
 	}
 
-	function getPriceWithUserType(string spotType) public constant returns (uint) {
+	modifier sentRequiredFunds() {
+		SpotType spotType = spotTypeWithSender(msg.sender);
+		if (msg.value == price[uint(spotType)]) {
+			_;
+		}
+	}
+
+	function getPriceWithUserType(string spotType) constant returns (uint) {
 		//candidate for onlyOwner
 		if (sha3(spotType) == sha3("INDIVIDUAL")) {
 			return price[uint(SpotType.Individual)];
@@ -102,6 +134,11 @@ contract Schedule is Killable {
 			return price[uint(SpotType.Reseller)];
 		}
 		revert();
+	}
+
+	function getPrice() constant returns (uint) {
+		SpotType spotType = spotTypeWithSender(msg.sender);
+		return price[uint(spotType)];
 	}
 
 	function getNumberOfAttendees() onlyOwner constant returns (uint) {
@@ -118,48 +155,6 @@ contract Schedule is Killable {
 		return spots[index].attendee;
 	}
 
-	function getPrice() public returns (uint) {
-		SpotType spotType = spotTypeWithSender(msg.sender);
-		return price[uint(spotType)];
-	}
-
-	function getPriceWithSender(address sender) private constant returns (uint) {
-		SpotType spotType = spotTypeWithSender(sender);
-		return price[uint(spotType)];	
-	}
-
-	function spotPurchase(address attendee, address reseller) payable external {
-		require(attendee != 0x0);
-		//sender is the msg.sender sent to the original calling method
-		var (spot, found, index) = spotFindPurchasable(attendee, reseller);
-		require(found == true);
-		SpotType spotType = this.spotTypeWithSender(reseller != 0x0 ? reseller : attendee);
-		//todo: address of reseller
-		spot = Spot(spotType, attendee, msg.sender, reseller);
-		spots[index] = spot;
-		SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index);
-	}
-
-	function spotCancel(address attendee, address reseller) withinDeadlineCancellation external {
-		var (spot, found, index) = spotFindReserved(attendee);
-		require(found == true);
-		require(spot.sender == msg.sender);
-		uint spotPrice = getPriceWithSender(spot.reseller != 0x0 ? spot.reseller : spot.attendee);
-		spots[index] = Spot(SpotType.Available, 0x0, 0x0, 0x0);
-		address destination = reseller != 0x0 ? reseller : attendee;
-		if (!destination.send(spotPrice)) {
-			revert();
-		}
-		SpotCancelled(uint(spot.spotType), attendee, 0x0);
-	}
-
-	modifier sentRequiredFunds() {
-		SpotType spotType = spotTypeWithSender(msg.sender);
-		if (msg.value == price[uint(spotType)]) {
-			_;
-		}
-	}
-
 	function spotTypeWithSender(address sender) constant returns (SpotType) {
 		address studio = Class(klass).owner();
 		if (studioContract.isAuthorizedReseller(studio, sender)) {
@@ -167,6 +162,16 @@ contract Schedule is Killable {
 		} else {
 			return SpotType.Individual;
 		}
+	}
+
+	function spotIsReserved(address attendee) constant returns (bool) {
+		var (, found, ) = spotFindReserved(attendee);
+		return found;
+	}
+
+	function getPriceWithSender(address sender) private constant returns (uint) {
+		SpotType spotType = spotTypeWithSender(sender);
+		return price[uint(spotType)];	
 	}
 
 	function spotFindPurchasable(address attendee, address reseller) private constant returns (Spot, bool, uint) {
@@ -197,11 +202,6 @@ contract Schedule is Killable {
 			}
 		}
 		return nSpotsResellerFound;
-	}
-
-	function spotIsReserved(address attendee) constant returns (bool) {
-		var (, found, ) = spotFindReserved(attendee);
-		return found;
 	}
 
 	function spotFindReserved(address attendee) private constant returns (Spot, bool, uint) {

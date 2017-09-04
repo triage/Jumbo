@@ -1,6 +1,6 @@
-import { put, call, select, apply, takeEvery } from 'redux-saga/effects'
+import { put, call, apply, takeEvery } from 'redux-saga/effects'
 import eth from 'src/util/eth'
-import { schedulesLoad, scheduleLoad } from 'user/model/ScheduleActions'
+import { schedulesLoad } from 'user/model/ScheduleActions'
 import {
   SCHEDULE_CANCEL,
   SCHEDULE_COMPLETE,
@@ -18,14 +18,12 @@ export function* doScheduleCancel(action) {
   const from = eth.from()
 
   try {
-    const studioAddress = yield select(state => state.user.data.address);
-    
     const schedule = Schedule.at(action.schedule)
-    const studio = Studio.at(studioAddress)
+    const studio = yield Studio.deployed()
     yield apply(schedule, schedule.cancel, [action.reason, from])
     // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
     yield apply(studio, studio.scheduleRemoved, [schedule.address, from])
-    yield put(schedulesLoad(studioAddress))
+    yield put(schedulesLoad())
     yield call(action.history.push, '/dashboard')
   } catch (error) {
     console.log(error)
@@ -40,10 +38,9 @@ function* doScheduleComplete(action) {
     const schedule = Schedule.at(action.schedule)
     yield apply(schedule, schedule.complete.sendTransaction, [eth.from()])
     yield put(scheduleCompleted(action.schedule, action.history))
-    const studioAddress = yield select(state => state.user.data.address);
-    const studio = Studio.at(studioAddress)
-    yield apply(studio, studio.scheduleRemoved, [studioAddress, eth.from()])
-    yield put(schedulesLoad(studioAddress))
+    const studio = yield Studio.deployed()
+    yield apply(studio, studio.scheduleRemoved, [action.schedule, eth.from()])
+    yield put(schedulesLoad())
     action.history.push('/dashboard')
   } catch (error) {
     console.log(`error completing schedule:${error}`)
@@ -52,10 +49,9 @@ function* doScheduleComplete(action) {
 }
 
 function* doSpotCancel(action) {
-  const Schedule = eth.Schedule()
   try {
-    const schedule = Schedule.at(action.schedule.address)
-    yield apply(schedule, schedule.spotCancel.sendTransaction, [action.individual, eth.from()])
+    const individual = yield eth.Individual().deployed()
+    yield apply(individual, individual.spotCancel.sendTransaction, [action.schedule.address, eth.from()])
     yield put(spotCancelled(action.schedule, action.history))
   } catch(error) {
     console.log(error)
@@ -64,19 +60,13 @@ function* doSpotCancel(action) {
 }
 
 function* doSpotPurchase(action) {
-  const Schedule = eth.Schedule()
   const Individual = eth.Individual()
   try {
-    const schedule = Schedule.at(action.schedule.address)
     const from = Object.assign({}, eth.from(), {
       value: parseInt(action.schedule.price.individual, 10),
     })
-    yield apply(schedule, schedule.spotPurchase.sendTransaction, [action.individual, from])
-    // const userAddress = yield select(state => state.user.data.address);
-    // const individual = Individual.at(userAddress)
-    // debugger;
-    // yield apply(individual, individual.scheduleAdded, [action.schedule.address, from])
-    // debugger;
+    const individual = yield Individual.deployed()
+    yield apply(individual, individual.spotPurchase.sendTransaction, [action.schedule.address, from])
     yield put(spotPurchased(action.schedule, action.history))
     
   } catch(error) {

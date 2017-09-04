@@ -102,7 +102,6 @@ export const start = callback => {
       }
       
       let authentication
-      let defaultAccount
       const account = {}
 
       eth.getDefaultAccount().then(defaultAccount => {
@@ -119,7 +118,7 @@ export const start = callback => {
         return authentication.userType()
       }).then(type => {
         account.type = type
-        console.log(`type for ${defaultAccount}: ${type}`)
+        console.log(`type for ${account.address}: ${type}`)
         return (type === UserType.studio) ? eth.Studio().deployed() : eth.Individual().deployed()
       }).then(deployed => {
         return deployed.name.call(account.address)

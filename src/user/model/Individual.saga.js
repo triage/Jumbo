@@ -1,7 +1,7 @@
-import { put, call, takeEvery, take } from 'redux-saga/effects'
+import { put, takeEvery } from 'redux-saga/effects'
 import moment from 'moment'
 import { INDIVIDUAL_LOAD } from './IndividualActions'
-import { schedulesLoad, SCHEDULES_LOADED, schedulesLoaded } from './ScheduleActions'
+import { schedulesLoaded } from './ScheduleActions'
 import eth from 'src/util/eth'
 
 function* doIndividualLoad(action) {
@@ -9,12 +9,13 @@ function* doIndividualLoad(action) {
   const Class = eth.Class()
   const Schedule = eth.Schedule()
   const Studio = eth.Studio()
+  const from = eth.from()
   try {
     const individual = Individual.deployed()
-    let count = yield individual.getSchedulesCount.call(eth.from())
+    let count = yield individual.getSchedulesCount.call(from)
     const schedules = []
     for (let i = 0; i < parseInt(count.valueOf()); i++) {
-      const address = yield individual.getSchedule.call(i, eth.from())
+      const address = yield individual.getSchedule.call(i, from)
       const schedule = Schedule.at(address)
       const dates = yield schedule.dates.call()
       const instructor = yield schedule.instructor.call()

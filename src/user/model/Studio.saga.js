@@ -1,4 +1,4 @@
-import { put, call, takeEvery, take } from 'redux-saga/effects'
+import { put, takeEvery, take } from 'redux-saga/effects'
 import { STUDIO_INFO_LOAD, STUDIO_INFO_LOADED, STUDIO_LOAD, studioInfoLoad, studioInfoError, studioInfoLoaded } from './StudioActions'
 import { classesLoad, CLASSES_LOADED } from './ClassesActions'
 import { schedulesLoad, SCHEDULES_LOADED } from './ScheduleActions'
@@ -6,7 +6,7 @@ import eth from 'src/util/eth'
 
 function* studioInfoSaga(action) {
   try {
-    const studio = yield Studio().deployed()
+    const studio = yield eth.Studio().deployed()
     const name = yield studio.name.call(eth.defaultAccount)
     // const contactDetails = yield call(studio.contactDetails.call)
     yield put(studioInfoLoaded(name, null))

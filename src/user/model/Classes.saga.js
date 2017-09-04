@@ -1,27 +1,16 @@
-import { put, call, takeEvery } from 'redux-saga/effects'
-import ClassContract from '../../../build/contracts/Class.json'
-import StudioContract from '../../../build/contracts/Studio.json'
-import Web3 from 'web3'
+import { put, takeEvery } from 'redux-saga/effects'
 import { CLASSES_LOAD, classesLoaded } from './ClassesActions'
-
-const provider = new Web3.providers.HttpProvider('http://localhost:8545')
-const contract = require('truffle-contract')
-
-const Class = contract(ClassContract)
-Class.setProvider(provider)
-
-const Studio = contract(StudioContract)
-Studio.setProvider(provider)
+import eth from 'src/util/eth'
 
 export function* doClassesLoad(action) {
   try {
-    const studio = yield Studio.deployed()
+    const studio = yield eth.Studio().deployed()
 
     const classesCount = yield studio.classesCount.call(eth.from())
     let classes = []
     for(let classIndex = 0; classIndex < classesCount.toNumber(); classIndex++) {
       const address = yield studio.classAtIndex.call(classIndex, eth.from())
-      const instance = Class.at(address)
+      const instance = eth.Class().at(address)
       const name = yield instance.name.call()
       const description = yield instance.description.call()
       const classObject = {

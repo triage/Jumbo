@@ -12,10 +12,13 @@ function* doScheduleSubmit(action) {
   try {
     // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
     const values = action.values;
+    const studio = yield Studio.deployed()
+    debugger
     const schedule = yield apply(
       Schedule,
       Schedule.new,
       [
+        studio.address,
         values.class.address,
         values.instructor,
         new Date(values.date.start).valueOf(),
@@ -27,12 +30,15 @@ function* doScheduleSubmit(action) {
         from
       ]
     )
+    debugger
     const user = yield select(state => state.user.data)
-    const studio = yield Studio.deployed()
     
+    debugger
     // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
     yield apply(studio, studio.scheduleAdded, [schedule.address, from])
+    debugger
     yield put(schedulesLoad(user.address))
+    debugger
     yield call(action.history.push, '/dashboard')
   } catch (error) {
     console.log(`error:${error}`)

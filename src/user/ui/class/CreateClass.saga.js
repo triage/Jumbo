@@ -1,4 +1,4 @@
-import { put, call, select, takeEvery, apply } from 'redux-saga/effects'
+import { put, call, takeEvery, apply } from 'redux-saga/effects'
 import { CLASS_CREATE, classCreated } from './CreateClassActions'
 import eth from 'src/util/eth'
 
@@ -10,10 +10,7 @@ export function* doCreateClass(action) {
   try {
     //create the class
     const studio = yield Studio.deployed()
-    const classInstance = yield apply(Class, Class.new, [action.name, action.description, eth.from()])
-    
-    //add the class to the studio
-    yield apply(studio, studio.classAdded, [classInstance.address, eth.from()])
+    const classInstance = yield apply(studio, studio.classCreate, [action.name, action.description, eth.from()])
     yield put(classCreated({
       address: classInstance.address,
       name: action.name,
@@ -22,7 +19,7 @@ export function* doCreateClass(action) {
     yield call(
       action.history.push,
       '/schedule/new',
-      Object.assign({}, action.location.state,{ class: classInstance.address })
+      Object.assign({}, action.location.state, { class: classInstance.address })
     )
 
   } catch (error) {
