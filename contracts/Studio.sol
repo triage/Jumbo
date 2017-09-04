@@ -25,6 +25,7 @@ contract Studio is Killable {
 	function classCreate(string name, string description) {
 		Class class = new Class(name, description);
 		class.transferOwnership(msg.sender);
+		assert(class.owner() == msg.sender);
 		classes[msg.sender].push(class);
 	}
 

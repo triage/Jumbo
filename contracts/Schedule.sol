@@ -46,7 +46,8 @@ contract Schedule is Killable {
 	event SpotPurchased(uint spotType, address attendee, address reseller, uint index);
 	event SpotCancelled(uint spotType, address attendee, address reseller);
 
-	function Schedule(address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {		
+	function Schedule(address _studioContract, address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {		
+		studioContract = Studio(_studioContract);
 		dates = Dates(_dateStart, _dateEnd, _dateStart - 60 * 60 * 10, _dateStart - 60 * 60);
 		klass = _class;
 		owner = msg.sender;
@@ -118,7 +119,7 @@ contract Schedule is Killable {
 	}
 
 	function getPrice() public returns (uint) {
-		SpotType spotType = spotTypeWithSender(0x123);
+		SpotType spotType = spotTypeWithSender(msg.sender);
 		return price[uint(spotType)];
 	}
 
@@ -161,11 +162,9 @@ contract Schedule is Killable {
 
 	function spotTypeWithSender(address sender) constant returns (SpotType) {
 		address studio = Class(klass).owner();
-		if (studioContract.isAuthorizedReseller(studio, sender) == true) {
-			//valid resellers
+		if (studioContract.isAuthorizedReseller(studio, sender)) {
 			return SpotType.Reseller;
 		} else {
-			//else if is individual
 			return SpotType.Individual;
 		}
 	}

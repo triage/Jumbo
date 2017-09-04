@@ -114,15 +114,14 @@ contract("Schedule", (accounts) => {
 			return studio.deployed.classAtIndex(count - 1, { from: barrys.from })
 		}).then(address => {
 			legsAss.instance = Class.at(address);
-			console.log(`class at:${address}`)
 			return legsAss.instance.name()
 		}).then(name => {
 			assert.equal(name, legsAss.name);
 			return legsAss.instance.owner();
 		}).then(owner => {
 			assert.equal(owner, barrys.from)
-			done()
 			return Schedule.new(
+				studio.deployed.address,
 				legsAss.instance.address, //address _class,
 				legsAss12pm.instructor, //string _instructor
 				legsAss12pm.date.start, //uint _dateStart
@@ -135,18 +134,14 @@ contract("Schedule", (accounts) => {
 			)
 	    }).then(schedule => {
 			legsAss12pm.instance = schedule
-			return legsAss12pm.instance.spotTypeWithSender.call(jessprager.from)
-		}).then(type => {
-			assert.equal(type.valueOf(), 1)
-			return legsAss12pm.instance.spotTypeWithSender.call(classpass.from)
+			return legsAss12pm.instance.spotTypeWithSender(classpass.from)
 		}).then(type => {
 			assert.equal(type.valueOf(), 2)
+			return legsAss12pm.instance.spotTypeWithSender(jessprager.from)
+		}).then(type => {
+			assert.equal(type.valueOf(), 1)
 			done()
 	    })
-	})
-
-	it.only("foo", done => {
-		done()
 	})
 
 	it("should get the correct prices", done => {
@@ -191,7 +186,7 @@ contract("Schedule", (accounts) => {
 			done()
 		})
 	})
-	
+
 	it("should get correct individual price, buy a spot, request a refund", done => {
 		legsAss12pm.instance.getPrice.call(
 			{ from: jessprager.from }

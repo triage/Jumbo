@@ -29,7 +29,7 @@ contract("Studio", (accounts) => {
 	
 	it("should update studio details", done => {
 		studio.deployed.updateContactDetails(
-			barrys.contactDetails, {from: barrys.from}
+			barrys.contactDetails, { from: barrys.from }
 		).then(() => {
 			return studio.deployed.getContactDetails.call(barrys.from)
 		}).then(contactDetails => {
@@ -39,22 +39,19 @@ contract("Studio", (accounts) => {
 	})
 
 	it("should add, then remove a class", done => {
-		studio.deployed.classCreate("Class name", "Class description", { from: barrys.from }).then((classInstance) => {
-			barrysClass = classInstance
-			return studio.deployed.classAdded(barrysClass.address, { from: barrys.from })
-		}).then(() => {
+		studio.deployed.classCreate("Class name", "Class description", { from: barrys.from }).then(() => {
 			return studio.deployed.classesCount.call({ from: barrys.from })
 		}).then(count => {
 			assert.equal(count, 1, "class count should == 1")
 			return studio.deployed.classAtIndex.call(0, { from: barrys.from })
 		}).then(address => {
-			assert.equal(address, barrysClass.address, "classAtIndex[0] should == barrysClass.address")
+			assert.notEqual(address, 0x0, "classAtIndex[0] should not be 0x0")
 			done()
 		})
 	})
 	
 	it("should add, then remove a schedule", done => {
-		studio.deployed.scheduleAdded(schedule, {from: barrys.from}).then(() => {
+		studio.deployed.scheduleAdded(schedule, { from: barrys.from }).then(() => {
 			return studio.deployed.schedulesCount.call()
 		}).then(count => {
 			assert.equal(count, 1, "schedules count should == 1")
