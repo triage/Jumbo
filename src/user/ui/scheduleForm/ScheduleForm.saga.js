@@ -8,7 +8,6 @@ function* doScheduleSubmit(action) {
   const Schedule = eth.Schedule()
   const Studio = eth.Studio()
   const from = eth.from()
-  
 
   try {
     // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
