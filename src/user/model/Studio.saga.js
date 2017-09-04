@@ -18,15 +18,15 @@ function* studioInfoSaga(action) {
 
 function* studioLoadSaga(action) {
   try {
-    //first load studio info
+    // first load studio info
     yield put(studioInfoLoad())
     yield take(STUDIO_INFO_LOADED)
 
-    //then load all classes
+    // then load all classes
     yield put(classesLoad())
     yield take(CLASSES_LOADED)
 
-    //load all schedules
+    // load all schedules
     yield put(schedulesLoad())
     yield take(SCHEDULES_LOADED)
   } catch (error) {

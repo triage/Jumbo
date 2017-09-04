@@ -6,7 +6,7 @@ export function* doClassesLoad(action) {
   try {
     const studio = yield eth.Studio().deployed()
 
-    const classesCount = yield studio.classesCount.call(eth.from())
+    const classesCount = yield studio.classesCount(eth.from())
     let classes = []
     for(let classIndex = 0; classIndex < classesCount.toNumber(); classIndex++) {
       const address = yield studio.classAtIndex.call(classIndex, eth.from())
@@ -17,7 +17,6 @@ export function* doClassesLoad(action) {
         address,
         name,
         description,
-        instance
       }
       classes.push(classObject)
     }

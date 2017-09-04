@@ -4,7 +4,6 @@ import eth from 'src/util/eth'
 
 export function* doCreateClass(action) {
 
-  const Class = eth.Class()
   const Studio = eth.Studio()
 
   try {
