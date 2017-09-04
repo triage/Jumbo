@@ -14,13 +14,15 @@ export function* doUserSignup(action) {
     const deployed = yield entity.deployed()
     yield apply(deployed, deployed.signup, [data.name, eth.from()])
     const authentication = yield eth.Authentication().deployed()
-    const loggedIn = yield apply(authentication, authentication.login, [eth.defaultAccount, eth.from()])
+    const loggedIn = yield authentication.login.call(eth.from())
     if (loggedIn) {
       yield put(userLoggedIn({
         ...data,
         address: eth.defaultAccount,
       }))
       yield call(history.push, '/dashboard')
+    } else {
+      debugger
     }
   } catch (error) {
     console.log(error)

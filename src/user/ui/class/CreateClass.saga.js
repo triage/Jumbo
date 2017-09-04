@@ -9,16 +9,18 @@ export function* doCreateClass(action) {
   try {
     //create the class
     const studio = yield Studio.deployed()
-    const classInstance = yield apply(studio, studio.classCreate, [action.name, action.description, eth.from()])
+    yield apply(studio, studio.classCreate, [action.name, action.description, eth.from()])
+    const count = yield studio.classesCount.call(eth.from())
+    const address = yield studio.classAtIndex.call(count - 1)
     yield put(classCreated({
-      address: classInstance.address,
+      address,
       name: action.name,
       description: action.description
     }))
     yield call(
       action.history.push,
       '/schedule/new',
-      Object.assign({}, action.location.state, { class: classInstance.address })
+      Object.assign({}, action.location.state, { class: address })
     )
 
   } catch (error) {
