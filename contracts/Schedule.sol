@@ -46,8 +46,8 @@ contract Schedule is Killable {
 	event SpotPurchased(uint spotType, address attendee, address reseller, uint index);
 	event SpotCancelled(uint spotType, address attendee, address reseller);
 
-	function Schedule(address _studioContract, address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {		
-		studioContract = Studio(_studioContract);
+	function Schedule(address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {
+		studioContract = Studio(msg.sender);
 		dates = Dates(_dateStart, _dateEnd, _dateStart - 60 * 60 * 10, _dateStart - 60 * 60);
 		klass = _class;
 		owner = msg.sender;

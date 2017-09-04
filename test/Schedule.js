@@ -120,8 +120,7 @@ contract("Schedule", (accounts) => {
 			return legsAss.instance.owner();
 		}).then(owner => {
 			assert.equal(owner, barrys.from)
-			return Schedule.new(
-				studio.deployed.address,
+			return studio.deployed.scheduleCreate(
 				legsAss.instance.address, //address _class,
 				legsAss12pm.instructor, //string _instructor
 				legsAss12pm.date.start, //uint _dateStart
@@ -132,8 +131,10 @@ contract("Schedule", (accounts) => {
 				legsAss12pm.price.reseller, //uint priceReseller
 				{ from: barrys.from }
 			)
+		}).then(() => {
+			return studio.deployed.scheduleAtIndex(0, { from: barrys.from});
 	    }).then(schedule => {
-			legsAss12pm.instance = schedule
+			legsAss12pm.instance = Schedule.at(schedule)
 			return legsAss12pm.instance.spotTypeWithSender(classpass.from)
 		}).then(type => {
 			assert.equal(type.valueOf(), 2)

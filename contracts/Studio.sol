@@ -2,6 +2,7 @@ pragma solidity ^0.4.0;
 import "./zeppelin/lifecycle/Killable.sol";
 import { Authentication } from "./Authentication.sol";
 import { Class } from "./Class.sol";
+import { Schedule } from "./Schedule.sol";
 
 contract Studio is Killable {
 	
@@ -27,6 +28,20 @@ contract Studio is Killable {
 		class.transferOwnership(msg.sender);
 		assert(class.owner() == msg.sender);
 		classes[msg.sender].push(class);
+	}
+
+	function scheduleCreate(address class, string instructor, uint dateStart, uint dateEnd, uint nSpots, uint nSpotsReseller, uint priceIndividual, uint priceReseller) {
+		require(class != 0x0);
+		require(dateStart > 0);
+		require(dateEnd > 0);
+		require(nSpots > nSpotsReseller);
+		require(priceIndividual > 0);
+		require(priceReseller > 0);
+		
+		Schedule schedule = new Schedule(class, instructor, dateStart, dateEnd, nSpots, nSpotsReseller, priceIndividual, priceReseller);
+		schedule.transferOwnership(msg.sender);
+		assert(schedule.owner() == msg.sender);
+		schedules[msg.sender].push(schedule);
 	}
 
 	function signup(string _name) {

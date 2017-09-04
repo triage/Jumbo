@@ -8,7 +8,7 @@ let legsAss = { name: "Legs & Ass", description: "Squats, squats, squats and mor
 contract("Class", (accounts) => {
 	barrys.from = accounts[0]
 
-	it.only("should create class", done => {
+	it("should create class", done => {
 		Studio.deployed().then(instance => {
 			studio.instance = instance
 		}).then(() => {
