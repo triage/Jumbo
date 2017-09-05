@@ -6,94 +6,80 @@ const Reseller = artifacts.require("./Reseller.sol")
 const Studio = artifacts.require("./Studio.sol")
 const Class = artifacts.require("./Class.sol")
 const schedule = 0x123
+const studio = {}
+const reseller = {}
 
 contract("Studio", (accounts) => {
 	barrys.from = accounts[0]
 	classpass.from = accounts[1]
 
-	beforeEach(done => {
-		Studio.new("Barry's", { from: barrys.from}).then((instance) => {
-			barrys.instance = instance
-			return Reseller.new("Classpass", { from: classpass.from})
-		}).then((instance) => {
-			classpass.instance = instance
+	before(done => {
+		Studio.deployed().then(deployed => {
+			studio.deployed = deployed
+			return Reseller.deployed()
+		}).then(deployed => {
+			reseller.deployed = deployed
+			return studio.deployed.signup("Barry's", { from: barrys.from })
+		}).then(instance => {
+			return reseller.deployed.signup("Classpass", { from: classpass.from })
+		}).then(() => {
 			done()
 		})
 	})
 	
 	it("should update studio details", done => {
-		barrys.instance.updateContactDetails(
-			barrys.contactDetails, {from: barrys.from}
+		studio.deployed.updateContactDetails(
+			barrys.contactDetails, { from: barrys.from }
 		).then(() => {
-				return barrys.instance.contactDetails.call()
-		}).then((contactDetails) => {
-				assert.equal(contactDetails, barrys.contactDetails, `'${contactDetails}' not equal to '${barrys.contactDetails}'`)
-				done()
-		})
-	})
-
-	it("should add, then remove a class", done => {
-		Class.new(barrys.instance.address, "Class name", "Class description", { from: barrys.from }).then((classInstance) => {
-			barrysClass = classInstance
-			return barrys.instance.classAdded(barrysClass.address)
-		}).then(() => {
-			return barrys.instance.classesCount.call()
-		}).then((count) => {
-			assert.equal(count, 1, "class count should == 1")
-			return barrys.instance.classAtIndex.call(0)
-		}).then((address) => {
-			assert.equal(address, barrysClass.address, "classAtIndex[0] should == barrysClass.address")
+			return studio.deployed.getContactDetails.call(barrys.from)
+		}).then(contactDetails => {
+			assert.equal(contactDetails, barrys.contactDetails)
 			done()
 		})
 	})
 
+	it("should add, then remove a class", done => {
+		studio.deployed.classCreate("Class name", "Class description", { from: barrys.from }).then(() => {
+			return studio.deployed.classesCount.call({ from: barrys.from })
+		}).then(count => {
+			assert.equal(count, 1, "class count should == 1")
+			return studio.deployed.classAtIndex.call(0, { from: barrys.from })
+		}).then(address => {
+			assert.notEqual(address, 0x0, "classAtIndex[0] should not be 0x0")
+			done()
+		})
+	})
+	
 	it("should add, then remove a schedule", done => {
-		barrys.instance.scheduleAdded(schedule, {from: barrys.from}).then(() => {
-			return barrys.instance.schedulesCount.call()
-		}).then((count) => {
+		studio.deployed.scheduleAdded(schedule, { from: barrys.from }).then(() => {
+			return studio.deployed.schedulesCount.call()
+		}).then(count => {
 			assert.equal(count, 1, "schedules count should == 1")
-			return barrys.instance.scheduleRemoved(schedule)
+			return studio.deployed.scheduleRemoved(schedule, { from: barrys.from })
 		}).then(() => {
-			return barrys.instance.schedulesCount.call()
-		}).then((count) => {
-			console.log('omfg')
-			console.log(count)
+			return studio.deployed.schedulesCount.call({ from: barrys.from })
+		}).then(count => {
 			assert.equal(count, 0, "should have 0 classes after cancellation")
 			done()
 		})
 	})
 
 	it("should add, remove reseller", done => {
-		barrys.instance.addReseller(
-			classpass.instance.address, {from: barrys.from}
-		).then(
-			() => {
-				return barrys.instance.isAuthorizedReseller.call(classpass.instance.address)
-			}
-		).then(
-			(isAuthorizedReseller) => {
-				assert.equal(isAuthorizedReseller, true, `${classpass.instance.address} is not an authorized reseller (and should be)`)
-				return barrys.instance.isSenderAuthorizedReseller.call(classpass.from)
-			}
-		).then(
-			(isSenderAuthorizedReseller) => {
-				assert.equal(isSenderAuthorizedReseller, true, `${classpass.from} is not an authorized reseller (and should be)`)
-				return barrys.instance.removeReseller(classpass.instance.address, { from: barrys.from })
-			}
-		).then(
-			() => {
-				return barrys.instance.isAuthorizedReseller.call(classpass.instance.address)
-			}
-		).then(
-			(isAuthorizedReseller) => {
-				assert.equal(isAuthorizedReseller, false, `${classpass.instance.address} is an authorized reseller (and should not be)`)
-				return barrys.instance.isSenderAuthorizedReseller.call(classpass.from)
-			}
-		).then(
-			(isSenderAuthorizedReseller) => {
-				assert.equal(isSenderAuthorizedReseller, false, `${classpass.from} is an authorized reseller (and should not be)`)
-				done()
-			}
-		)
+		studio.deployed.addReseller(
+			classpass.from, {from: barrys.from}
+		).then(() => {
+			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
+		}).then(isAuthorizedReseller => {
+			assert.equal(isAuthorizedReseller, true, `${classpass.from} is not an authorized reseller (and should be)`)
+			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
+		}).then(isSenderAuthorizedReseller => {
+			assert.equal(isSenderAuthorizedReseller, true, `${classpass.from} is not an authorized reseller (and should be)`)
+			return studio.deployed.removeReseller(classpass.from, { from: barrys.from })
+		}).then(() => {
+			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
+		}).then(isAuthorizedReseller => {
+			assert.equal(isAuthorizedReseller, false, `${classpass.from} is an authorized reseller (and should not be)`)
+			done()
+		})
 	})
 })

@@ -4,56 +4,45 @@ import './zeppelin/lifecycle/Killable.sol';
 
 contract Authentication is Killable {
 
-  struct User {
-		address user;
-		string userType;
-	} 
-
-  mapping (address => User) private users;
-
-  uint private id; // Stores user id temporarily
-
-  function login() constant returns (address) {
-    // Check if user exists.
-    // If yes, return user.
-    // If no, throw.
-
-    if (users[msg.sender].user == 0x0)
-    {
-        throw;
+    struct User {
+        address user;
+        string userType;
     }
 
-    return users[msg.sender].user;
-  }
+    address private studio;
+    address private individual;
+    address private reseller;
 
-  function userType() constant returns (string) {
-    if (users[msg.sender].user == 0x0)
-    {
-        throw;
+    mapping (address => User) private users;
+
+    uint private id; // Stores user id temporarily
+    
+
+    modifier trusted() {if (msg.sender == studio || msg.sender == individual || msg.sender == reseller) _;}
+
+    function setStudio(address _studio) public onlyOwner {
+        studio = _studio;
     }
 
-    return users[msg.sender].userType;
-  }
-
-  function signup(address user, string userType) payable returns (bool) {
-    // Check if user exists.
-    // If yes, return user name.
-    // If no, check if name was sent.
-    // If yes, create and return user.
-    // If no, throw.
-
-    if (user == 0x0)
-    {
-        throw;
+    function setIndividual(address _individual) public onlyOwner {
+        individual = _individual;
     }
 
-    if (users[msg.sender].user == 0x0)
-    {
-        users[msg.sender] = User(user, userType);
-
-        return true;
+    function setReseller(address _reseller) public onlyOwner {
+        reseller = _reseller;
     }
 
-    return false;
-  }
+    function login() constant returns (bool) {
+        return users[msg.sender].user != 0x0;
+    }
+
+    function userType() constant returns (string) {
+        return users[msg.sender].userType;
+    }
+
+    function signup(address user, string userType) trusted external {
+        //called from Individual or Studio contract (trusted)
+        require(users[user].user == 0x0);
+        users[user] = User(user, userType);
+    }
 }

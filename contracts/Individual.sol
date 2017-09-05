@@ -1,42 +1,53 @@
 pragma solidity ^0.4.0;
 import "./zeppelin/lifecycle/Killable.sol";
+import { Schedule } from './Schedule.sol';
+import { Authentication } from './Authentication.sol';
 
 contract Individual is Killable {
-  string public name;
-  address[] public schedules;
+  	mapping(address => string) public name;
+  	mapping(address => address[]) public schedules;
+	address public authentication;
 
-	function Individual(string _name) {
-		name = _name;
-		owner = msg.sender;
+	function setAuthentication(address _authentication) onlyOwner {
+		authentication = _authentication;
 	}
 
-	function getName() public returns (string) {
-		return name;
+	modifier authenticated() {if (sha3(name[msg.sender]) != sha3("")) _;}
+
+	function signup(string _name) {
+		require(sha3(name[msg.sender]) == sha3(""));
+		name[msg.sender] = _name;
+		Authentication(authentication).signup(msg.sender, "INDIVIDUAL");
 	}
 
-	function scheduleAdded() {
-		//called only from the Schedule
-		//todo: refactor ... should call spotPurchase from Individual, which should be an onlyOwner
-		schedules.push(msg.sender);
+	function getName(address individual) public constant returns (string) {
+		return name[individual];
 	}
 
-	function getSchedulesCount() returns (uint) {
-		return schedules.length;
+	function getSchedulesCount() constant returns (uint) {
+		return schedules[msg.sender].length;
 	}
 
-	function getSchedule(uint index) returns (address) {
-		return schedules[index];
+	function getSchedule(uint index) constant returns (address) {
+		return schedules[msg.sender][index];
 	}
 
-	function scheduleRemoved() onlyOwner {
-		//called only from the Schedule. Refactor.
-		for(uint i = 0; i < schedules.length; i++) {
-			if(schedules[i] == msg.sender) {
-				if(i < schedules.length - 1) {
-					schedules[i] = schedules[i+1];
+	function spotPurchase(address schedule) authenticated payable {
+		Schedule(schedule).spotPurchase.value(msg.value)(msg.sender, 0x0);
+		schedules[msg.sender].push(schedule);
+	}
+
+	function spotCancel(address schedule) authenticated {
+		Schedule(schedule).spotCancel(msg.sender, 0x0);
+
+		//called only from the Schedule contract when the studio cancels the class
+		for (uint i = 0; i < schedules[msg.sender].length; i++) {
+			if (schedules[msg.sender][i] == schedule) {
+				if (i < schedules[msg.sender].length - 1) {
+					schedules[msg.sender][i] = schedules[msg.sender][i+1];
 				}
-				delete schedules[schedules.length - 1];
-				schedules.length--;
+				delete schedules[msg.sender][schedules[msg.sender].length - 1];
+				schedules[msg.sender].length--;
 				break;
 			}
 		}

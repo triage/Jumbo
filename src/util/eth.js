@@ -101,32 +101,30 @@ export const start = callback => {
         return
       }
       
-      let userAddress
       let authentication
+      const account = {}
 
-      eth.getDefaultAccount().then(account => {
+      eth.getDefaultAccount().then(defaultAccount => {
+        account.address = defaultAccount
         return eth.Authentication().deployed()
       }).then(instance => {
         authentication = instance
         return authentication.login()
-      }).then(address => {
-        if (parseInt(address, 16) === 0) {
+      }).then(loggedIn => {
+        if (!loggedIn) {
           reject(SigninError.unauthorized)
           return
         }
-        userAddress = address
         return authentication.userType()
       }).then(type => {
-        console.log(`type for ${userAddress}: ${type}`)
-        const entity = (type === UserType.studio) ? eth.Studio() : eth.Individual()
-        const user = entity.at(userAddress)
-        user.name.call().then(name => {
-          fulfill({
-            name,
-            type: type,
-            address: userAddress
-          })
-        })
+        account.type = type
+        console.log(`type for ${account.address}: ${type}`)
+        return (type === UserType.studio) ? eth.Studio().deployed() : eth.Individual().deployed()
+      }).then(deployed => {
+        return deployed.name.call(account.address)
+      }).then(name => {
+        account.name = name
+        fulfill(account)
       }).catch(error => {
         reject(SigninError.unauthorized)
       })

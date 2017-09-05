@@ -1,114 +1,127 @@
 pragma solidity ^0.4.0;
 import "./zeppelin/lifecycle/Killable.sol";
+import { Authentication } from "./Authentication.sol";
+import { Class } from "./Class.sol";
+import { Schedule } from "./Schedule.sol";
 
 contract Studio is Killable {
-	string public name;
-	string public contactDetails;
-	address[] public resellers;
-	address[] public schedules;
-	address[] public classes;
+	
+	mapping(address => string) public name;
+	mapping(address => string) public contactDetails;
+	mapping(address => address[]) public resellers;
+	mapping(address => address[]) public schedules;
+	mapping(address => address[]) public classes;
 
 	event ScheduleAdded(address indexed schedule);
 	event ScheduleRemoved(address indexed schedule);
-	event ClassAdded(address indexed class);
-	event ContactDetailsUpdated(string contactDetails);
+	event ClassAdded(address indexed klass);
+	event ContactDetailsUpdated(address indexed studio, string contactDetails);
+	modifier authenticated() {if (bytes(name[msg.sender]).length > 0) _;}
 
-	function Studio(string _name) {
-		name = _name;
-		owner = msg.sender;
+	address public authentication;
+	function setAuthentication(address _authentication) onlyOwner {
+		authentication = _authentication;
 	}
 
-	function updateContactDetails(string _contactDetails) public onlyOwner {
-		contactDetails = _contactDetails;
-		ContactDetailsUpdated(contactDetails);
+	function classCreate(string name, string description) {
+		Class class = new Class(name, description);
+		class.transferOwnership(msg.sender);
+		assert(class.owner() == msg.sender);
+		classes[msg.sender].push(class);
 	}
 
-	function classesCount() returns (uint) {
-		return classes.length;
+	function scheduleCreate(address class, string instructor, uint dateStart, uint dateEnd, uint nSpots, uint nSpotsReseller, uint priceIndividual, uint priceReseller) {
+		require(class != 0x0);
+		require(dateStart > 0);
+		require(dateEnd > 0);
+		require(nSpots > nSpotsReseller);
+		require(priceIndividual > 0);
+		require(priceReseller > 0);
+		
+		Schedule schedule = new Schedule(class, instructor, dateStart, dateEnd, nSpots, nSpotsReseller, priceIndividual, priceReseller);
+		schedule.transferOwnership(msg.sender);
+		assert(schedule.owner() == msg.sender);
+		schedules[msg.sender].push(schedule);
 	}
 
-	function classAtIndex(uint index) returns (address) {
-		return classes[index];
+	function signup(string _name) {
+		require(sha3(name[msg.sender]) == sha3(""));
+		name[msg.sender] = _name;
+		Authentication(authentication).signup(msg.sender, "STUDIO");
 	}
 
-	function classAdded(address class) onlyOwner {
-		classes.push(class);
-		ClassAdded(class);
+	function userExists(address user) public constant returns (bool) {
+		return bytes(name[user]).length > 0;
 	}
 
-	function schedulesCount() returns (uint) {
-		return schedules.length;
+	function getName(address studio) public constant returns (string) {
+		return name[studio];
 	}
 
-	function scheduleAtIndex(uint index) returns (address) {
-		return schedules[index];
+	function getContactDetails(address studio) public constant returns (string) {
+		return contactDetails[studio];
 	}
 
-	function scheduleAdded(address schedule) onlyOwner {
-		schedules.push(schedule);
+	function updateContactDetails(string _contactDetails) authenticated public {
+		contactDetails[msg.sender] = _contactDetails;
+		ContactDetailsUpdated(msg.sender, contactDetails[msg.sender]);
+	}
+
+	function classesCount() constant returns (uint) {
+		return classes[msg.sender].length;
+	}
+
+	function classAtIndex(uint index) constant returns (address) {
+		return classes[msg.sender][index];
+	}
+
+	function schedulesCount() constant returns (uint) {
+		return schedules[msg.sender].length;
+	}
+
+	function scheduleAtIndex(uint index) constant returns (address) {
+		return schedules[msg.sender][index];
+	}
+
+	function scheduleAdded(address schedule) {
+		schedules[msg.sender].push(schedule);
 		ScheduleAdded(schedule);
 	}
 
-	function scheduleRemoved(address schedule) onlyOwner {
-		for(uint i = 0; i < schedules.length; i++) {
-			if(schedules[i] == schedule) {
-				if(i < schedules.length - 1) {
-					schedules[i] = schedules[i+1];
+	function scheduleRemoved(address schedule) authenticated {
+		for (uint i = 0; i < schedules[msg.sender].length; i++) {
+			if (schedules[msg.sender][i] == schedule) {
+				if (i < schedules[msg.sender].length - 1) {
+					schedules[msg.sender][i] = schedules[msg.sender][i+1];
 				}
-				delete schedules[schedules.length - 1];
-				schedules.length--;
+				delete schedules[msg.sender][schedules[msg.sender].length - 1];
+				schedules[msg.sender].length--;
 				ScheduleRemoved(schedule);
 				break;
 			}
 		}
 	}
 
-	function addReseller(address reseller) public onlyOwner {
-		if(isAuthorizedReseller(reseller)) {
-			throw;
-		}
-		resellers.push(reseller);
+	function addReseller(address reseller) public authenticated {
+		require(isAuthorizedReseller(msg.sender, reseller) == false);
+		resellers[msg.sender].push(reseller);
 	}
 
-	function removeReseller(address reseller) onlyOwner returns (bool) {
-		if(!isAuthorizedReseller(reseller)) {
-			throw;
-		}
-		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(resellers[resellerIndex] == reseller) {
-				delete(resellers[resellerIndex]);
+	function removeReseller(address reseller) authenticated returns (bool) {
+		assert(isAuthorizedReseller(msg.sender, reseller));
+		for (uint resellerIndex = 0; resellerIndex < resellers[msg.sender].length; resellerIndex++) {
+			if (resellers[msg.sender][resellerIndex] == reseller) {
+				delete(resellers[msg.sender][resellerIndex]);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	function isAuthorizedReseller(address reseller) returns (bool) {
+	function isAuthorizedReseller(address studio, address reseller) public constant returns (bool) {
 		bool isReseller = false;
-		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(resellers[resellerIndex] == reseller) {
-				isReseller = true;
-				break;
-			}
-		}
-		return isReseller;
-	}
-
-	function resellerWithSender(address sender) returns (address) {
-		address reseller = 0x0;
-		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(Ownable(resellers[resellerIndex]).owner() == sender) {
-				reseller = address(resellers[resellerIndex]);
-				break;
-			}
-		}
-		return reseller;
-	}
-
-	function isSenderAuthorizedReseller(address sender) returns (bool) {
-		bool isReseller = false;
-		for(uint resellerIndex = 0; resellerIndex < resellers.length; resellerIndex++) {
-			if(Ownable(resellers[resellerIndex]).owner() == sender) {
+		for (uint resellerIndex = 0; resellerIndex < resellers[studio].length; resellerIndex++) {
+			if (resellers[studio][resellerIndex] == reseller) {
 				isReseller = true;
 				break;
 			}

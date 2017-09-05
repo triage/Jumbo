@@ -10,18 +10,20 @@ export function* doUserSignup(action) {
   } = action
 
   const entity = data.type === UserType.studio ? eth.Studio() : eth.Individual()
-
   try {
-    const user = yield apply(entity, entity.new, [data.name, eth.from()])
-    const authentication = yield call(eth.Authentication().deployed)
-    yield apply(authentication, authentication.signup, [user.address, data.type, eth.from()])
-    yield apply(authentication, authentication.login, [eth.defaultAccount, eth.from()])
-    yield put(userLoggedIn(
-      Object.assign({}, data, {
-        address: user.address
-      })
-    ))
-    yield call(history.push, '/dashboard')
+    const deployed = yield entity.deployed()
+    yield apply(deployed, deployed.signup, [data.name, eth.from()])
+    const authentication = yield eth.Authentication().deployed()
+    const loggedIn = yield authentication.login.call(eth.from())
+    if (loggedIn) {
+      yield put(userLoggedIn({
+        ...data,
+        address: eth.defaultAccount,
+      }))
+      yield call(history.push, '/dashboard')
+    } else {
+      debugger
+    }
   } catch (error) {
     console.log(error)
     debugger

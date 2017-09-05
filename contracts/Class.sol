@@ -4,12 +4,8 @@ import "./zeppelin/lifecycle/Killable.sol";
 contract Class is Killable {
 	string public name;
 	string public description;
-	address public studio;
-	address public owner;
 
-	function Class(address _studio, string _name, string _description) {
-		owner = msg.sender;
-		studio = _studio;
+	function Class(string _name, string _description) {
 		name = _name;
 		description = _description;
 	}

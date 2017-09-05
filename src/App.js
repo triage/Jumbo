@@ -1,12 +1,10 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers.js'
-import { userLoggedIn } from './user/ui/signupform/SignUpFormActions.js'
 import { Link, withRouter } from 'react-router-dom'
 import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
 
 // Layouts
-import Home from './layouts/home/Home'
 import Dashboard from './layouts/dashboard/Dashboard'
 import SignUp from './user/layouts/signup/SignUp'
 import Profile from './user/layouts/profile/Profile'

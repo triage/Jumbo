@@ -1,4 +1,4 @@
-import { put, call, takeEvery, take } from 'redux-saga/effects'
+import { put, takeEvery, take } from 'redux-saga/effects'
 import { STUDIO_INFO_LOAD, STUDIO_INFO_LOADED, STUDIO_LOAD, studioInfoLoad, studioInfoError, studioInfoLoaded } from './StudioActions'
 import { classesLoad, CLASSES_LOADED } from './ClassesActions'
 import { schedulesLoad, SCHEDULES_LOADED } from './ScheduleActions'
@@ -6,8 +6,8 @@ import eth from 'src/util/eth'
 
 function* studioInfoSaga(action) {
   try {
-    const studio = eth.Studio().at(action.studio)
-    const name = yield call(studio.name.call)
+    const studio = yield eth.Studio().deployed()
+    const name = yield studio.name.call(eth.defaultAccount)
     // const contactDetails = yield call(studio.contactDetails.call)
     yield put(studioInfoLoaded(name, null))
   } catch (error) {
@@ -18,16 +18,16 @@ function* studioInfoSaga(action) {
 
 function* studioLoadSaga(action) {
   try {
-    //first load studio info
-    yield put(studioInfoLoad(action.studio))
+    // first load studio info
+    yield put(studioInfoLoad())
     yield take(STUDIO_INFO_LOADED)
 
-    //then load all classes
-    yield put(classesLoad(action.studio))
+    // then load all classes
+    yield put(classesLoad())
     yield take(CLASSES_LOADED)
 
-    //load all schedules
-    yield put(schedulesLoad(action.studio))
+    // load all schedules
+    yield put(schedulesLoad())
     yield take(SCHEDULES_LOADED)
   } catch (error) {
     console.log(`error:${error}`)

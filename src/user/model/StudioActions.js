@@ -4,14 +4,12 @@ export const STUDIO_INFO_ERROR = 'STUDIO_INFO_ERROR'
 export const STUDIO_LOADED = 'STUDIO_LOADED'
 export const STUDIO_LOAD = 'STUDIO_LOAD'
 
-export const studioInfoLoad = studio => ({
-  type: STUDIO_INFO_LOAD,
-  studio
+export const studioInfoLoad = () => ({
+  type: STUDIO_INFO_LOAD
 })
 
-export const studioLoad = studio => ({
-  type: STUDIO_LOAD,
-  studio
+export const studioLoad = () => ({
+  type: STUDIO_LOAD
 })
 
 export const studioInfoLoaded = (name, contactDetails) => ({

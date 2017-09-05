@@ -14,6 +14,7 @@ const mapStateToProps = (state, ownProps) => ({
       end: new Date(schedule.dates.end),
       name: schedule.class ? schedule.class.name : 'n/a',
       instructor: schedule.instructor,
+      reserved: schedule.reserved,
       studio: schedule.class.studio || state.studio,
     }
     return obj

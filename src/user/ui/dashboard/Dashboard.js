@@ -16,17 +16,35 @@ const Event = ({ event }) => (
 
 const EventAgenda = ({event}) => (
   <div>
-    <strong>{event.name}</strong><br />
-    {event.instructor}
+    <a href={event.url}>
+      <strong>{event.name}</strong><br />
+      {event.instructor}
+    </a>
   </div>
 )
 
 const Dashboard = props => {
   const {
     user,
-    events,
     history,
   } = props;
+
+  let {
+    events
+  } = props;
+
+  events = events.map(event => {
+    return Object.assign({}, event, {
+      url: `schedule/${event.address}`
+    })
+  })
+
+  if (user.data.type == UserType.individual) {
+    events = events.filter(event => {
+      return event.reserved
+    })
+    console.log(events)
+  }
 
   document.title = `JUMBO - ${user.data.name}`
 
@@ -52,7 +70,6 @@ const Dashboard = props => {
           })
         }}
         onSelectEvent={event => {
-          debugger
           history.push(`schedule/${event.address}`)
         }}
         components={{

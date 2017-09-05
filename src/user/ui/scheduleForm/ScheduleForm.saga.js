@@ -12,14 +12,15 @@ function* doScheduleSubmit(action) {
   try {
     // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
     const values = action.values;
+    const studio = yield Studio.deployed()
     const schedule = yield apply(
-      Schedule,
-      Schedule.new,
+      studio,
+      studio.scheduleCreate,
       [
         values.class.address,
         values.instructor,
-        new Date(values.date.start).valueOf(),
-        new Date(values.date.end).valueOf(),
+        new Date(values.date.start).valueOf(10),
+        new Date(values.date.end).valueOf(10),
         values.spots.total,
         values.spots.reseller,
         eth.web3().toWei(values.price.individual),
@@ -28,10 +29,7 @@ function* doScheduleSubmit(action) {
       ]
     )
     const user = yield select(state => state.user.data)
-    const studio = Studio.at(user.address)
-    
     // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
-    yield apply(studio, studio.scheduleAdded, [schedule.address, from])
     yield put(schedulesLoad(user.address))
     yield call(action.history.push, '/dashboard')
   } catch (error) {
