@@ -40,6 +40,7 @@ function* doIndividualLoad(action) {
           address: classAddress,
           name
         },
+        reserved: true,
         studio: {
           name: studioName,
           contactDetails: studioContactDetails

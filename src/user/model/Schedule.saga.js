@@ -44,7 +44,6 @@ function* doSchedulesLoad(action) {
     }
     yield put(schedulesLoaded(schedules))
   } catch (error) {
-    debugger
     console.log(`error:${error}`)
   }
 }

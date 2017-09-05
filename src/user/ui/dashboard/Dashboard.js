@@ -26,9 +26,25 @@ const EventAgenda = ({event}) => (
 const Dashboard = props => {
   const {
     user,
-    events,
     history,
   } = props;
+
+  let {
+    events
+  } = props;
+
+  events = events.map(event => {
+    return Object.assign({}, event, {
+      url: `schedule/${event.address}`
+    })
+  })
+
+  if (user.data.type == UserType.individual) {
+    events = events.filter(event => {
+      return event.reserved
+    })
+    console.log(events)
+  }
 
   document.title = `JUMBO - ${user.data.name}`
 
@@ -40,11 +56,7 @@ const Dashboard = props => {
   return(
     <div>
       <BigCalendar
-        events={events.map(event => {
-          return Object.assign({}, event, {
-            url: `schedule/${event.address}`
-          })
-        })}
+        events={events}
         step={15}
         selectable
         onSelectSlot={({start, end}) => {
