@@ -16,8 +16,10 @@ const Event = ({ event }) => (
 
 const EventAgenda = ({event}) => (
   <div>
-    <strong>{event.name}</strong><br />
-    {event.instructor}
+    <a href={event.url}>
+      <strong>{event.name}</strong><br />
+      {event.instructor}
+    </a>
   </div>
 )
 
@@ -38,7 +40,11 @@ const Dashboard = props => {
   return(
     <div>
       <BigCalendar
-        events={events}
+        events={events.map(event => {
+          return Object.assign({}, event, {
+            url: `schedule/${event.address}`
+          })
+        })}
         step={15}
         selectable
         onSelectSlot={({start, end}) => {
