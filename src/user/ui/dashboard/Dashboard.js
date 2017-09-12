@@ -39,11 +39,10 @@ const Dashboard = props => {
     })
   })
 
-  if (user.data.type == UserType.individual) {
+  if (user.data.type === UserType.individual) {
     events = events.filter(event => {
       return event.reserved
     })
-    console.log(events)
   }
 
   document.title = `JUMBO - ${user.data.name}`

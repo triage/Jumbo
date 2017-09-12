@@ -9,7 +9,19 @@ export function* doUserSignup(action) {
     history
   } = action
 
-  const entity = data.type === UserType.studio ? eth.Studio() : eth.Individual()
+  let entity
+  switch(data.type) {
+    case UserType.studio:
+      entity = eth.Studio()
+      break
+    case UserType.individual:
+      entity = eth.Individual()
+      break
+    case UserType.reseller:
+      entity = eth.Reseller()
+      break
+  }
+
   try {
     const deployed = yield entity.deployed()
     yield apply(deployed, deployed.signup, [data.name, eth.from()])

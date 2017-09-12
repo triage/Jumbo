@@ -34,6 +34,8 @@ const SignUpForm = props => {
         <Field name="type" component="input" type="radio" value={UserType.studio} selected />
         Individual
         <Field name="type" component="input" type="radio" value={UserType.individual} />
+        Reseller
+        <Field name="type" component="input" type="radio" value={UserType.reseller} />
         </div>
         <button
           disabled={pristine || submitting}

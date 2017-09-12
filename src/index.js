@@ -15,10 +15,6 @@ import UserType from './user/model/UserType'
 let isAnonymous = false
 let isLoggedIn = false
 
-// function HomeWrapper() {
-//   return <Home isAuthenticated={!isAnonymous} hasAccount={hasAccount} />
-// }
-
 function render() {
   ReactDOM.render((
     <Provider store={store}>
@@ -37,8 +33,10 @@ start().then(user => {
   store.dispatch(userLoggedIn(user))
   if (user.type === UserType.studio) {
     store.dispatch(studioLoad(user.address))
-  } else {
+  } else if (user.type === UserType.individual) {
     store.dispatch(individualLoad(user.address))
+  } else if (user.type === UserType.reseller) {
+    debugger
   }
   render()
 }).catch(error => {

@@ -3,6 +3,7 @@ import ClassContract from 'contracts/Class.json'
 import StudioContract from 'contracts/Studio.json'
 import ScheduleContract from 'contracts/Schedule.json'
 import AuthenticationContract from 'contracts/Authentication.json'
+import ResellerContract from 'contracts/Reseller.json'
 import IndividualContract from 'contracts/Individual.json'
 import contract from 'truffle-contract'
 import UserType from 'src/user/model/UserType'
@@ -81,6 +82,12 @@ const eth = {
     return Individual
   },
 
+  Reseller: () => {
+    const Reseller = contract(ResellerContract)
+    Reseller.setProvider(eth.provider())
+    return Reseller
+  },
+
   Schedule: () => {
     const Schedule = contract(ScheduleContract)
     Schedule.setProvider(eth.provider())
@@ -112,6 +119,7 @@ export const start = callback => {
         return authentication.login()
       }).then(loggedIn => {
         if (!loggedIn) {
+          debugger
           reject(SigninError.unauthorized)
           return
         }
@@ -119,7 +127,18 @@ export const start = callback => {
       }).then(type => {
         account.type = type
         console.log(`type for ${account.address}: ${type}`)
-        return (type === UserType.studio) ? eth.Studio().deployed() : eth.Individual().deployed()
+        let instance
+        switch (type) {
+          case UserType.studio:
+            return eth.Studio().deployed()
+            break
+          case UserType.individual:
+            return eth.Individual().deployed()
+            break
+          case UserType.reseller:
+            return eth.Reseller().deployed()
+            break
+        }
       }).then(deployed => {
         return deployed.name.call(account.address)
       }).then(name => {
