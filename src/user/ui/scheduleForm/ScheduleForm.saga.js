@@ -5,7 +5,6 @@ import eth from 'src/util/eth'
 
 function* doScheduleSubmit(action) {
 
-  const Schedule = eth.Schedule()
   const Studio = eth.Studio()
   const from = eth.from()
 
@@ -13,7 +12,7 @@ function* doScheduleSubmit(action) {
     // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
     const values = action.values;
     const studio = yield Studio.deployed()
-    const schedule = yield apply(
+    yield apply(
       studio,
       studio.scheduleCreate,
       [

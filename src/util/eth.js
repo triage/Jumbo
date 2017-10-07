@@ -119,7 +119,6 @@ export const start = callback => {
         return authentication.login()
       }).then(loggedIn => {
         if (!loggedIn) {
-          debugger
           reject(SigninError.unauthorized)
           return
         }

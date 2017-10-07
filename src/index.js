@@ -36,7 +36,7 @@ start().then(user => {
   } else if (user.type === UserType.individual) {
     store.dispatch(individualLoad(user.address))
   } else if (user.type === UserType.reseller) {
-    debugger
+    //todo
   }
   render()
 }).catch(error => {

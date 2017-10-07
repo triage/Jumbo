@@ -22,5 +22,9 @@ export default routes = [
   {
     pattern: '/profile',
     component: UserIsAuthenticated(Profile),
+  },
+  {
+    pattern: '/profile/resellers',
+    component: UserIsAuthenticated(Resellers),
   }
 ];
