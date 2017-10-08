@@ -102,7 +102,6 @@ function* doScheduleLoad(action) {
       },
       class: classObject
     }
-    debugger
     yield put(scheduleLoaded(scheduleObj))
   } catch (error) {
     console.log(`error:${error}`)

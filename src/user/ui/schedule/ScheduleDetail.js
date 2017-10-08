@@ -68,7 +68,8 @@ const UserActions = props => {
         }}>Complete class and withdraw ${balance}</button>
       )
     }
-  } else if (user.type === UserType.individual) {
+  } else if (user.type === UserType.individual || user.type == UserType.reseller) {
+    const price = user.type === UserType.individual ? schedule.price.individual : schedule.price.reseller
     if (schedule.reserved) {
       if (new Date().valueOf() < new Date(schedule.dates.cancellation).valueOf()) {
         return (
@@ -87,7 +88,7 @@ const UserActions = props => {
           <button type="button" onClick={event => {
             spotPurchase(schedule, user.address, history, location)
             }}>
-            {`Buy class for ${eth.web3().fromWei(schedule.price.individual)}`}
+            {`Buy class for ${eth.web3().fromWei(price)}`}
           </button>
         )
       } else {
