@@ -20,11 +20,11 @@ export default routes = [
     component: UserIsNotAuthenticated(SignUp),
   },
   {
+    pattern: '/profile/resellers',
+    component: UserIsAuthenticated(Resellers),
+  },
+  {
     pattern: '/profile',
     component: UserIsAuthenticated(Profile),
   },
-  {
-    pattern: '/profile/resellers',
-    component: UserIsAuthenticated(Resellers),
-  }
 ];

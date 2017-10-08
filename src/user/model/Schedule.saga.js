@@ -10,7 +10,7 @@ function* doSchedulesLoad(action) {
     const schedulesCount = yield studio.schedulesCount.call(eth.from())
     const classes = yield select(state => state.studio.classes);
     let schedules = []
-
+    
     // todo: don't totally wipe out the schedules here ... only replace if necessary so as to prevent a refresh
     for (let i = 0; i < parseInt(schedulesCount.valueOf(10)); i++) {
       const address = yield studio.scheduleAtIndex.call(i, eth.from())
@@ -102,6 +102,7 @@ function* doScheduleLoad(action) {
       },
       class: classObject
     }
+    debugger
     yield put(scheduleLoaded(scheduleObj))
   } catch (error) {
     console.log(`error:${error}`)

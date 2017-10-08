@@ -6,11 +6,11 @@ const styles = {
     float: 'left',
     width: 200,
     marginRight: 20
-  }
+  },
 }
 
 const studioOnly = (userType, component) => {
-  if (userType == UserType.studio) {
+  if (userType === UserType.studio) {
     return component
   }
   return null
@@ -19,15 +19,18 @@ const studioOnly = (userType, component) => {
 const SideNavigation = props => {
 
     const {
-        user,
-        router
+      user,
     } = props
 
+    if (!user || user.type !== UserType.studio) {
+      return null
+    }
+
     return (
-        <div class="" style={styles.container}>
+        <div style={styles.container}>
             <ul>
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Resellers</a></li>
+                {studioOnly(UserType.studio, <li><a href="/profile">Profile</a></li>)}
+                {studioOnly(UserType.studio, <li><a href="/profile/resellers">Resellers</a></li>)}
             </ul>
         </div>
     )

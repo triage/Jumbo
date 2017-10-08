@@ -6,6 +6,7 @@ import { watchScheduleSubmit } from './user/ui/scheduleForm/ScheduleForm.saga'
 import { watchScheduleCancel } from './user/ui/schedule/ScheduleDetail.saga'
 import { watchUserSignup } from './user/ui/signupform/SignUpForm.saga'
 import { watchIndividualLoad } from './user/model/Individual.saga'
+import { watchResellers } from './user/ui/profile/Resellers.saga'
 
 export function* rootSaga() {
   yield [
@@ -16,6 +17,7 @@ export function* rootSaga() {
     watchSchedulesLoad(),
     watchScheduleCancel(),
     watchUserSignup(),
-    watchIndividualLoad()
+    watchIndividualLoad(),
+    watchResellers()
   ]
 }

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
-class ProfileForm extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      name: this.props.name
+      name: this.props.user.name
     }
   }
 
@@ -41,4 +41,4 @@ class ProfileForm extends Component {
   }
 }
 
-export default ProfileForm
+export default Profile

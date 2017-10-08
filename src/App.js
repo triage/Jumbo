@@ -8,6 +8,7 @@ import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
 import Dashboard from './layouts/dashboard/Dashboard'
 import SignUp from './user/layouts/signup/SignUp'
 import Profile from './user/layouts/profile/Profile'
+import Resellers from './user/layouts/profile/Resellers'
 import ScheduleForm from './layouts/schedule/ScheduleForm'
 import ScheduleDetail from './layouts/schedule/ScheduleDetail'
 import CreateClass from './layouts/class/CreateClass'
@@ -52,6 +53,7 @@ const App = () => {
         <Route path="/schedule/:address" component={ScheduleDetail} />
         <Route path="/class/new" component={UserIsAuthenticated(CreateClass)} />
         <Route path="/signup" component={UserIsNotAuthenticated(SignUp)} />
+        <Route path="/profile/resellers" component={UserIsAuthenticated(Resellers)} />
         <Route path="/profile" component={UserIsAuthenticated(Profile)} />
         <Route path="/" component={UserIsAuthenticated(Dashboard)} />
       </Switch>

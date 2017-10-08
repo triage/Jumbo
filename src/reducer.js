@@ -1,16 +1,18 @@
 import { combineReducers } from 'redux'
-import { routerReducer } from 'react-router-redux'
-import { reducer as formReducer } from 'redux-form'
-import userReducer from './user/userReducer'
-import studioReducer from './user/model/StudioReducer'
-import scheduleReducer from './user/model/SchedulesReducer'
+import { routerReducer as routing } from 'react-router-redux'
+import { reducer as form } from 'redux-form'
+import user from './user/userReducer'
+import studio from './user/model/StudioReducer'
+import schedules from './user/model/SchedulesReducer'
+import resellers from './user/model/ResellersReducer'
 
 const reducer = combineReducers({
-  routing: routerReducer,
-  user: userReducer,
-  studio: studioReducer,
-  form: formReducer,
-  schedules: scheduleReducer
+  routing,
+  user,
+  studio,
+  form,
+  resellers,
+  schedules
 })
 
 export default reducer

@@ -8,6 +8,10 @@ import IndividualContract from 'contracts/Individual.json'
 import contract from 'truffle-contract'
 import UserType from 'src/user/model/UserType'
 
+export const addresses = {
+  blank: '0x0000000000000000000000000000000000000000'
+}
+
 export const SigninError = {
   unsupported: 'BROWSER UNSUPPORTED',
   anonymous: 'ANONYMOUS',

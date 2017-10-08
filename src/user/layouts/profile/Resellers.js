@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import ProfileContainer from '../../ui/profile/ProfileContainer'
+import ResellersContainer from '../../ui/profile/ResellersContainer'
 import SideNavigationContainer from '../../ui/profile/SideNavigationContainer'
 
-class Profile extends Component {
+class Resellers extends Component {
   render() {
     return(
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
-            <h1>Profile</h1>
+            <h1>Resellers</h1>
             <SideNavigationContainer />
-            <ProfileContainer />
+            <ResellersContainer />
           </div>
         </div>
       </main>
@@ -18,4 +18,4 @@ class Profile extends Component {
   }
 }
 
-export default Profile
+export default Resellers

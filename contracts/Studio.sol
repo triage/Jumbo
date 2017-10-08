@@ -102,6 +102,14 @@ contract Studio is Killable {
 		}
 	}
 
+	function resellersCount() authenticated returns (uint) {
+		return resellers[msg.sender].length;
+	}
+
+	function resellerAtIndex(uint index) authenticated returns (address) {
+		return resellers[msg.sender][index];
+	}
+
 	function addReseller(address reseller) public authenticated {
 		require(isAuthorizedReseller(msg.sender, reseller) == false);
 		resellers[msg.sender].push(reseller);

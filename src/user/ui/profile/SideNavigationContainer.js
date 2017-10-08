@@ -6,7 +6,7 @@ const mapStateToProps = (state, ownProps) => ({
   user: state.user.data
 })
 
-const mapDispatchToProps = (dispatch) => {}
+const mapDispatchToProps = {}
 
 const SideNavigationContainer = connect(
   mapStateToProps,
