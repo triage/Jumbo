@@ -111,5 +111,3 @@ export default reduxForm({
   // a unique name for the form
   form: 'userActions'
 })(UserActions)
-
-//<Field style={{ float: 'left' }} name="address" component="input" type="text" placeholder="User Address" onChange={event => this.onAddressChanged(event)} />
