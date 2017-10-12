@@ -40,11 +40,16 @@ function* studioLoadSaga(action) {
 function* doResellersLoad(action) {
   try {
     const studio = yield eth.Studio().deployed()
+    const reseller = yield eth.Reseller().deployed()
     const count = yield studio.resellersCount.call()
     const resellers = []
     for (let index = 0; index < count; index++) {
       const address = yield studio.resellerAtIndex.call(index);
-      resellers.push(address);
+      const name = yield reseller.getName.call(address)
+      resellers.push({
+        address,
+        name
+      });
     }
     yield put(resellersLoaded(resellers))
   } catch (error) {

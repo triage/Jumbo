@@ -1,13 +1,15 @@
 export const RESELLER_ADD = 'RESELLER_ADD'
-export const resellerAdd = address => ({
+export const resellerAdd = (address, name) => ({
   type: RESELLER_ADD,
-  address
+  address,
+  name
 })
 
 export const RESELLER_ADDED = 'RESELLER_ADDED'
-export const resellerAdded = address => ({
+export const resellerAdded = (address, name) => ({
   type: RESELLER_ADDED,
-  address
+  address,
+  name
 })
 
 export const RESELLER_REMOVE = 'RESELLER_REMOVE'

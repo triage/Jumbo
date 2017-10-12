@@ -1,16 +1,19 @@
 import { put, apply, takeEvery } from 'redux-saga/effects'
 import { RESELLER_ADD, resellerAdded, RESELLER_REMOVE, resellerRemoved } from './ResellerActions'
 import eth from 'src/util/eth'
+import { reset } from 'redux-form'
+import { formName } from './Resellers'
 
 function* doResellerAdd(action) {
 
   const Studio = eth.Studio()
-  const { address } = action;
+  const { address, name } = action;
 
   try {
     const studio = yield Studio.deployed()
     yield apply(studio, studio.addReseller.sendTransaction, [address, eth.from()])
-    yield put(resellerAdded(address))
+    yield put(resellerAdded(address, name))
+    yield put(reset(formName))
   } catch (error) {
     console.log(`error:${error}`)
     debugger
@@ -21,7 +24,7 @@ function* doResellerRemove(action) {
   
     const Studio = eth.Studio()
     const { address } = action;
-  
+
     try {
       const studio = yield Studio.deployed()
       yield apply(studio, studio.removeReseller.sendTransaction, [address, eth.from()])
