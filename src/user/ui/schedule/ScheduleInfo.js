@@ -27,12 +27,12 @@ const ScheduleInfo = props => {
 
   return (
     <div>
-      <h2>{schedule.class.name}</h2>
-      <span style={style.address}>
+      <div>
+        <h2>{schedule.class.name}</h2>
         (<a href={url} target="_blank">{schedule.address}</a>)
-        </span>
-      <h3>{schedule.instructor}</h3>
-      <h4>{start} - {end}</h4>
+        <p>Instructor: {schedule.instructor}</p>
+        <p>{start} - {end}</p>
+      </div>
       <Attendees {...props} />
     </div>
   )

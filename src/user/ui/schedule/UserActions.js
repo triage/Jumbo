@@ -10,6 +10,7 @@ class UserActions extends PureComponent {
     this.state = {
       name: null,
       timer: null,
+      inputValid: false,
     }
   }
 
@@ -58,8 +59,17 @@ class UserActions extends PureComponent {
           >
             <div>Balance: {balance} eth</div>
             <span>Cancel:</span>
-            <Field name="reason" component="input" type="text" placeholder="cancellation reason" />
-            <input disabled={pristine || submitting} type="submit" value="Cancel" />
+            <Field
+              name="reason"
+              component="input"
+              type="text"
+              placeholder="cancellation reason"
+            />
+            <input
+              disabled={pristine || submitting}
+              type="submit"
+              value="Cancel"
+            />
           </form>
         )
       } else {
@@ -87,9 +97,36 @@ class UserActions extends PureComponent {
         }
       } else {
         if (new Date().valueOf() < new Date(schedule.dates.purchase).valueOf()) {
+          if (user.type === UserType.reseller) {
+            return (
+              <form
+                onSubmit={handleSubmit(values => {
+                  spotPurchase(schedule, values.address, history, location)
+                })}
+              >
+                <div>
+                  <div>
+                    <Field
+                      style={{ float: 'left' }}
+                      name="address" component="input"
+                      type="text"
+                      placeholder="User Address"
+                      onChange={event => this.onAddressChanged(event)}
+                    />
+                    {this.state.name}
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={pristine || submitting || this.state.inputValid}
+                  >
+                    {`Buy class for ${eth.web3().fromWei(price)}`}
+                  </button>
+                </div>
+              </form>
+            )
+          }
           return (
             <div>
-              <Field style={{ float: 'left' }} name="address" component="input" type="text" placeholder="User Address" onChange={event => this.onAddressChanged(event)} />
               <button type="button" onClick={event => {
                 spotPurchase(schedule, user.address, history, location)
               }}>

@@ -2,11 +2,11 @@
 
 body,
 .pure-g [class*=pure-u] {
-  font-family: 'Open Sans', sans-serif;
+  font-family: Roboto
 }
 
 h1, h2, h3 {
-  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  font-family: Roboto;
 }
 
 code {
@@ -40,7 +40,7 @@ code {
   position: fixed;
   padding: 5px;
   background: #0c1a2b;
-  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  font-family: Roboto;
 }
 
 .navbar a {

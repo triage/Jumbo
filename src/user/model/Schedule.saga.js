@@ -50,7 +50,8 @@ function* doSchedulesLoad(action) {
 
 function* doScheduleLoad(action) {
   try {
-    const individual = eth.Individual().deployed()
+    const individual = yield eth.Individual().deployed()
+    const reseller = yield eth.Reseller().deployed()
     const user = yield select(state => state.user.data)
     const address = action.address
     const schedule = eth.Schedule().at(address)
@@ -66,14 +67,15 @@ function* doScheduleLoad(action) {
     nSpots = nSpots.valueOf()
     const attendees = []
     for (let i = 0; i < nSpots; i++) {
-      const address = yield schedule.getSpotAtIndex.call(i)
-      if (parseInt(address) === 0) {
+      const attendee = yield schedule.getSpotAtIndex.call(i)
+      if (parseInt(attendee) === 0) {
         continue
       }
-      const name = yield individual.getName.call(address)
+      const name = yield individual.getName.call(attendee)
       attendees.push({
-        address,
-        name
+        attendee,
+        name,
+        // type
       })
     }
     const classInstance = eth.Class().at(klass)

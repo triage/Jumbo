@@ -173,6 +173,9 @@ contract("Schedule", (accounts) => {
 			)
 		}).then(found => {
 			assert.isTrue(found)
+			return legsAss12pm.instance.getSpotAtIndex.call(0, { from: barrys.from })
+		}).then(address => {
+			assert.equal(address, jessprager.from)
 			return reseller.deployed.spotCancel(
 				legsAss12pm.instance.address,
 				jessprager.from,
@@ -198,8 +201,12 @@ contract("Schedule", (accounts) => {
 				{ from: jessprager.from, value: price }
 			)
 		}).then(() => {
+			return legsAss12pm.instance.getSpotAtIndex.call(0, { from: barrys.from })
+		}).then(address => {
+			assert.equal(address, jessprager.from)
 			return individual.deployed.getSchedulesCount.call({ from: jessprager.from })
 		}).then(count => {
+			assert.equal(count, 1)
 			return individual.deployed.getSchedule.call(0, { from: jessprager.from })
 		}).then(address => {
 			assert.equal(address, legsAss12pm.instance.address)
