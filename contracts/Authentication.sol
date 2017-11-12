@@ -1,4 +1,4 @@
-pragma solidity ^0.4.2;
+pragma solidity ^0.4.18;
 
 import './zeppelin/lifecycle/Killable.sol';
 
@@ -32,17 +32,17 @@ contract Authentication is Killable {
         reseller = _reseller;
     }
 
-    function login() constant returns (bool) {
+    function login() public constant returns (bool) {
         return users[msg.sender].user != 0x0;
     }
 
-    function userType() constant returns (string) {
+    function userType() public constant returns (string) {
         return users[msg.sender].userType;
     }
 
-    function signup(address user, string userType) trusted external {
+    function signup(address _user, string _userType) trusted external {
         //called from Individual or Studio contract (trusted)
-        require(users[user].user == 0x0);
-        users[user] = User(user, userType);
+        require(users[_user].user == 0x0);
+        users[_user] = User(_user, _userType);
     }
 }

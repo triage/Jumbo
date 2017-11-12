@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.18;
 import { Studio } from "./Studio.sol";
 import { Class } from "./Class.sol";
 import { Individual } from "./Individual.sol";
@@ -46,7 +46,7 @@ contract Schedule is Killable {
 	event SpotPurchased(uint spotType, address attendee, address reseller, uint index);
 	event SpotCancelled(uint spotType, address attendee, address reseller);
 
-	function Schedule(address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) {
+	function Schedule(address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) public {
 		studioContract = Studio(msg.sender);
 		dates = Dates(_dateStart, _dateEnd, _dateStart - 60 * 60 * 10, _dateStart - 60 * 60);
 		klass = _class;
@@ -93,13 +93,13 @@ contract Schedule is Killable {
 		SpotCancelled(uint(spot.spotType), attendee, 0x0);
 	}
 
-	function complete() onlyOwner {
+	function complete() public onlyOwner {
 		//class has completed. 
 		selfdestruct(owner);
 		//todo: don't do this http://solidity.readthedocs.io/en/latest/frequently-asked-questions.html#are-mappings-iterable
 	}
 
-	function cancel(string reason) onlyOwner {
+	function cancel(string reason) public onlyOwner {
 		//studio needs to cancel this schedule. Refund all spots, notify all attendees of the reason.
 		Cancel(reason);
 
@@ -126,22 +126,22 @@ contract Schedule is Killable {
 		}
 	}
 
-	function getPriceWithUserType(string spotType) constant returns (uint) {
+	function getPriceWithUserType(string spotType) public constant returns (uint) {
 		//candidate for onlyOwner
-		if (sha3(spotType) == sha3("INDIVIDUAL")) {
+		if (keccak256(spotType) == keccak256("INDIVIDUAL")) {
 			return price[uint(SpotType.Individual)];
-		} else if (sha3(spotType) == sha3("RESELLER")) {
+		} else if (keccak256(spotType) == keccak256("RESELLER")) {
 			return price[uint(SpotType.Reseller)];
 		}
 		revert();
 	}
 
-	function getPrice() constant returns (uint) {
+	function getPrice() public constant returns (uint) {
 		SpotType spotType = spotTypeWithSender(msg.sender);
 		return price[uint(spotType)];
 	}
 
-	function getNumberOfAttendees() onlyOwner constant returns (uint) {
+	function getNumberOfAttendees() public onlyOwner constant returns (uint) {
 		uint nSpotsReserved = 0;
 		for (uint spotIndex = 0; spotIndex < nSpots; spotIndex++) {
 			if (spots[spotIndex].attendee != 0x0) {
@@ -151,11 +151,11 @@ contract Schedule is Killable {
 		return nSpotsReserved;
 	}
 
-	function getSpotAtIndex(uint index) onlyOwner constant returns (address) {
+	function getSpotAtIndex(uint index) onlyOwner public constant returns (address) {
 		return spots[index].attendee;
 	}
 
-	function spotTypeWithSender(address sender) constant returns (SpotType) {
+	function spotTypeWithSender(address sender) public constant returns (SpotType) {
 		address studio = Class(klass).owner();
 		if (studioContract.isAuthorizedReseller(studio, sender)) {
 			return SpotType.Reseller;
@@ -164,7 +164,7 @@ contract Schedule is Killable {
 		}
 	}
 
-	function spotIsReserved(address attendee) constant returns (bool) {
+	function spotIsReserved(address attendee) public constant returns (bool) {
 		var (, found, ) = spotFindReserved(attendee);
 		return found;
 	}

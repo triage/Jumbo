@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.18;
 import "./zeppelin/lifecycle/Killable.sol";
 import { Schedule } from './Schedule.sol';
 import { Authentication } from './Authentication.sol';
@@ -8,14 +8,14 @@ contract Individual is Killable {
   	mapping(address => address[]) public schedules;
 	address public authentication;
 
-	function setAuthentication(address _authentication) onlyOwner {
+	function setAuthentication(address _authentication) public onlyOwner {
 		authentication = _authentication;
 	}
 
-	modifier authenticated() {if (sha3(name[msg.sender]) != sha3("")) _;}
+	modifier authenticated() {if (keccak256(name[msg.sender]) != keccak256("")) _;}
 
-	function signup(string _name) {
-		require(sha3(name[msg.sender]) == sha3(""));
+	function signup(string _name) public {
+		require(keccak256(name[msg.sender]) == keccak256(""));
 		name[msg.sender] = _name;
 		Authentication(authentication).signup(msg.sender, "INDIVIDUAL");
 	}
@@ -24,20 +24,20 @@ contract Individual is Killable {
 		return name[individual];
 	}
 
-	function getSchedulesCount() constant returns (uint) {
+	function getSchedulesCount() public constant returns (uint) {
 		return schedules[msg.sender].length;
 	}
 
-	function getSchedule(uint index) constant returns (address) {
+	function getSchedule(uint index) public constant returns (address) {
 		return schedules[msg.sender][index];
 	}
 
-	function spotPurchase(address schedule) authenticated payable {
+	function spotPurchase(address schedule) public authenticated payable {
 		Schedule(schedule).spotPurchase.value(msg.value)(msg.sender, 0x0);
 		schedules[msg.sender].push(schedule);
 	}
 
-	function spotCancel(address schedule) authenticated {
+	function spotCancel(address schedule) public authenticated {
 		Schedule(schedule).spotCancel(msg.sender, 0x0);
 
 		//called only from the Schedule contract when the studio cancels the class

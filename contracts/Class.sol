@@ -1,11 +1,11 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.18;
 import "./zeppelin/lifecycle/Killable.sol";
 
 contract Class is Killable {
 	string public name;
 	string public description;
 
-	function Class(string _name, string _description) {
+	function Class(string _name, string _description) public {
 		name = _name;
 		description = _description;
 	}

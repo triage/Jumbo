@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.18;
 import "./zeppelin/lifecycle/Killable.sol";
 import { Schedule } from './Schedule.sol';
 import { Authentication } from './Authentication.sol';
@@ -18,51 +18,51 @@ contract Reseller is Killable {
   	mapping(address => Studio[]) private studios;
 	address public authentication;
 
-	modifier authenticated() {if (sha3(name[msg.sender]) != sha3("")) _;}
+	modifier authenticated() {if (keccak256(name[msg.sender]) != keccak256("")) _;}
 
-	function setAuthentication(address _authentication) onlyOwner {
+	function setAuthentication(address _authentication) public onlyOwner {
 		authentication = _authentication;
 	}
 
-	function signup(string _name) {
+	function signup(string _name) public {
 		require(bytes(name[msg.sender]).length == 0);
 		assert(authentication != 0x0);
 		name[msg.sender] = _name;
 		Authentication(authentication).signup(msg.sender, "RESELLER");
 	}
 
-	function signedUp() constant returns (bool) {
-		return sha3(name[msg.sender]) != sha3("");
+	function signedUp() public constant returns (bool) {
+		return keccak256(name[msg.sender]) != keccak256("");
 	}
 
 	function getName(address reseller) public constant returns (string) {
 		return name[reseller];
 	}
 
-	function getStudiosCount() authenticated constant returns (uint) {
+	function getStudiosCount() public authenticated constant returns (uint) {
 		return studios[msg.sender].length;
 	}
 
-	function getStudio(uint index) authenticated constant returns (address) {
+	function getStudio(uint index) public authenticated constant returns (address) {
 		require(studios[msg.sender].length > 0);
 		return studios[msg.sender][index].studio;
 	}
 
-	function getStudioState(uint index) authenticated constant returns (uint) {
+	function getStudioState(uint index) public authenticated constant returns (uint) {
 		require(studios[msg.sender].length > 0);
 		return uint(studios[msg.sender][index].state);
 	}
 
-	function spotPurchase(address schedule, address individual) authenticated payable {
+	function spotPurchase(address schedule, address individual) public authenticated payable {
 		Schedule(schedule).spotPurchase.value(msg.value)(individual, msg.sender);
 	}
 
-	function spotCancel(address schedule, address individual) authenticated {
+	function spotCancel(address schedule, address individual) public authenticated {
 		Schedule(schedule).spotCancel(individual, msg.sender);
 	}
 
 	function resellerStateChanged(address studio, uint state) external {
-		require(sha3(name[studio]) == sha3(""));
+		require(keccak256(name[studio]) == keccak256(""));
 		Studio[] storage resellerStudios = studios[studio];
 		//be sure there is a pending request for this studio from the reseller
 		bool found = false;
