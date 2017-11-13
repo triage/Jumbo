@@ -70,3 +70,9 @@ code {
 .rbc-today {
   background: #eceff1;
 }
+
+[type="radio"]:not(:checked), [type="radio"]:checked {
+  opacity: 1;
+  position: relative !important;
+  pointer-events: auto;
+}

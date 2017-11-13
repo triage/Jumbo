@@ -87,6 +87,9 @@ contract("Schedule", (accounts) => {
 			return individual.deployed.getName.call(jessprager.from)
 		}).then(name => {
 			assert.equal(jessprager.name, name, "individual name not correctly set");
+			return authentication.deployed.userType({ from: jessprager.from })
+		}).then(userType => {
+			assert.equal(userType, 'INDIVIDUAL')
 			return studio.deployed.signup(barrys.name, { from: barrys.from })
 		}).then(() => {
 			return studio.deployed.getName.call(barrys.from)

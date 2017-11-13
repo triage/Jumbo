@@ -20,15 +20,15 @@ contract Individual is Killable {
 		Authentication(authentication).signup(msg.sender, "INDIVIDUAL");
 	}
 
-	function getName(address individual) public constant returns (string) {
+	function getName(address individual) public view returns (string) {
 		return name[individual];
 	}
 
-	function getSchedulesCount() public constant returns (uint) {
+	function getSchedulesCount() public view returns (uint) {
 		return schedules[msg.sender].length;
 	}
 
-	function getSchedule(uint index) public constant returns (address) {
+	function getSchedule(uint index) public view returns (address) {
 		return schedules[msg.sender][index];
 	}
 

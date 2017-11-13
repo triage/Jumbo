@@ -120,13 +120,13 @@ export const start = callback => {
         return eth.Authentication().deployed()
       }).then(instance => {
         authentication = instance
-        return authentication.login()
+        return authentication.login(eth.from())
       }).then(loggedIn => {
         if (!loggedIn) {
           reject(SigninError.unauthorized)
           return
         }
-        return authentication.userType()
+        return authentication.userType(eth.from())
       }).then(type => {
         account.type = type
         console.log(`type for ${account.address}: ${type}`)
@@ -143,7 +143,6 @@ export const start = callback => {
       }).then(deployed => {
         return deployed.name.call(account.address)
       }).then(name => {
-        debugger
         account.name = name
         fulfill(account)
       }).catch(error => {

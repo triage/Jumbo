@@ -31,24 +31,24 @@ contract Reseller is Killable {
 		Authentication(authentication).signup(msg.sender, "RESELLER");
 	}
 
-	function signedUp() public constant returns (bool) {
+	function signedUp() public view returns (bool) {
 		return keccak256(name[msg.sender]) != keccak256("");
 	}
 
-	function getName(address reseller) public constant returns (string) {
+	function getName(address reseller) public view returns (string) {
 		return name[reseller];
 	}
 
-	function getStudiosCount() public authenticated constant returns (uint) {
+	function getStudiosCount() public authenticated view returns (uint) {
 		return studios[msg.sender].length;
 	}
 
-	function getStudio(uint index) public authenticated constant returns (address) {
+	function getStudio(uint index) public authenticated view returns (address) {
 		require(studios[msg.sender].length > 0);
 		return studios[msg.sender][index].studio;
 	}
 
-	function getStudioState(uint index) public authenticated constant returns (uint) {
+	function getStudioState(uint index) public authenticated view returns (uint) {
 		require(studios[msg.sender].length > 0);
 		return uint(studios[msg.sender][index].state);
 	}
@@ -67,7 +67,7 @@ contract Reseller is Killable {
 		//be sure there is a pending request for this studio from the reseller
 		bool found = false;
 		for (uint i = 0; i < resellerStudios.length; i++) {
-			if(resellerStudios[i].studio == studio) {
+			if (resellerStudios[i].studio == studio) {
 				found = true;
 				resellerStudios[i].state = State(state);
 				break;
