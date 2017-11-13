@@ -1,6 +1,5 @@
 let barrys = { contactDetails: "135 W 20th St, New York, NY 10011" }
 let classpass = {}
-let barrysClass = {}
 
 const Reseller = artifacts.require("./Reseller.sol")
 const Studio = artifacts.require("./Studio.sol")

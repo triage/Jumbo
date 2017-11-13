@@ -53,7 +53,7 @@ const Dashboard = props => {
   const toolbar = user.data.type === UserType.studio ? true : false
 
   return(
-    <div>
+    <div style={{ marginTop: 20, }}>
       <BigCalendar
         events={events}
         step={15}

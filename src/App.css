@@ -44,13 +44,13 @@ code {
 }
 
 .navbar a {
-  color: #fff;
+  color: #000;
 }
 
 .navbar a:active,
 .navbar a:focus,
 .navbar a:hover {
-  background: #233e5e;
+  color: #37474f;
 }
 
 .navbar .pure-menu-heading {
@@ -65,4 +65,8 @@ code {
 .navbar .uport-logo {
   height: 16px;
   margin-right: 10px;
+}
+
+.rbc-today {
+  background: #eceff1;
 }

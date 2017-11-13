@@ -130,21 +130,20 @@ export const start = callback => {
       }).then(type => {
         account.type = type
         console.log(`type for ${account.address}: ${type}`)
-        let instance
         switch (type) {
           case UserType.studio:
             return eth.Studio().deployed()
-            break
           case UserType.individual:
             return eth.Individual().deployed()
-            break
           case UserType.reseller:
             return eth.Reseller().deployed()
-            break
+          default:
+            return null
         }
       }).then(deployed => {
         return deployed.name.call(account.address)
       }).then(name => {
+        debugger
         account.name = name
         fulfill(account)
       }).catch(error => {

@@ -50,15 +50,15 @@ contract Studio is Killable {
 		Authentication(authentication).signup(msg.sender, "STUDIO");
 	}
 
-	function userExists(address user) public constant returns (bool) {
+	function userExists(address user) public view returns (bool) {
 		return bytes(name[user]).length > 0;
 	}
 
-	function getName(address studio) public constant returns (string) {
+	function getName(address studio) public view returns (string) {
 		return name[studio];
 	}
 
-	function getContactDetails(address studio) public constant returns (string) {
+	function getContactDetails(address studio) public view returns (string) {
 		return contactDetails[studio];
 	}
 
@@ -67,19 +67,19 @@ contract Studio is Killable {
 		ContactDetailsUpdated(msg.sender, contactDetails[msg.sender]);
 	}
 
-	function classesCount() public constant returns (uint) {
+	function classesCount() public view returns (uint) {
 		return classes[msg.sender].length;
 	}
 
-	function classAtIndex(uint index) public constant returns (address) {
+	function classAtIndex(uint index) public view returns (address) {
 		return classes[msg.sender][index];
 	}
 
-	function schedulesCount() public constant returns (uint) {
+	function schedulesCount() public view returns (uint) {
 		return schedules[msg.sender].length;
 	}
 
-	function scheduleAtIndex(uint index) public constant returns (address) {
+	function scheduleAtIndex(uint index) public view returns (address) {
 		return schedules[msg.sender][index];
 	}
 

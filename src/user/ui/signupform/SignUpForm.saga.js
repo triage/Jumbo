@@ -20,6 +20,9 @@ export function* doUserSignup(action) {
     case UserType.reseller:
       entity = eth.Reseller()
       break
+    default:
+      entity = null
+      break
   }
 
   try {

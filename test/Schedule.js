@@ -44,9 +44,9 @@ let studio = {}
 let authentication = {}
 
 contract("Schedule", (accounts) => {
-	barrys.from = accounts[1]
-	classpass.from = accounts[2]
-	jessprager.from = accounts[3]
+	barrys.from = accounts[0]
+	classpass.from = accounts[1]
+	jessprager.from = accounts[2]
 
 	before(done => {
 		Reseller.deployed().then(deployed => {
@@ -96,7 +96,7 @@ contract("Schedule", (accounts) => {
 				classpass.from,
 				{ from: barrys.from }
 			)
-	    }).then(() => {
+	  }).then(() => {
 			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
 		}).then(isAuthorized => {
 			assert.equal(isAuthorized, true)

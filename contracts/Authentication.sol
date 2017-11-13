@@ -32,11 +32,11 @@ contract Authentication is Killable {
         reseller = _reseller;
     }
 
-    function login() public constant returns (bool) {
+    function login() public view returns (bool) {
         return users[msg.sender].user != 0x0;
     }
 
-    function userType() public constant returns (string) {
+    function userType() public view returns (string) {
         return users[msg.sender].userType;
     }
 

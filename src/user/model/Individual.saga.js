@@ -14,7 +14,7 @@ function* doIndividualLoad(action) {
     const individual = yield Individual.deployed()
     let count = yield individual.getSchedulesCount.call(from)
     const schedules = []
-    for (let i = 0; i < parseInt(count.valueOf(10)); i++) {
+    for (let i = 0; i < parseInt(count.valueOf(10), 10); i++) {
       const address = yield individual.getSchedule.call(i, from)
       const schedule = Schedule.at(address)
       const dates = yield schedule.dates.call()

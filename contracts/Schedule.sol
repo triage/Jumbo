@@ -126,7 +126,7 @@ contract Schedule is Killable {
 		}
 	}
 
-	function getPriceWithUserType(string spotType) public constant returns (uint) {
+	function getPriceWithUserType(string spotType) public view returns (uint) {
 		//candidate for onlyOwner
 		if (keccak256(spotType) == keccak256("INDIVIDUAL")) {
 			return price[uint(SpotType.Individual)];
@@ -136,12 +136,12 @@ contract Schedule is Killable {
 		revert();
 	}
 
-	function getPrice() public constant returns (uint) {
+	function getPrice() public view returns (uint) {
 		SpotType spotType = spotTypeWithSender(msg.sender);
 		return price[uint(spotType)];
 	}
 
-	function getNumberOfAttendees() public onlyOwner constant returns (uint) {
+	function getNumberOfAttendees() public onlyOwner view returns (uint) {
 		uint nSpotsReserved = 0;
 		for (uint spotIndex = 0; spotIndex < nSpots; spotIndex++) {
 			if (spots[spotIndex].attendee != 0x0) {
@@ -151,11 +151,11 @@ contract Schedule is Killable {
 		return nSpotsReserved;
 	}
 
-	function getSpotAtIndex(uint index) onlyOwner public constant returns (address) {
+	function getSpotAtIndex(uint index) onlyOwner public view returns (address) {
 		return spots[index].attendee;
 	}
 
-	function spotTypeWithSender(address sender) public constant returns (SpotType) {
+	function spotTypeWithSender(address sender) public view returns (SpotType) {
 		address studio = Class(klass).owner();
 		if (studioContract.isAuthorizedReseller(studio, sender)) {
 			return SpotType.Reseller;
@@ -164,17 +164,17 @@ contract Schedule is Killable {
 		}
 	}
 
-	function spotIsReserved(address attendee) public constant returns (bool) {
+	function spotIsReserved(address attendee) public view returns (bool) {
 		var (, found, ) = spotFindReserved(attendee);
 		return found;
 	}
 
-	function getPriceWithSender(address sender) private constant returns (uint) {
+	function getPriceWithSender(address sender) private view returns (uint) {
 		SpotType spotType = spotTypeWithSender(sender);
 		return price[uint(spotType)];	
 	}
 
-	function spotFindPurchasable(address attendee, address reseller) private constant returns (Spot, bool, uint) {
+	function spotFindPurchasable(address attendee, address reseller) private view returns (Spot, bool, uint) {
 		var (, found, ) = spotFindReserved(attendee);
 		require(found == false);
 
@@ -193,7 +193,7 @@ contract Schedule is Killable {
 		return (Spot(SpotType.Unavailable, 0x0, 0x0, 0x0), false, 0);
 	}
 
-	function nSpotsResellerReserved() private constant returns (uint) {
+	function nSpotsResellerReserved() private view returns (uint) {
 		uint nSpotsResellerFound = 0;
 		for (uint spotIndex = 0; spotIndex < nSpots; spotIndex++) {
 			Spot storage spot = spots[spotIndex];
@@ -204,7 +204,7 @@ contract Schedule is Killable {
 		return nSpotsResellerFound;
 	}
 
-	function spotFindReserved(address attendee) private constant returns (Spot, bool, uint) {
+	function spotFindReserved(address attendee) private view returns (Spot, bool, uint) {
 		for (uint spotIndex = 0; spotIndex < nSpots; spotIndex++) {
 			Spot storage spot = spots[spotIndex];
 			if (spot.attendee == attendee) {
