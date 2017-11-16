@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import { reduxForm } from 'redux-form'
 import UserType from 'src/user/model/UserType'
-import UserActions from './UserActions'
 import ClassInfo from './ClassInfo'
 import ScheduleInfo from './ScheduleInfo'
 
@@ -27,12 +26,11 @@ class Schedule extends PureComponent {
 
     return (
       <div>
-        <ScheduleInfo {...this.props} />
+        <div>
+          <ScheduleInfo {...this.props} />
+        </div>
         <ClassInfo {...this.props} />
-        <hr />
-        <UserActions {...this.props} />
       </div>
-
     )
   }
 }

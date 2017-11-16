@@ -3,6 +3,16 @@ import UserType from 'src/user/model/UserType'
 import eth from 'src/util/eth'
 import { reduxForm, Field } from 'redux-form'
 
+const style = {
+  button: {
+    background: "#00bfa5",
+    width: '100%',
+    color: 'white',
+    border: 'none',
+    padding: '8pt'
+  }
+}
+
 class UserActions extends PureComponent {
 
   constructor() {
@@ -75,7 +85,7 @@ class UserActions extends PureComponent {
       } else {
         //studio can complete contract
         return (
-          <button onClick={event => {
+          <button style={style.button} onClick={event => {
             console.log('clicked')
             scheduleComplete(schedule.address, history)
           }}>Complete class and withdraw ${balance}</button>
@@ -86,7 +96,7 @@ class UserActions extends PureComponent {
       if (schedule.reserved) {
         if (new Date().valueOf() < new Date(schedule.dates.cancellation).valueOf()) {
           return (
-            <button type="button" onClick={event => spotCancel(schedule, user.address, history, location)}>
+            <button style={style.button} type="button" onClick={event => spotCancel(schedule, user.address, history, location)}>
               Cancel and refund
           </button>
           )
@@ -116,6 +126,7 @@ class UserActions extends PureComponent {
                     {this.state.name}
                   </div>
                   <button
+                    style={style.button} 
                     type="submit"
                     disabled={pristine || submitting || this.state.inputValid}
                   >
@@ -127,9 +138,12 @@ class UserActions extends PureComponent {
           }
           return (
             <div>
-              <button type="button" onClick={event => {
-                spotPurchase(schedule, user.address, history, location)
-              }}>
+              <button
+                style={style.button}
+                type="button"
+                onClick={event => {
+                  spotPurchase(schedule, user.address, history, location)
+                }}>
                 {`Buy class for ${eth.web3().fromWei(price)}`}
               </button>
             </div>

@@ -1,5 +1,9 @@
 /* PAGE */
 
+html {
+  background: #eceff1;
+}
+
 body,
 .pure-g [class*=pure-u] {
   font-family: Roboto
@@ -32,6 +36,11 @@ code {
 
 .pure-form input[type="text"]:focus {
   border-color: #0c1a2b;
+}
+
+.section {
+  background: white;
+  padding: 25pt;
 }
 
 /* NAVBAR */
@@ -67,6 +76,11 @@ code {
   margin-right: 10px;
 }
 
+.rbc-calendar {
+  background: white;
+  padding: 25pt;
+}
+
 .rbc-today {
   background: #eceff1;
 }
@@ -75,4 +89,12 @@ code {
   opacity: 1;
   position: relative !important;
   pointer-events: auto;
+}
+
+.rbc-day-slot .rbc-event {
+  background: #18233e;
+}
+
+.pure-g {
+  margin-top: 25pt
 }

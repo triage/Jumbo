@@ -1,8 +1,9 @@
-import { put, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery, call } from 'redux-saga/effects'
 import moment from 'moment'
+import UserType from 'src/user/model/UserType'
+import eth from 'src/util/eth'
 import { INDIVIDUAL_LOAD } from './IndividualActions'
 import { schedulesLoaded } from './ScheduleActions'
-import eth from 'src/util/eth'
 
 function* doIndividualLoad(action) {
   const Individual = eth.Individual()
@@ -26,9 +27,13 @@ function* doIndividualLoad(action) {
       const studio = yield Studio.deployed()
       const studioName = yield studio.name.call(studioAddress)
       const studioContactDetails = yield studio.contactDetails.call(studioAddress)
+      const price = {}
+      price.individual = yield call(schedule.getPriceWithUserType.call, UserType.individual)
+
       schedules.push({
         address: schedule.address,
         instructor,
+        price,
         dates: {
           /* eslint-disable radix */
           start: moment.unix(parseInt(dates[0].valueOf(10)) / 1000).toDate(),
