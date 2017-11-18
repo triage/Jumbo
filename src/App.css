@@ -20,6 +20,14 @@ code {
   background: #eee;
 }
 
+button.cta {
+  background: #00bfa5;
+  color: white;
+  border: none;
+  padding: 8pt;
+  min-width: 150px;
+}
+
 .container {
   box-sizing: border-box;
   width: 100%;
@@ -91,10 +99,22 @@ code {
   pointer-events: auto;
 }
 
+.rbc-agenda-view {
+  flex: none;
+}
+
 .rbc-day-slot .rbc-event {
-  background: #18233e;
+  background: #00bfa5;
+  border: none;
 }
 
 .pure-g {
   margin-top: 25pt
+}
+
+.half {
+  justify-content: stretch;
+  width: 50%;
+  align-self: center;
+  margin-left: 25%;
 }

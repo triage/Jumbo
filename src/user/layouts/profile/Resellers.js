@@ -9,8 +9,10 @@ class Resellers extends Component {
         <div className="pure-g">
           <div className="pure-u-1-1">
             <h1>Resellers</h1>
-            <SideNavigationContainer />
-            <ResellersContainer />
+            <div className="section">
+              <SideNavigationContainer />
+              <ResellersContainer />
+            </div>
           </div>
         </div>
       </main>

@@ -58,7 +58,6 @@ class UserActions extends PureComponent {
   } = this.props;
 
     if (user.type === UserType.studio) {
-      const balance = eth.web3().fromWei(schedule.balance)
       //studio can only cancel if current date is before class
       if (new Date() < new Date(schedule.dates.start)) {
         return (
@@ -67,7 +66,6 @@ class UserActions extends PureComponent {
               scheduleCancel(schedule.address, values.reason, history)
             })}
           >
-            <div>Balance: {balance} eth</div>
             <span>Cancel:</span>
             <Field
               name="reason"
@@ -84,6 +82,8 @@ class UserActions extends PureComponent {
         )
       } else {
         //studio can complete contract
+        const balance = eth.web3().fromWei(schedule.balance)
+        
         return (
           <button style={style.button} onClick={event => {
             console.log('clicked')

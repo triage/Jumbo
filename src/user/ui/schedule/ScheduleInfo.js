@@ -1,8 +1,8 @@
 import React from 'react'
-import UserType from 'src/user/model/UserType'
 import moment from 'moment'
 import Attendees from './Attendees'
 import UserActions from './UserActions'
+import eth from 'src/util/eth'
 
 const format = {
   long: 'ddd, MMM D, H:mm a',
@@ -37,6 +37,12 @@ const style = {
   }
 }
 
+const Balance = props => {
+  const { schedule } = props
+  const balance = eth.web3().fromWei(schedule.balance)
+  return <div>Balance: {balance} eth</div>
+}
+
 const ScheduleInfo = props => {
   const {
     schedule,
@@ -51,6 +57,8 @@ const ScheduleInfo = props => {
       <div style={style.left}>
         <div style={style.name}>{schedule.class.name}</div>
         <div style={style.address}><a href={url} target="_blank">{schedule.address}</a></div>
+        <Balance schedule={schedule} />
+        <Attendees {...props} />
       </div>
       <div style={style.userActions}>
         <p>Instructor: {schedule.instructor}</p>
@@ -58,7 +66,6 @@ const ScheduleInfo = props => {
         <UserActions {...props} style={style.userActions} />
       </div>
       <div style={{ clear: 'both' }} />
-      <Attendees {...props} />
     </div>
   )
 }

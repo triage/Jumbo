@@ -84,6 +84,7 @@ const Dashboard = props => {
         views={views}
         defaultView={defaultView}
         defaultDate={new Date()} />
+        <div style={{ clear: 'both' }} />
     </div>
   )
 }

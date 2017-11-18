@@ -45,7 +45,7 @@ class Resellers extends PureComponent {
           } = this.props
 
         return (
-            <div style={{ float: 'left' }}>
+            <div>
                 <form
                     className="pure-form pure-form-stacked"
                     onSubmit={handleSubmit(values => {
