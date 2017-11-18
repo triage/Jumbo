@@ -25,7 +25,7 @@ class Schedule extends PureComponent {
     document.title = `${schedule.class.name}`
 
     return (
-      <div>
+      <div className="section">
         <div>
           <ScheduleInfo {...this.props} />
         </div>

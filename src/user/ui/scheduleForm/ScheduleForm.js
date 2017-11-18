@@ -7,7 +7,10 @@ import ClassesSelector from 'src/user/ui/class/classes/ClassesSelector'
 
 import 'react-date-picker/index.css'
 
-const format = 'ddd, MMM D, H:mm a'
+const format = {
+  long: 'ddd, MMM D, H:mm a',
+  short: 'H:mm a'
+}
 
 const ScheduleForm = props => {
 
@@ -37,112 +40,112 @@ const ScheduleForm = props => {
   }
 
   return (
-    <form
-      className="pure-form pure-form-stacked"
-      onSubmit={handleSubmit(values => {
-        if(!values.class && location.state.class) {
-          values.class = { address: location.state.class }
-        }
-        scheduleSubmit(Object.assign({}, values, { date }), history)
-      })}
-    >
-      <h2>Class:</h2>
-      <Field
-        name="class"
-        component={ClassesSelector}
-        selected={location.state.class}
-        history={history}
-        location={location}
-        classes={classes}
-        defaultValue={location.state.class}
-        value={location.state.class}
+    <div className="section">
+      <form
+        className="pure-form pure-form-stacked"
+        onSubmit={handleSubmit(values => {
+          if (!values.class && location.state.class) {
+            values.class = { address: location.state.class }
+          }
+          scheduleSubmit(Object.assign({}, values, { date }), history)
+        })}
+      >
+
+        <h5>{moment(date.start).format(format.long)} - {moment(date.end).format(format.short)}</h5>
+        <hr />
+
+        <h5>Class:</h5>
+        <Field
+          name="class"
+          component={ClassesSelector}
+          selected={location.state.class}
+          history={history}
+          location={location}
+          classes={classes}
+          defaultValue={location.state.class}
+          value={location.state.class}
         />
 
-      <h2>Starts at:</h2>
-      <h4>{moment(date.start).format(format)}</h4>
+        <h5>Instructor Name</h5>
+        <Field
+          name="instructor"
+          component="input"
+          type="text"
+        />
 
-      <h2>Ends at:</h2>
-      <h4>{moment(date.end).format(format)}</h4>
-
-      <h2>Instructor Name</h2>
-      <Field
-        name="instructor"
-        component="input"
-        type="text"
-      />
-
-      <h2>Number of spots (total)</h2>
-      <Field
-        component={props => {
-          const {
+        <h5>Number of spots (total)</h5>
+        <Field
+          component={props => {
+            const {
             input
           } = props;
-          return <NumericInput
-            min={0}
-            max={20}
-            value={input.value}
-            onChange={value => {
-              input.onChange(value)
-            }} />
-        }}
-        name="spots.total"
-      />
+            return <NumericInput
+              min={0}
+              max={20}
+              value={input.value}
+              onChange={value => {
+                input.onChange(value)
+              }} />
+          }}
+          name="spots.total"
+        />
 
-      <h2>Number of spots (reseller)</h2>
-      <Field
-        component={props => {
-          const {
+        <h5>Number of spots (reseller)</h5>
+        <Field
+          component={props => {
+            const {
             input
           } = props;
-          return <NumericInput
-            min={0}
-            max={20}
-            value={input.value}
-            onChange={value => {
-              input.onChange(value)
-            }} />
-        }}
-        name="spots.reseller"
-      />
+            return <NumericInput
+              min={0}
+              max={20}
+              value={input.value}
+              onChange={value => {
+                input.onChange(value)
+              }} />
+          }}
+          name="spots.reseller"
+        />
 
-      <h2>Price (individual)</h2>
-      <Field
-        component={props => {
-          const {
+        <h5>Price (individual)</h5>
+        <Field
+          component={props => {
+            const {
             input
           } = props;
-          return <NumericInput
-            {...priceProps}
-            value={input.value}
-            onChange={value => {
-              input.onChange(value)
-            }} />
-        }}
-        name="price.individual"
-      />
+            return <NumericInput
+              {...priceProps}
+              value={input.value}
+              onChange={value => {
+                input.onChange(value)
+              }} />
+          }}
+          name="price.individual"
+        />
 
-      <h2>Price (reseller)</h2>
-      <Field
-        component={props => {
-          const {
+        <h5>Price (reseller)</h5>
+        <Field
+          component={props => {
+            const {
             input
           } = props;
-          return <NumericInput
-            {...priceProps}
-            value={input.value}
-            onChange={value => {
-              input.onChange(value)
-            }} />
-        }}
-        name="price.reseller"
-      />
+            return <NumericInput
+              {...priceProps}
+              value={input.value}
+              onChange={value => {
+                input.onChange(value)
+              }} />
+          }}
+          name="price.reseller"
+        />
 
-      <hr />
-      <button
+        <hr />
+        <button
           disabled={pristine || submitting}
           type="submit"
           className="pure-button pure-button-primary">Create Schedule</button>
-    </form>
+      </form>
+    </div>
   )
 }
 

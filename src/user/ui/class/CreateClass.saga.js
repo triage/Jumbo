@@ -22,7 +22,6 @@ export function* doCreateClass(action) {
       '/schedule/new',
       Object.assign({}, action.location.state, { class: address })
     )
-
   } catch (error) {
     console.log(error)
     yield put({ type: "CLASS_CREATE_FAILED", error })
