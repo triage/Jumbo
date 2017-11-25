@@ -51,6 +51,7 @@ function* doSchedulesLoad(action) {
 function* doScheduleLoad(action) {
   try {
     const individual = yield eth.Individual().deployed()
+    const Studio = yield eth.Studio().deployed()
     // const reseller = yield eth.Reseller().deployed()
     const user = yield select(state => state.user.data)
     const address = action.address
@@ -87,6 +88,15 @@ function* doScheduleLoad(action) {
       description,
     }
 
+    const studio = yield call(classInstance.owner.call)
+    const studioName = yield Studio.getName.call(studio)
+    const contactDetails = yield Studio.getContactDetails.call(studio)
+    const studioObject = {
+      address: studio,
+      name: studioName,
+      contactDetails,
+    }
+
     const scheduleObj = {
       address,
       attendees,
@@ -102,7 +112,8 @@ function* doScheduleLoad(action) {
         cancellation: moment.unix(parseInt(dates[2].valueOf(10)) / 1000).toDate(),
         purchase: moment.unix(parseInt(dates[3].valueOf(10)) / 1000).toDate(),
       },
-      class: classObject
+      class: classObject,
+      studio: studioObject,
     }
     yield put(scheduleLoaded(scheduleObj))
   } catch (error) {

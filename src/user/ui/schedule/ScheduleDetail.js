@@ -3,6 +3,7 @@ import { reduxForm } from 'redux-form'
 import UserType from 'src/user/model/UserType'
 import ClassInfo from './ClassInfo'
 import ScheduleInfo from './ScheduleInfo'
+import Attendees from './Attendees'
 
 class Schedule extends PureComponent {
 
@@ -25,10 +26,9 @@ class Schedule extends PureComponent {
     document.title = `${schedule.class.name}`
 
     return (
-      <div className="section">
-        <div>
-          <ScheduleInfo {...this.props} />
-        </div>
+      <div>
+        <ScheduleInfo {...this.props} />
+        <Attendees {...this.props} />
         <ClassInfo {...this.props} />
       </div>
     )

@@ -1,15 +1,13 @@
 import React from 'react'
-import UserType from 'src/user/model/UserType'
 
 const ClassInfo = props => {
   const {
-    user,
     schedule
   } = props
-  if (user.type === UserType.studio) {
-    return null
-  }
-  return <p>{schedule.class.description}</p>
+  return (<div className="section z-depth-2">
+    <h5>About this class:</h5>
+    <p style={{ whiteSpace: 'pre-line' }}>{schedule.class.description}</p>
+  </div>)
 }
 
 export default ClassInfo

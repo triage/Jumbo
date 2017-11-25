@@ -3,15 +3,15 @@ import UserType from 'src/user/model/UserType'
 import eth from 'src/util/eth'
 import { reduxForm, Field } from 'redux-form'
 
-const style = {
-  button: {
-    background: "#00bfa5",
-    width: '100%',
-    color: 'white',
-    border: 'none',
-    padding: '8pt'
-  }
-}
+// const style = {
+//   button: {
+//     background: "#00bfa5",
+//     width: '100%',
+//     color: 'white',
+//     border: 'none',
+//     padding: '8pt'
+//   }
+// }
 
 class UserActions extends PureComponent {
 
@@ -58,6 +58,10 @@ class UserActions extends PureComponent {
   } = this.props;
 
     if (user.type === UserType.studio) {
+
+      //studio can complete contract
+      const balance = eth.web3().fromWei(schedule.balance)
+      
       //studio can only cancel if current date is before class
       if (new Date() < new Date(schedule.dates.start)) {
         return (
@@ -66,7 +70,7 @@ class UserActions extends PureComponent {
               scheduleCancel(schedule.address, values.reason, history)
             })}
           >
-            <span>Cancel:</span>
+            <hr />
             <Field
               name="reason"
               component="input"
@@ -74,6 +78,7 @@ class UserActions extends PureComponent {
               placeholder="cancellation reason"
             />
             <input
+              className="cta destructive"
               disabled={pristine || submitting}
               type="submit"
               value="Cancel"
@@ -81,11 +86,9 @@ class UserActions extends PureComponent {
           </form>
         )
       } else {
-        //studio can complete contract
-        const balance = eth.web3().fromWei(schedule.balance)
         
         return (
-          <button style={style.button} onClick={event => {
+          <button className="cta" onClick={event => {
             console.log('clicked')
             scheduleComplete(schedule.address, history)
           }}>Complete class and withdraw ${balance}</button>
@@ -96,8 +99,11 @@ class UserActions extends PureComponent {
       if (schedule.reserved) {
         if (new Date().valueOf() < new Date(schedule.dates.cancellation).valueOf()) {
           return (
-            <button style={style.button} type="button" onClick={event => spotCancel(schedule, user.address, history, location)}>
-              Cancel and refund
+            <button
+              type="button"
+              className="cta destructive"
+              onClick={event => spotCancel(schedule, user.address, history, location)}>
+                Cancel and refund
           </button>
           )
         } else {
@@ -126,8 +132,8 @@ class UserActions extends PureComponent {
                     {this.state.name}
                   </div>
                   <button
-                    style={style.button} 
                     type="submit"
+                    className="cta"
                     disabled={pristine || submitting || this.state.inputValid}
                   >
                     {`Buy class for ${eth.web3().fromWei(price)}`}
@@ -139,8 +145,8 @@ class UserActions extends PureComponent {
           return (
             <div>
               <button
-                style={style.button}
                 type="button"
+                className="cta"
                 onClick={event => {
                   spotPurchase(schedule, user.address, history, location)
                 }}>

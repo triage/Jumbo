@@ -40,19 +40,17 @@ const ScheduleForm = props => {
   }
 
   return (
-    <div className="section">
-      <form
-        className="pure-form pure-form-stacked"
-        onSubmit={handleSubmit(values => {
-          if (!values.class && location.state.class) {
-            values.class = { address: location.state.class }
-          }
-          scheduleSubmit(Object.assign({}, values, { date }), history)
-        })}
-      >
-
+    <form
+      className="pure-form pure-form-stacked"
+      onSubmit={handleSubmit(values => {
+        if (!values.class && location.state.class) {
+          values.class = { address: location.state.class }
+        }
+        scheduleSubmit(Object.assign({}, values, { date }), history)
+      })}
+    >
+      <div className="section z-depth-2">
         <h5>{moment(date.start).format(format.long)} - {moment(date.end).format(format.short)}</h5>
-        <hr />
 
         <h5>Class:</h5>
         <Field
@@ -73,79 +71,88 @@ const ScheduleForm = props => {
           type="text"
         />
 
-        <h5>Number of spots (total)</h5>
-        <Field
-          component={props => {
-            const {
-            input
-          } = props;
-            return <NumericInput
-              min={0}
-              max={20}
-              value={input.value}
-              onChange={value => {
-                input.onChange(value)
-              }} />
-          }}
-          name="spots.total"
-        />
+      </div>
 
-        <h5>Number of spots (reseller)</h5>
-        <Field
-          component={props => {
-            const {
-            input
-          } = props;
-            return <NumericInput
-              min={0}
-              max={20}
-              value={input.value}
-              onChange={value => {
-                input.onChange(value)
-              }} />
-          }}
-          name="spots.reseller"
-        />
+      <div className="section z-depth-2" style={{ overflow: 'hidden' }}>
+        <h5>Number of spots</h5>
+        <div className="left">  
+          <Field
+            component={props => {
+              const {
+                input
+              } = props;
+              return <NumericInput
+                min={0}
+                max={20}
+                value={input.value}
+                onChange={value => {
+                  input.onChange(value)
+                }} />
+            }}
+            name="spots.total"
+          />
+        </div>
+        <div className="left">
+          <Field
+            component={props => {
+              const {
+                input
+              } = props;
+              return <NumericInput
+                {...priceProps}
+                placeholder="$"
+                value={input.value}
+                onChange={value => {
+                  input.onChange(value)
+                }} />
+            }}
+            name="price.individual"
+          />
+        </div>
+      </div>
 
-        <h5>Price (individual)</h5>
-        <Field
-          component={props => {
-            const {
-            input
-          } = props;
-            return <NumericInput
-              {...priceProps}
-              value={input.value}
-              onChange={value => {
-                input.onChange(value)
-              }} />
-          }}
-          name="price.individual"
-        />
-
-        <h5>Price (reseller)</h5>
-        <Field
-          component={props => {
-            const {
-            input
-          } = props;
-            return <NumericInput
-              {...priceProps}
-              value={input.value}
-              onChange={value => {
-                input.onChange(value)
-              }} />
-          }}
-          name="price.reseller"
-        />
-
-        <hr />
-        <button
-          disabled={pristine || submitting}
-          type="submit"
-          className="pure-button pure-button-primary">Create Schedule</button>
-      </form>
-    </div>
+      <div className="section z-depth-2" style={{ overflow: 'hidden' }}>
+        <h5># of Reseller Spots</h5>
+        <div className="left">
+          <Field
+            component={props => {
+              const {
+              input
+            } = props;
+              return <NumericInput
+                min={0}
+                max={20}
+                value={input.value}
+                onChange={value => {
+                  input.onChange(value)
+                }} />
+            }}
+            name="spots.reseller"
+          />
+        </div>
+        <div className="left">
+          <Field
+            component={props => {
+              const {
+              input
+            } = props;
+              return <NumericInput
+                {...priceProps}
+                placeholder="$"
+                value={input.value}
+                onChange={value => {
+                  input.onChange(value)
+                }} />
+            }}
+            name="price.reseller"
+          />
+        </div>
+      </div>
+      <button
+        disabled={pristine || submitting}
+        type="submit"
+        className="pure-button pure-button-primary cta">Create Schedule</button>
+    </form>
   )
 }
 

@@ -20,12 +20,16 @@ code {
   background: #eee;
 }
 
-button.cta {
+.cta {
   background: #00bfa5;
   color: white;
   border: none;
   padding: 8pt;
   min-width: 150px;
+}
+
+.destructive {
+  background: #ff0000;
 }
 
 .container {
@@ -49,6 +53,8 @@ button.cta {
 .section {
   background: white;
   padding: 25pt;
+  margin-bottom: 20pt;
+  /* padding-top: 15pt; */
 }
 
 /* NAVBAR */
@@ -117,4 +123,23 @@ button.cta {
   width: 50%;
   align-self: center;
   margin-left: 25%;
+}
+
+.left {
+  float: left;
+  width: 50%;
+}
+
+.left:before,
+.left:after {
+    content: " ";
+    display: table;
+}
+
+.left:after {
+    clear: both;
+}
+
+.left {
+    *zoom: 1;
 }

@@ -5,7 +5,7 @@ const ScheduleNew = props => {
   return (
   <main className="container">
     <div className="pure-g">
-      <div className="pure-u-1-1">
+      <div className="pure-u-1-1 half">
         <h1>Create a new schedule</h1>
         <ScheduleFormContainer {...props} />
       </div>
