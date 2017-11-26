@@ -3,6 +3,13 @@ import { Field, reduxForm } from 'redux-form'
 import eth from 'src/util/eth'
 
 export const formName = "resellers"
+const style = {
+    addButton: {
+        marginTop: '3pt',
+        height: '34pt',
+        marginLeft: '10pt'
+    }
+}
 
 class Resellers extends PureComponent {
 
@@ -12,6 +19,7 @@ class Resellers extends PureComponent {
             inputValid: true,
             name: null,
             timer: null,
+            buttonTitle: 'Add Reseller'
         }
     }
 
@@ -25,11 +33,12 @@ class Resellers extends PureComponent {
                     return reseller.getName.call(event.target.value)
                 }).then(name => {
                     this.setState({
-                        inputValid: false,
+                        inputValid: name.length > 0,
+                        buttonTitle: name.length > 0 ? `Add Reseller (${name})` : 'Add Reseller',
                         name
                     })
                 })
-            }, 1000) 
+            }, 1000)
         })
     }
 
@@ -55,28 +64,36 @@ class Resellers extends PureComponent {
                         })
                     })}
                 >
-                    <fieldset>                        
+                    <fieldset>
                         <div>
                             <label htmlFor="name">New reseller address:</label>
-                            <Field style={{ float: 'left' }} name="address" component="input" type="text" placeholder="Name" onChange={event => this.onAddressChanged(event)} /> {this.state.name}
-                        </div>
-                        <div>
+                            <Field
+                                style={{ float: 'left', width: '50%' }}
+                                name="address"
+                                component="input"
+                                type="text"
+                                placeholder="Name"
+                                onChange={event => this.onAddressChanged(event)} />
                             <button
-                                disabled={pristine || submitting || this.state.valid}
+                                disabled={pristine || submitting || !this.state.inputValid}
                                 type="submit"
-                                className="pure-button pure-button-primary">Add Reseller</button>
+                                style={style.addButton}
+                                className="cta">
+                                {this.state.buttonTitle}
+                            </button>
+                        </div>
+                        <div style={{ marginTop: 32 }}>
+                            <hr />
+                            <ul>
+                                {resellers.map(reseller => (
+                                    <li key={reseller.address}>{reseller.name} ({reseller.address}) - <a href="#" onClick={() => {
+                                        resellerRemove(reseller.address)
+                                    }}>x</a></li>
+                                ))}
+                            </ul>
                         </div>
                     </fieldset>
                 </form>
-                <div>
-                    <ul>
-                        {resellers.map(reseller => (
-                            <li key={reseller.address}>{reseller.name} ({ reseller.address }) - <a href="#" onClick={() => {
-                                resellerRemove(reseller.address)
-                            }}>x</a></li>
-                        ))}
-                    </ul>
-                </div>
             </div>
         )
     }

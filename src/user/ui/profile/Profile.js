@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
+import UserType from 'src/user/model/UserType'
 
 class Profile extends Component {
   constructor(props) {
     super(props)
-
-    console.log(props)
     this.state = {
       contactDetails: this.props.contactDetails,
       name: this.props.user.name
@@ -31,7 +30,7 @@ class Profile extends Component {
   }
 
   render() {
-    return(
+    return (
       <div>
         <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit.bind(this)}>
           <fieldset>
