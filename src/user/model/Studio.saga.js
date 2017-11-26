@@ -8,8 +8,8 @@ function* studioInfoSaga(action) {
   try {
     const studio = yield eth.Studio().deployed()
     const name = yield studio.name.call(eth.defaultAccount)
-    // const contactDetails = yield call(studio.contactDetails.call)
-    yield put(studioInfoLoaded(name, null))
+    const contactDetails = yield studio.contactDetails.call(eth.defaultAccount)
+    yield put(studioInfoLoaded(name, contactDetails))
   } catch (error) {
     console.log(`error:${error}`)
     yield put(studioInfoError(error))

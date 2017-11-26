@@ -22,7 +22,6 @@ export function* doScheduleCancel(action) {
     const schedule = Schedule.at(action.schedule)
     const studio = yield Studio.deployed()
     yield apply(schedule, schedule.cancel, [action.reason, from])
-    // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
     yield apply(studio, studio.scheduleRemoved, [schedule.address, from])
     yield put(schedulesLoad())
     yield call(action.history.push, '/dashboard')

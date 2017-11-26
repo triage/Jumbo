@@ -1,20 +1,16 @@
 import { connect } from 'react-redux'
 import Profile from './Profile'
-import { updateUser } from './ProfileActions'
+import { userUpdate } from './ProfileActions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
     user: state.user.data,
+    contactDetails: state.studio.contactDetails
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onProfileFormSubmit: (name) => {
-      event.preventDefault();
-      dispatch(updateUser(name))
-    }
-  }
+const mapDispatchToProps = {
+  userUpdate
 }
 
 const ProfileContainer = connect(

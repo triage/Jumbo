@@ -61,7 +61,8 @@ code {
 
 .navbar {
   position: fixed;
-  padding: 5px;
+  padding-left: 10pt;
+  padding-right: 10pt;
   background: #0c1a2b;
   font-family: Roboto;
 }

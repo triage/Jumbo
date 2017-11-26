@@ -7,6 +7,7 @@ import { watchScheduleCancel } from './user/ui/schedule/ScheduleDetail.saga'
 import { watchUserSignup } from './user/ui/signupform/SignUpForm.saga'
 import { watchIndividualLoad } from './user/model/Individual.saga'
 import { watchResellers } from './user/ui/profile/Resellers.saga'
+import { watchUserUpdate } from './user/ui/profile/Profile.saga'
 
 export function* rootSaga() {
   yield [
@@ -18,6 +19,7 @@ export function* rootSaga() {
     watchScheduleCancel(),
     watchUserSignup(),
     watchIndividualLoad(),
-    watchResellers()
+    watchResellers(),
+    watchUserUpdate()
   ]
 }

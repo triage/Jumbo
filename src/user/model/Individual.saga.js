@@ -23,6 +23,7 @@ function* doIndividualLoad(action) {
       const classAddress = yield schedule.klass.call()
       const klass = Class.at(classAddress)
       const name = yield klass.name.call()
+      const description = yield klass.description.call()
       const studioAddress = yield klass.owner.call()
       const studio = yield Studio.deployed()
       const studioName = yield studio.name.call(studioAddress)
@@ -43,7 +44,8 @@ function* doIndividualLoad(action) {
         },
         class: {
           address: classAddress,
-          name
+          name,
+          description
         },
         reserved: true,
         studio: {

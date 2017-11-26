@@ -144,6 +144,9 @@ export const start = callback => {
         return deployed.name.call(account.address)
       }).then(name => {
         account.name = name
+        return eth.getBalance(account.address)
+      }).then(balance => {
+        account.balance = balance
         fulfill(account)
       }).catch(error => {
         reject(SigninError.unauthorized)

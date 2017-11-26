@@ -3,16 +3,6 @@ import UserType from 'src/user/model/UserType'
 import eth from 'src/util/eth'
 import { reduxForm, Field } from 'redux-form'
 
-// const style = {
-//   button: {
-//     background: "#00bfa5",
-//     width: '100%',
-//     color: 'white',
-//     border: 'none',
-//     padding: '8pt'
-//   }
-// }
-
 class UserActions extends PureComponent {
 
   constructor() {
@@ -127,7 +117,7 @@ class UserActions extends PureComponent {
                       name="address" component="input"
                       type="text"
                       placeholder="User Address"
-                      onChange={event => this.onAddressChanged(event)}
+                    onChange={event => this.onAddressChanged(event)}
                     />
                     {this.state.name}
                   </div>
