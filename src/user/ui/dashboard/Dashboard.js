@@ -23,6 +23,20 @@ const EventAgenda = ({event}) => (
   </div>
 )
 
+const DashboardReseller = props => (
+  <div className="section z-depth-2">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Your address: {props.user.data.address}
+          </th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+)
+
 const Dashboard = props => {
   const {
     user,
@@ -32,6 +46,12 @@ const Dashboard = props => {
   let {
     events
   } = props;
+
+  document.title = `JUMBO - ${user.data.name}`
+
+  if (user.data.type === UserType.reseller) {
+    return <DashboardReseller {...props} />
+  }
 
   events = events.map(event => {
     return Object.assign({}, event, {
@@ -45,7 +65,7 @@ const Dashboard = props => {
     })
   }
 
-  document.title = `JUMBO - ${user.data.name}`
+  
 
   const earliestSchedulableClassHoursBefore = 1
   const defaultView = user.data.type === UserType.studio ? 'week' : 'agenda'

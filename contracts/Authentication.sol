@@ -16,9 +16,11 @@ contract Authentication is Killable {
     mapping (address => User) private users;
 
     uint private id; // Stores user id temporarily
-    
 
-    modifier trusted() {if (msg.sender == studio || msg.sender == individual || msg.sender == reseller) _;}
+    modifier trusted() {
+        require (msg.sender == studio || msg.sender == individual || msg.sender == reseller);
+        _;
+    }
 
     function setStudio(address _studio) public onlyOwner {
         studio = _studio;

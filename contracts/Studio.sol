@@ -3,6 +3,7 @@ import "./zeppelin/lifecycle/Killable.sol";
 import { Authentication } from "./Authentication.sol";
 import { Class } from "./Class.sol";
 import { Schedule } from "./Schedule.sol";
+import { Reseller } from "./Reseller.sol";
 
 contract Studio is Killable {
 	
@@ -16,11 +17,20 @@ contract Studio is Killable {
 	event ScheduleRemoved(address indexed schedule);
 	event ClassAdded(address indexed klass);
 	event ContactDetailsUpdated(address indexed studio, string contactDetails);
-	modifier authenticated() {if (bytes(name[msg.sender]).length > 0) _;}
+	modifier authenticated() {
+		require(bytes(name[msg.sender]).length > 0);
+		_;
+	}
 
 	address public authentication;
+	address public reseller;
+	
 	function setAuthentication(address _authentication) public onlyOwner {
 		authentication = _authentication;
+	}
+
+	function setReseller(address _reseller) public onlyOwner {
+		reseller = _reseller;
 	}
 
 	function classCreate(string _name, string _description) public {
@@ -110,26 +120,28 @@ contract Studio is Killable {
 		return resellers[msg.sender][index];
 	}
 
-	function addReseller(address reseller) public authenticated {
-		require(isAuthorizedReseller(msg.sender, reseller) == false);
-		resellers[msg.sender].push(reseller);
+	function addReseller(address _reseller) public authenticated {
+		require(isAuthorizedReseller(msg.sender, _reseller) == false);
+		resellers[msg.sender].push(_reseller);
+		Reseller(reseller).resellerAdded(msg.sender, _reseller);
 	}
 
-	function removeReseller(address reseller) public authenticated returns (bool) {
-		assert(isAuthorizedReseller(msg.sender, reseller));
+	function removeReseller(address _reseller) public authenticated returns (bool) {
+		assert(isAuthorizedReseller(msg.sender, _reseller));
 		for (uint resellerIndex = 0; resellerIndex < resellers[msg.sender].length; resellerIndex++) {
-			if (resellers[msg.sender][resellerIndex] == reseller) {
+			if (resellers[msg.sender][resellerIndex] == _reseller) {
 				delete(resellers[msg.sender][resellerIndex]);
+				Reseller(reseller).resellerRemoved(msg.sender, _reseller);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	function isAuthorizedReseller(address studio, address reseller) public view returns (bool) {
+	function isAuthorizedReseller(address _studio, address _reseller) public view returns (bool) {
 		bool isReseller = false;
-		for (uint resellerIndex = 0; resellerIndex < resellers[studio].length; resellerIndex++) {
-			if (resellers[studio][resellerIndex] == reseller) {
+		for (uint resellerIndex = 0; resellerIndex < resellers[_studio].length; resellerIndex++) {
+			if (resellers[_studio][resellerIndex] == _reseller) {
 				isReseller = true;
 				break;
 			}

@@ -70,14 +70,23 @@ contract("Studio", (accounts) => {
 			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
 		}).then(isAuthorizedReseller => {
 			assert.equal(isAuthorizedReseller, true, `${classpass.from} is not an authorized reseller (and should be)`)
-			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
-		}).then(isSenderAuthorizedReseller => {
-			assert.equal(isSenderAuthorizedReseller, true, `${classpass.from} is not an authorized reseller (and should be)`)
+			return reseller.deployed.getStudiosCount.call({ from: classpass.from })
+		}).then(count => {
+			assert.equal(count, 1)
+			return reseller.deployed.getStudio.call(0, { from: classpass.from })
+		}).then(address => {
+			assert.equal(address, barrys.from);
+			return reseller.deployed.getStudioStatus.call(0, { from: classpass.from })
+		}).then(status => {
+			assert.equal(status, 1)
 			return studio.deployed.removeReseller(classpass.from, { from: barrys.from })
 		}).then(() => {
 			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
 		}).then(isAuthorizedReseller => {
 			assert.equal(isAuthorizedReseller, false, `${classpass.from} is an authorized reseller (and should not be)`)
+			return reseller.deployed.getStudioStatus.call(0, { from: classpass.from })
+		}).then(status => {
+			assert.equal(status, 2)
 			done()
 		})
 	})

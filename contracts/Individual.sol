@@ -12,7 +12,10 @@ contract Individual is Killable {
 		authentication = _authentication;
 	}
 
-	modifier authenticated() {if (keccak256(name[msg.sender]) != keccak256("")) _;}
+	modifier authenticated() {
+		require(keccak256(name[msg.sender]) != keccak256(""));
+		_;
+	}
 
 	function signup(string _name) public {
 		require(keccak256(name[msg.sender]) == keccak256(""));

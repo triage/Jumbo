@@ -9,6 +9,7 @@ import { start, SigninError } from './util/eth'
 import App from './App'
 import { userPurge } from 'src/user/model/UserActions'
 import { studioLoad } from './user/model/StudioActions'
+import { resellerLoad } from './user/model/ResellerActions'
 import { individualLoad } from './user/model/IndividualActions'
 import UserType from './user/model/UserType'
 
@@ -37,6 +38,7 @@ start().then(user => {
     store.dispatch(individualLoad(user.address))
   } else if (user.type === UserType.reseller) {
     //todo
+    store.dispatch(resellerLoad(user.address))
   }
   render()
 }).catch(error => {

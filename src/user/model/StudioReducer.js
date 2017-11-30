@@ -26,7 +26,7 @@ const studioReducer = (state = initialState, action) => {
       loading: true
     })
   } else if (action.type === 'persist/REHYDRATE') {
-    return action.payload.studio;
+    return action.payload.studio | initialState;
   } else if (action.type === CLASS_CREATED) {
     let classes = state.classes ? Array.from(state.classes) : []
     classes.push(action.class)

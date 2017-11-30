@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import UserType from 'src/user/model/UserType'
 
 class Profile extends Component {
   constructor(props) {

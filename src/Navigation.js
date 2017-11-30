@@ -4,7 +4,7 @@ import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
 import { Link } from 'react-router-dom'
 
 const OnlyAuthLinks = VisibleOnlyAuth(props => {
-  const balance = eth.web3().fromWei(props.user.data.balance)
+  const balance = parseInt(eth.web3().fromWei(props.user.data.balance), 10).toFixed(2)
   return (<span>
     <li>
       <Link to="/profile">

@@ -6,7 +6,7 @@ import { Authentication } from './Authentication.sol';
 contract Reseller is Killable {
 
 	enum State {
-		Pending, Approved, Rejected
+		Pending, Approved, Suspended
 	}
 
 	struct Studio {
@@ -17,11 +17,23 @@ contract Reseller is Killable {
   	mapping(address => string) public name;
   	mapping(address => Studio[]) private studios;
 	address public authentication;
+	address private studio;
 
-	modifier authenticated() {if (keccak256(name[msg.sender]) != keccak256("")) _;}
+	modifier authenticated() {
+		require(keccak256(name[msg.sender]) != keccak256(""));
+		_;
+	}
+	modifier onlyStudio() {
+		require(msg.sender == studio);
+		_;
+	}
 
 	function setAuthentication(address _authentication) public onlyOwner {
 		authentication = _authentication;
+	}
+
+	function setStudio(address _studio) public onlyOwner {
+		studio = _studio;
 	}
 
 	function signup(string _name) public {
@@ -48,6 +60,11 @@ contract Reseller is Killable {
 		return studios[msg.sender][index].studio;
 	}
 
+	function getStudioStatus(uint index) public authenticated view returns (uint) {
+		require(studios[msg.sender].length > 0);
+		return uint(studios[msg.sender][index].state);
+	}
+
 	function getStudioState(uint index) public authenticated view returns (uint) {
 		require(studios[msg.sender].length > 0);
 		return uint(studios[msg.sender][index].state);
@@ -61,17 +78,16 @@ contract Reseller is Killable {
 		Schedule(schedule).spotCancel(individual, msg.sender);
 	}
 
-	function resellerStateChanged(address studio, uint state) external {
-		require(keccak256(name[studio]) == keccak256(""));
-		Studio[] storage resellerStudios = studios[studio];
-		//be sure there is a pending request for this studio from the reseller
-		bool found = false;
-		for (uint i = 0; i < resellerStudios.length; i++) {
-			if (resellerStudios[i].studio == studio) {
-				found = true;
-				resellerStudios[i].state = State(state);
+	function resellerAdded(address _studio, address reseller) external onlyStudio {
+		studios[reseller].push(Studio(_studio, State.Approved));
+	}
+
+	function resellerRemoved(address _studio, address reseller) external onlyStudio {
+		for (uint i = 0; i < studios[reseller].length; i++) {
+			if (studios[reseller][i].studio == _studio) {
+				studios[reseller][i].state = State.Suspended;
 				break;
 			}
-		}	
+		}
 	}
 }

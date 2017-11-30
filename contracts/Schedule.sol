@@ -39,8 +39,15 @@ contract Schedule is Killable {
 	mapping(uint => uint) private price;
 	Studio private studioContract;
 
-	modifier withinDeadlineCancellation() {if (block.timestamp <= dates.cancellation) _;}
-	modifier withinDeadlinePurchase() {if (block.timestamp <= dates.purchase) _; }
+	modifier withinDeadlineCancellation() {
+		require (block.timestamp <= dates.cancellation);
+		_;
+	}
+
+	modifier withinDeadlinePurchase() {
+		require(block.timestamp <= dates.purchase);
+		_;
+	}
 
 	event Cancel(string reason);
 	event SpotPurchased(uint spotType, address attendee, address reseller, uint index);
