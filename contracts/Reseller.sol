@@ -16,6 +16,8 @@ contract Reseller is Killable {
 
   	mapping(address => string) public name;
   	mapping(address => Studio[]) private studios;
+	mapping(address => string) public contactDetails;
+
 	address public authentication;
 	address private studio;
 
@@ -51,6 +53,10 @@ contract Reseller is Killable {
 		return name[reseller];
 	}
 
+	function getContactDetails(address reseller) public view returns (string) {
+		return contactDetails[reseller];
+	}
+
 	function getStudiosCount() public authenticated view returns (uint) {
 		return studios[msg.sender].length;
 	}
@@ -58,11 +64,6 @@ contract Reseller is Killable {
 	function getStudio(uint index) public authenticated view returns (address) {
 		require(studios[msg.sender].length > 0);
 		return studios[msg.sender][index].studio;
-	}
-
-	function getStudioStatus(uint index) public authenticated view returns (uint) {
-		require(studios[msg.sender].length > 0);
-		return uint(studios[msg.sender][index].state);
 	}
 
 	function getStudioState(uint index) public authenticated view returns (uint) {

@@ -6,20 +6,20 @@ function* doResellerLoad(action) {
   const Reseller = eth.Reseller()
   const Studio = eth.Studio()
   const from = eth.from()
-  debugger
   try {
     const reseller = yield Reseller.deployed()
     const studio = yield Studio.deployed()
     let count = yield reseller.getStudiosCount.call(from)
     const studios = []
-    debugger
     for (let i = 0; i < parseInt(count.valueOf(10), 10); i++) {
       const address = yield reseller.getStudio.call(i, from)
-      const name = studio.getName.call(address, from)
-      debugger
+      const state = yield reseller.getStudioState.call(i, from)
+      const name = yield studio.getName.call(address, from)
+      
       studios.push({
         address,
-        name
+        name,
+        state
       })
     }
     yield put(resellerLoaded(studios))

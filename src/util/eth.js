@@ -114,6 +114,7 @@ export const start = callback => {
       
       let authentication
       const account = {}
+      let contract
 
       eth.getDefaultAccount().then(defaultAccount => {
         account.address = defaultAccount
@@ -141,9 +142,13 @@ export const start = callback => {
             return null
         }
       }).then(deployed => {
+        contract = deployed
         return deployed.name.call(account.address)
       }).then(name => {
         account.name = name
+        return contract.contactDetails.call(account.address)
+      }).then(contactDetails => {
+        account.contactDetails = contactDetails
         return eth.getBalance(account.address)
       }).then(balance => {
         account.balance = balance

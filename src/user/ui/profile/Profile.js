@@ -4,9 +4,10 @@ class Profile extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      contactDetails: this.props.contactDetails,
+      contactDetails: this.props.user.contactDetails,
       name: this.props.user.name
     }
+    console.log(this.props)
   }
 
   onInputChange(event) {
@@ -44,9 +45,8 @@ class Profile extends Component {
               name="contactDetails"
               placeholder="Contact Details"
               onChange={this.onContactDetailsChanged.bind(this)}
-              style={{ height: 160 }}>
-              {this.props.contactDetails}
-            </textarea>
+              defaultValue={this.props.user.contactDetails}
+              style={{ height: 160 }} />
             <br />
             <button
               type="submit"

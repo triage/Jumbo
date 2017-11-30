@@ -2,12 +2,9 @@ import { connect } from 'react-redux'
 import Profile from './Profile'
 import { userUpdate } from './ProfileActions'
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    user: state.user.data,
-    contactDetails: state.studio.contactDetails
-  }
-}
+const mapStateToProps = (state, ownProps) => ({
+  user: state.user.data
+})
 
 const mapDispatchToProps = {
   userUpdate

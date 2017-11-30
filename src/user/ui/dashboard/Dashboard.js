@@ -24,15 +24,24 @@ const EventAgenda = ({event}) => (
 )
 
 const DashboardReseller = props => (
-  <div className="section z-depth-2">
-    <table>
+  <div className="section z-depth-2 half">
+    <h5>Studios that recognize you as a reseller:</h5>
+    <table className="bordered">
       <thead>
         <tr>
           <th>
-            Your address: {props.user.data.address}
+            Name
+          </th>
+          <th>
+            Address
           </th>
         </tr>
       </thead>
+      <tbody>
+        {props.reseller.studios.map(reseller => (
+            <tr key={reseller.address}><td>{reseller.name}</td><td>{reseller.address}}</td></tr>
+          ))}
+      </tbody>
     </table>
   </div>
 )

@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom'
 const mapStateToProps = (state, ownProps) => ({
   user: state.user,
   studio: state.studio,
+  reseller: state.reseller,
   events: state.schedules.map(schedule => {
     const obj = {
       address: schedule.address,

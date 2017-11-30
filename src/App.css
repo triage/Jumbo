@@ -144,3 +144,7 @@ code {
 .left {
     *zoom: 1;
 }
+
+td, th {
+  padding: 10pt 0pt;
+}

@@ -23,6 +23,7 @@ const SideNavigation = props => {
     } = props
 
     if (!user || user.type !== UserType.studio) {
+      console.log('render nothing')
       return null
     }
 
