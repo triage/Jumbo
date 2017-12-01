@@ -50,11 +50,17 @@ contract("Studio", (accounts) => {
 	})
 	
 	it("should add, then remove a schedule", done => {
-		studio.deployed.scheduleAdded(schedule, { from: barrys.from }).then(() => {
+		studio.deployed.classCreate("Class name", "Class description", { from: barrys.from }).then(() => {
+			return studio.deployed.classAtIndex.call(0, { from: barrys.from })
+		}).then(classAddress => {
+			return studio.deployed.scheduleCreate(classAddress, 'eric', 1, 2, 10, 3, 100, 100, { from: barrys.from })
+		}).then(() => {
 			return studio.deployed.schedulesCount.call()
 		}).then(count => {
 			assert.equal(count, 1, "schedules count should == 1")
-			return studio.deployed.scheduleRemoved(schedule, { from: barrys.from })
+			return studio.deployed.scheduleAtIndex(0, { from: barrys.from })
+		}).then(address => {
+			return studio.deployed.scheduleRemoved(address, { from: barrys.from })
 		}).then(() => {
 			return studio.deployed.schedulesCount.call({ from: barrys.from })
 		}).then(count => {

@@ -14,6 +14,10 @@ contract Reseller is Killable {
 		State state;
 	}
 
+	event ContactDetailsUpdated(address indexed studio, string contactDetails);
+	event ResellerAdded(address indexed studio, address indexed reseller);
+	event ResellerRemoved(address indexed studio, address indexed reseller);
+
   	mapping(address => string) public name;
   	mapping(address => Studio[]) private studios;
 	mapping(address => string) public contactDetails;
@@ -57,6 +61,11 @@ contract Reseller is Killable {
 		return contactDetails[reseller];
 	}
 
+	function updateContactDetails(string _contactDetails) authenticated public {
+		contactDetails[msg.sender] = _contactDetails;
+		ContactDetailsUpdated(msg.sender, contactDetails[msg.sender]);
+	}
+
 	function getStudiosCount() public authenticated view returns (uint) {
 		return studios[msg.sender].length;
 	}
@@ -81,12 +90,14 @@ contract Reseller is Killable {
 
 	function resellerAdded(address _studio, address reseller) external onlyStudio {
 		studios[reseller].push(Studio(_studio, State.Approved));
+		ResellerAdded(_studio, reseller);
 	}
 
 	function resellerRemoved(address _studio, address reseller) external onlyStudio {
 		for (uint i = 0; i < studios[reseller].length; i++) {
 			if (studios[reseller][i].studio == _studio) {
 				studios[reseller][i].state = State.Suspended;
+				ResellerRemoved(_studio, reseller);
 				break;
 			}
 		}

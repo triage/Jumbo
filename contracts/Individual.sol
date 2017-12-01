@@ -9,6 +9,8 @@ contract Individual is Killable {
 	mapping(address => string) public contactDetails;
 	address public authentication;
 
+	event ContactDetailsUpdated(address indexed individual, string contactDetails);
+
 	function setAuthentication(address _authentication) public onlyOwner {
 		authentication = _authentication;
 	}
@@ -30,6 +32,11 @@ contract Individual is Killable {
 
 	function getContactDetails(address individual) public view returns (string) {
 		return contactDetails[individual];
+	}
+
+	function updateContactDetails(string _contactDetails) authenticated public {
+		contactDetails[msg.sender] = _contactDetails;
+		ContactDetailsUpdated(msg.sender, contactDetails[msg.sender]);
 	}
 
 	function getSchedulesCount() public view returns (uint) {

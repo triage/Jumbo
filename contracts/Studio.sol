@@ -13,10 +13,11 @@ contract Studio is Killable {
 	mapping(address => address[]) public schedules;
 	mapping(address => address[]) public classes;
 
-	event ScheduleAdded(address indexed schedule);
-	event ScheduleRemoved(address indexed schedule);
-	event ClassAdded(address indexed klass);
+	event ScheduleAdded(address indexed studio, address indexed klass, address indexed schedule);
+	event ScheduleRemoved(address indexed studio, address indexed schedule);
+	event ClassAdded(address indexed studio, address indexed klass);
 	event ContactDetailsUpdated(address indexed studio, string contactDetails);
+	
 	modifier authenticated() {
 		require(bytes(name[msg.sender]).length > 0);
 		_;
@@ -38,6 +39,7 @@ contract Studio is Killable {
 		class.transferOwnership(msg.sender);
 		assert(class.owner() == msg.sender);
 		classes[msg.sender].push(class);
+		ClassAdded(msg.sender, address(class));
 	}
 
 	function scheduleCreate(address class, string instructor, uint dateStart, uint dateEnd, uint nSpots, uint nSpotsReseller, uint priceIndividual, uint priceReseller) public {
@@ -52,6 +54,8 @@ contract Studio is Killable {
 		schedule.transferOwnership(msg.sender);
 		assert(schedule.owner() == msg.sender);
 		schedules[msg.sender].push(schedule);
+
+		ScheduleAdded(msg.sender, class, schedule);
 	}
 
 	function signup(string _name) public {
@@ -93,11 +97,6 @@ contract Studio is Killable {
 		return schedules[msg.sender][index];
 	}
 
-	function scheduleAdded(address schedule) public {
-		schedules[msg.sender].push(schedule);
-		ScheduleAdded(schedule);
-	}
-
 	function scheduleRemoved(address schedule) public authenticated {
 		for (uint i = 0; i < schedules[msg.sender].length; i++) {
 			if (schedules[msg.sender][i] == schedule) {
@@ -106,7 +105,7 @@ contract Studio is Killable {
 				}
 				delete schedules[msg.sender][schedules[msg.sender].length - 1];
 				schedules[msg.sender].length--;
-				ScheduleRemoved(schedule);
+				ScheduleRemoved(msg.sender, schedule);
 				break;
 			}
 		}
