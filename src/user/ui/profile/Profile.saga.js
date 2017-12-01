@@ -24,7 +24,6 @@ function* doUserUpdate(action) {
       break
     }
     const entity = yield contract.deployed()
-    debugger
     yield apply(entity, entity.updateContactDetails.sendTransaction, [contactDetails, eth.from()])
     yield put(userUpdated(name, contactDetails))
   } catch (error) {

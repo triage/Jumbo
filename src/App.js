@@ -11,6 +11,7 @@ import Resellers from './user/layouts/profile/Resellers'
 import ScheduleForm from './layouts/schedule/ScheduleForm'
 import ScheduleDetail from './layouts/schedule/ScheduleDetail'
 import CreateClass from './layouts/class/CreateClass'
+import Studio from './layouts/studio/Studio'
 
 // Styles
 import './css/oswald.css'
@@ -25,6 +26,7 @@ const App = () => {
       <NavigationContainer />
       <Switch>
         <Route path="/schedule/new" component={UserIsAuthenticated(ScheduleForm)} />
+        <Route path="/studio/:address" component={Studio} />
         <Route path="/schedule/:address" component={ScheduleDetail} />
         <Route path="/class/new" component={UserIsAuthenticated(CreateClass)} />
         <Route path="/signup" component={UserIsNotAuthenticated(SignUp)} />

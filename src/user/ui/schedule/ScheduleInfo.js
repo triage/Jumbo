@@ -58,7 +58,10 @@ const ScheduleInfo = props => {
     schedule,
   } = props
 
-  const url = `http://localhost:8000/#/address/${schedule.address}`
+  const url = {
+    schedule: `http://localhost:8000/#/address/${schedule.address}`,
+    studio: `/studio/${schedule.studio.address}`,
+  }
   const date = moment(schedule.dates.start).format(format.date)
   const start = moment(schedule.dates.start).format(format.short)
   const end = moment(schedule.dates.end).format(format.short)
@@ -67,8 +70,8 @@ const ScheduleInfo = props => {
     <div>
       <div className="section z-depth-2">
         <div style={style.left}>
-          <div style={style.name}>{schedule.class.name} at {schedule.studio.name}</div>
-          <div style={style.address}><a href={url} target="_blank">{schedule.address}</a></div>
+          <div style={style.name}>{schedule.class.name} at <a href={url.studio}>{schedule.studio.name}</a></div>
+          <div style={style.address}><a href={url.schedule} target="_blank">{schedule.address}</a></div>
           <div style={style.contactDetails}>{schedule.studio.contactDetails}</div>
         </div>
         <div style={style.userActions}>

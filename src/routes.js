@@ -4,6 +4,10 @@ export default routes = [
     component: UserIsAuthenticated(Dashboard),
   },
   {
+    pattern: '/studio/:address',
+    component: sadfsafddas,
+  },
+  {
     pattern: '/schedule/new',
     component: UserIsAuthenticated(ScheduleNew),
   },
