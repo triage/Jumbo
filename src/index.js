@@ -9,15 +9,12 @@ import { start, SigninError } from './util/eth'
 import App from './App'
 import { userPurge } from 'src/user/model/UserActions'
 import { studioLoad } from './user/model/StudioActions'
+import { resellerLoad } from './user/model/ResellerActions'
 import { individualLoad } from './user/model/IndividualActions'
 import UserType from './user/model/UserType'
 
 let isAnonymous = false
 let isLoggedIn = false
-
-// function HomeWrapper() {
-//   return <Home isAuthenticated={!isAnonymous} hasAccount={hasAccount} />
-// }
 
 function render() {
   ReactDOM.render((
@@ -37,8 +34,11 @@ start().then(user => {
   store.dispatch(userLoggedIn(user))
   if (user.type === UserType.studio) {
     store.dispatch(studioLoad(user.address))
-  } else {
+  } else if (user.type === UserType.individual) {
     store.dispatch(individualLoad(user.address))
+  } else if (user.type === UserType.reseller) {
+    //todo
+    store.dispatch(resellerLoad(user.address))
   }
   render()
 }).catch(error => {

@@ -1,12 +1,16 @@
 /* PAGE */
 
+html {
+  background: #eceff1;
+}
+
 body,
 .pure-g [class*=pure-u] {
-  font-family: 'Open Sans', sans-serif;
+  font-family: Roboto
 }
 
 h1, h2, h3 {
-  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  font-family: Roboto;
 }
 
 code {
@@ -14,6 +18,18 @@ code {
   margin: 20px 0 15px 0;
   padding: 10px;
   background: #eee;
+}
+
+.cta {
+  background: #00bfa5;
+  color: white;
+  border: none;
+  padding: 8pt;
+  min-width: 150px;
+}
+
+.destructive {
+  background: #ff0000;
 }
 
 .container {
@@ -34,23 +50,31 @@ code {
   border-color: #0c1a2b;
 }
 
+.section {
+  background: white;
+  padding: 25pt;
+  margin-bottom: 20pt;
+  /* padding-top: 15pt; */
+}
+
 /* NAVBAR */
 
 .navbar {
   position: fixed;
-  padding: 5px;
+  padding-left: 10pt;
+  padding-right: 10pt;
   background: #0c1a2b;
-  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  font-family: Roboto;
 }
 
 .navbar a {
-  color: #fff;
+  color: #000;
 }
 
 .navbar a:active,
 .navbar a:focus,
 .navbar a:hover {
-  background: #233e5e;
+  color: #37474f;
 }
 
 .navbar .pure-menu-heading {
@@ -65,4 +89,62 @@ code {
 .navbar .uport-logo {
   height: 16px;
   margin-right: 10px;
+}
+
+.rbc-calendar {
+  background: white;
+  padding: 25pt;
+}
+
+.rbc-today {
+  background: #eceff1;
+}
+
+[type="radio"]:not(:checked), [type="radio"]:checked {
+  opacity: 1;
+  position: relative !important;
+  pointer-events: auto;
+}
+
+.rbc-agenda-view {
+  flex: none;
+}
+
+.rbc-day-slot .rbc-event {
+  background: #00bfa5;
+  border: none;
+}
+
+.pure-g {
+  margin-top: 25pt
+}
+
+.half {
+  justify-content: stretch;
+  width: 50%;
+  align-self: center;
+  margin-left: 25%;
+}
+
+.left {
+  float: left;
+  width: 50%;
+}
+
+.left:before,
+.left:after {
+    content: " ";
+    display: table;
+}
+
+.left:after {
+    clear: both;
+}
+
+.left {
+    *zoom: 1;
+}
+
+td, th {
+  padding: 10pt 0pt;
 }

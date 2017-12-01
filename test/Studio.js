@@ -1,6 +1,5 @@
 let barrys = { contactDetails: "135 W 20th St, New York, NY 10011" }
 let classpass = {}
-let barrysClass = {}
 
 const Reseller = artifacts.require("./Reseller.sol")
 const Studio = artifacts.require("./Studio.sol")
@@ -51,11 +50,17 @@ contract("Studio", (accounts) => {
 	})
 	
 	it("should add, then remove a schedule", done => {
-		studio.deployed.scheduleAdded(schedule, { from: barrys.from }).then(() => {
+		studio.deployed.classCreate("Class name", "Class description", { from: barrys.from }).then(() => {
+			return studio.deployed.classAtIndex.call(0, { from: barrys.from })
+		}).then(classAddress => {
+			return studio.deployed.scheduleCreate(classAddress, 'eric', 1, 2, 10, 3, 100, 100, { from: barrys.from })
+		}).then(() => {
 			return studio.deployed.schedulesCount.call()
 		}).then(count => {
 			assert.equal(count, 1, "schedules count should == 1")
-			return studio.deployed.scheduleRemoved(schedule, { from: barrys.from })
+			return studio.deployed.scheduleAtIndex(0, { from: barrys.from })
+		}).then(address => {
+			return studio.deployed.scheduleRemoved(address, { from: barrys.from })
 		}).then(() => {
 			return studio.deployed.schedulesCount.call({ from: barrys.from })
 		}).then(count => {
@@ -71,14 +76,23 @@ contract("Studio", (accounts) => {
 			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
 		}).then(isAuthorizedReseller => {
 			assert.equal(isAuthorizedReseller, true, `${classpass.from} is not an authorized reseller (and should be)`)
-			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
-		}).then(isSenderAuthorizedReseller => {
-			assert.equal(isSenderAuthorizedReseller, true, `${classpass.from} is not an authorized reseller (and should be)`)
+			return reseller.deployed.getStudiosCount.call({ from: classpass.from })
+		}).then(count => {
+			assert.equal(count, 1)
+			return reseller.deployed.getStudio.call(0, { from: classpass.from })
+		}).then(address => {
+			assert.equal(address, barrys.from);
+			return reseller.deployed.getStudioState.call(0, { from: classpass.from })
+		}).then(status => {
+			assert.equal(status, 1)
 			return studio.deployed.removeReseller(classpass.from, { from: barrys.from })
 		}).then(() => {
 			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
 		}).then(isAuthorizedReseller => {
 			assert.equal(isAuthorizedReseller, false, `${classpass.from} is an authorized reseller (and should not be)`)
+			return reseller.deployed.getStudioState.call(0, { from: classpass.from })
+		}).then(status => {
+			assert.equal(status, 2)
 			done()
 		})
 	})

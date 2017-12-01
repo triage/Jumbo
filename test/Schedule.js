@@ -44,9 +44,9 @@ let studio = {}
 let authentication = {}
 
 contract("Schedule", (accounts) => {
-	barrys.from = accounts[1]
-	classpass.from = accounts[2]
-	jessprager.from = accounts[3]
+	barrys.from = accounts[0]
+	classpass.from = accounts[1]
+	jessprager.from = accounts[2]
 
 	before(done => {
 		Reseller.deployed().then(deployed => {
@@ -87,6 +87,9 @@ contract("Schedule", (accounts) => {
 			return individual.deployed.getName.call(jessprager.from)
 		}).then(name => {
 			assert.equal(jessprager.name, name, "individual name not correctly set");
+			return authentication.deployed.userType({ from: jessprager.from })
+		}).then(userType => {
+			assert.equal(userType, 'INDIVIDUAL')
 			return studio.deployed.signup(barrys.name, { from: barrys.from })
 		}).then(() => {
 			return studio.deployed.getName.call(barrys.from)
@@ -96,7 +99,7 @@ contract("Schedule", (accounts) => {
 				classpass.from,
 				{ from: barrys.from }
 			)
-	    }).then(() => {
+	  }).then(() => {
 			return studio.deployed.isAuthorizedReseller.call(barrys.from, classpass.from)
 		}).then(isAuthorized => {
 			assert.equal(isAuthorized, true)
@@ -173,6 +176,9 @@ contract("Schedule", (accounts) => {
 			)
 		}).then(found => {
 			assert.isTrue(found)
+			return legsAss12pm.instance.getSpotAtIndex.call(0, { from: barrys.from })
+		}).then(address => {
+			assert.equal(address, jessprager.from)
 			return reseller.deployed.spotCancel(
 				legsAss12pm.instance.address,
 				jessprager.from,
@@ -198,8 +204,12 @@ contract("Schedule", (accounts) => {
 				{ from: jessprager.from, value: price }
 			)
 		}).then(() => {
+			return legsAss12pm.instance.getSpotAtIndex.call(0, { from: barrys.from })
+		}).then(address => {
+			assert.equal(address, jessprager.from)
 			return individual.deployed.getSchedulesCount.call({ from: jessprager.from })
 		}).then(count => {
+			assert.equal(count, 1)
 			return individual.deployed.getSchedule.call(0, { from: jessprager.from })
 		}).then(address => {
 			assert.equal(address, legsAss12pm.instance.address)

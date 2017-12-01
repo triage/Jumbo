@@ -12,26 +12,30 @@ module.exports = function(deployer) {
   deployer.then(() => {
     return Authentication.deployed()
   }).then(deployed => {
-    authentication = deployed.address
+    authentication = deployed
     return Individual.deployed()
   }).then(deployed => {
-    individual = deployed.address
+    individual = deployed
     return Studio.deployed()
   }).then(deployed => {
-    studio = deployed.address
+    studio = deployed
     return Reseller.deployed()
   }).then(deployed => {
-    reseller = deployed.address
-    return Individual.at(individual).setAuthentication(authentication)
+    reseller = deployed
+    return individual.setAuthentication(authentication.address)
   }).then(() => {
-    return Studio.at(studio).setAuthentication(authentication)
+    return studio.setAuthentication(authentication.address)
   }).then(() => {
-    return Reseller.at(reseller).setAuthentication(authentication)
+    return reseller.setAuthentication(authentication.address)
   }).then(() => {
-    return Authentication.at(authentication).setIndividual(individual)
+    return authentication.setIndividual(individual.address)
   }).then(() => {
-    return Authentication.at(authentication).setStudio(studio)
+    return authentication.setStudio(studio.address)
   }).then(() => {
-    return Authentication.at(authentication).setReseller(reseller)
+    return authentication.setReseller(reseller.address)
+  }).then(() => {
+    return reseller.setStudio(studio.address)
+  }).then(() => {
+    return studio.setReseller(reseller.address)
   })
 };

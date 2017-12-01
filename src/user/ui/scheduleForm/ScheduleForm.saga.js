@@ -5,15 +5,13 @@ import eth from 'src/util/eth'
 
 function* doScheduleSubmit(action) {
 
-  const Schedule = eth.Schedule()
   const Studio = eth.Studio()
-  const from = eth.from()
 
   try {
     // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
     const values = action.values;
     const studio = yield Studio.deployed()
-    const schedule = yield apply(
+    yield apply(
       studio,
       studio.scheduleCreate,
       [
@@ -25,7 +23,7 @@ function* doScheduleSubmit(action) {
         values.spots.reseller,
         eth.web3().toWei(values.price.individual),
         eth.web3().toWei(values.price.reseller),
-        from
+        eth.from()
       ]
     )
     const user = yield select(state => state.user.data)

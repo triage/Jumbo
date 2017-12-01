@@ -3,9 +3,14 @@ import ClassContract from 'contracts/Class.json'
 import StudioContract from 'contracts/Studio.json'
 import ScheduleContract from 'contracts/Schedule.json'
 import AuthenticationContract from 'contracts/Authentication.json'
+import ResellerContract from 'contracts/Reseller.json'
 import IndividualContract from 'contracts/Individual.json'
 import contract from 'truffle-contract'
 import UserType from 'src/user/model/UserType'
+
+export const addresses = {
+  blank: '0x0000000000000000000000000000000000000000'
+}
 
 export const SigninError = {
   unsupported: 'BROWSER UNSUPPORTED',
@@ -81,6 +86,12 @@ const eth = {
     return Individual
   },
 
+  Reseller: () => {
+    const Reseller = contract(ResellerContract)
+    Reseller.setProvider(eth.provider())
+    return Reseller
+  },
+
   Schedule: () => {
     const Schedule = contract(ScheduleContract)
     Schedule.setProvider(eth.provider())
@@ -103,27 +114,44 @@ export const start = callback => {
       
       let authentication
       const account = {}
+      let contract
 
       eth.getDefaultAccount().then(defaultAccount => {
         account.address = defaultAccount
         return eth.Authentication().deployed()
       }).then(instance => {
         authentication = instance
-        return authentication.login()
+        return authentication.login(eth.from())
       }).then(loggedIn => {
         if (!loggedIn) {
           reject(SigninError.unauthorized)
           return
         }
-        return authentication.userType()
+        return authentication.userType(eth.from())
       }).then(type => {
         account.type = type
         console.log(`type for ${account.address}: ${type}`)
-        return (type === UserType.studio) ? eth.Studio().deployed() : eth.Individual().deployed()
+        switch (type) {
+          case UserType.studio:
+            return eth.Studio().deployed()
+          case UserType.individual:
+            return eth.Individual().deployed()
+          case UserType.reseller:
+            return eth.Reseller().deployed()
+          default:
+            return null
+        }
       }).then(deployed => {
+        contract = deployed
         return deployed.name.call(account.address)
       }).then(name => {
         account.name = name
+        return contract.contactDetails.call(account.address)
+      }).then(contactDetails => {
+        account.contactDetails = contactDetails
+        return eth.getBalance(account.address)
+      }).then(balance => {
+        account.balance = balance
         fulfill(account)
       }).catch(error => {
         reject(SigninError.unauthorized)

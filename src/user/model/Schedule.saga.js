@@ -10,9 +10,9 @@ function* doSchedulesLoad(action) {
     const schedulesCount = yield studio.schedulesCount.call(eth.from())
     const classes = yield select(state => state.studio.classes);
     let schedules = []
-
+    
     // todo: don't totally wipe out the schedules here ... only replace if necessary so as to prevent a refresh
-    for (let i = 0; i < parseInt(schedulesCount.valueOf(10)); i++) {
+    for (let i = 0; i < parseInt(schedulesCount.valueOf(10), 10); i++) {
       const address = yield studio.scheduleAtIndex.call(i, eth.from())
       const schedule = eth.Schedule().at(address)
       const instructor = yield schedule.instructor.call()
@@ -50,7 +50,9 @@ function* doSchedulesLoad(action) {
 
 function* doScheduleLoad(action) {
   try {
-    const individual = eth.Individual().deployed()
+    const individual = yield eth.Individual().deployed()
+    const Studio = yield eth.Studio().deployed()
+    // const reseller = yield eth.Reseller().deployed()
     const user = yield select(state => state.user.data)
     const address = action.address
     const schedule = eth.Schedule().at(address)
@@ -66,14 +68,15 @@ function* doScheduleLoad(action) {
     nSpots = nSpots.valueOf()
     const attendees = []
     for (let i = 0; i < nSpots; i++) {
-      const address = yield schedule.getSpotAtIndex.call(i)
-      if (parseInt(address) === 0) {
+      const attendee = yield schedule.getSpotAtIndex.call(i)
+      if (parseInt(attendee) === 0) {
         continue
       }
-      const name = yield individual.getName.call(address)
+      const name = yield individual.getName.call(attendee)
       attendees.push({
-        address,
-        name
+        attendee,
+        name,
+        // type
       })
     }
     const classInstance = eth.Class().at(klass)
@@ -83,6 +86,15 @@ function* doScheduleLoad(action) {
       address: klass,
       name,
       description,
+    }
+
+    const studio = yield call(classInstance.owner.call)
+    const studioName = yield Studio.getName.call(studio)
+    const contactDetails = yield Studio.getContactDetails.call(studio)
+    const studioObject = {
+      address: studio,
+      name: studioName,
+      contactDetails,
     }
 
     const scheduleObj = {
@@ -100,7 +112,8 @@ function* doScheduleLoad(action) {
         cancellation: moment.unix(parseInt(dates[2].valueOf(10)) / 1000).toDate(),
         purchase: moment.unix(parseInt(dates[3].valueOf(10)) / 1000).toDate(),
       },
-      class: classObject
+      class: classObject,
+      studio: studioObject,
     }
     yield put(scheduleLoaded(scheduleObj))
   } catch (error) {

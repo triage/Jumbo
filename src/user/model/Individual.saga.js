@@ -1,8 +1,9 @@
-import { put, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery, call } from 'redux-saga/effects'
 import moment from 'moment'
+import UserType from 'src/user/model/UserType'
+import eth from 'src/util/eth'
 import { INDIVIDUAL_LOAD } from './IndividualActions'
 import { schedulesLoaded } from './ScheduleActions'
-import eth from 'src/util/eth'
 
 function* doIndividualLoad(action) {
   const Individual = eth.Individual()
@@ -14,7 +15,7 @@ function* doIndividualLoad(action) {
     const individual = yield Individual.deployed()
     let count = yield individual.getSchedulesCount.call(from)
     const schedules = []
-    for (let i = 0; i < parseInt(count.valueOf(10)); i++) {
+    for (let i = 0; i < parseInt(count.valueOf(10), 10); i++) {
       const address = yield individual.getSchedule.call(i, from)
       const schedule = Schedule.at(address)
       const dates = yield schedule.dates.call()
@@ -22,13 +23,18 @@ function* doIndividualLoad(action) {
       const classAddress = yield schedule.klass.call()
       const klass = Class.at(classAddress)
       const name = yield klass.name.call()
+      const description = yield klass.description.call()
       const studioAddress = yield klass.owner.call()
       const studio = yield Studio.deployed()
       const studioName = yield studio.name.call(studioAddress)
       const studioContactDetails = yield studio.contactDetails.call(studioAddress)
+      const price = {}
+      price.individual = yield call(schedule.getPriceWithUserType.call, UserType.individual)
+
       schedules.push({
         address: schedule.address,
         instructor,
+        price,
         dates: {
           /* eslint-disable radix */
           start: moment.unix(parseInt(dates[0].valueOf(10)) / 1000).toDate(),
@@ -38,7 +44,8 @@ function* doIndividualLoad(action) {
         },
         class: {
           address: classAddress,
-          name
+          name,
+          description
         },
         reserved: true,
         studio: {

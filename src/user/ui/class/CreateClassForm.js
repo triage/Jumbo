@@ -3,6 +3,12 @@ import { Field, reduxForm } from 'redux-form'
 
 const CreateClassForm = props => {
 
+  const style = {
+    field: {
+      marginBottom: 20,
+    }
+  }
+
   const {
     classCreate,
     handleSubmit,
@@ -20,14 +26,18 @@ const CreateClassForm = props => {
       })}
     >
       <fieldset>
-        <label htmlFor="name">Name</label>
-        <Field name="name" component="input" type="text" placeholder="Name" />
-        <label htmlFor="description">Description</label>
-        <Field name="description" component="textarea" placeholder="Description" />
+        <div style={style.field}>
+          <label htmlFor="name">Name</label>
+          <Field name="name" component="input" type="text" placeholder="Name" />
+        </div>
+        <div style={style.field}>
+          <label htmlFor="description">About this class</label>
+          <Field name="description" component="textarea" type="text" rows="7" style={{ height: 'inherit' }} placeholder="Description" />
+        </div>
         <button
           disabled={pristine || submitting}
           type="submit"
-          className="pure-button pure-button-primary">Create Class</button>
+          className="pure-button pure-button-primary cta">Create Class</button>
       </fieldset>
     </form>
   )

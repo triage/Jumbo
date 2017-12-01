@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import ProfileFormContainer from '../../ui/profileform/ProfileFormContainer'
+import ProfileContainer from '../../ui/profile/ProfileContainer'
+import SideNavigationContainer from '../../ui/profile/SideNavigationContainer'
 
 class Profile extends Component {
   render() {
@@ -8,8 +9,10 @@ class Profile extends Component {
         <div className="pure-g">
           <div className="pure-u-1-1">
             <h1>Profile</h1>
-            <p>Edit your account details here.</p>
-            <ProfileFormContainer />
+            <div className="section">
+              <SideNavigationContainer />
+              <ProfileContainer />
+            </div>
           </div>
         </div>
       </main>
