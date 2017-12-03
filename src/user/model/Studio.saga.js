@@ -6,9 +6,10 @@ import eth from 'src/util/eth'
 
 function* studioInfoSaga(action) {
   try {
+    const { address } = action
     const studio = yield eth.Studio().deployed()
-    const name = yield studio.name.call(eth.defaultAccount)
-    const contactDetails = yield studio.contactDetails.call(eth.defaultAccount)
+    const name = yield studio.name.call(address)
+    const contactDetails = yield studio.contactDetails.call(address)
     yield put(studioInfoLoaded(name, contactDetails))
   } catch (error) {
     console.log(`error:${error}`)
@@ -19,18 +20,18 @@ function* studioInfoSaga(action) {
 function* studioLoadSaga(action) {
   try {
     // first load studio info
-    yield put(studioInfoLoad())
+    yield put(studioInfoLoad(action.address))
     yield take(STUDIO_INFO_LOADED)
 
     // then load all classes
-    yield put(classesLoad())
+    yield put(classesLoad(action.address))
     yield take(CLASSES_LOADED)
 
     // load all schedules
-    yield put(schedulesLoad())
+    yield put(schedulesLoad(action.address))
     yield take(SCHEDULES_LOADED)
 
-    yield put(resellersLoad())
+    yield put(resellersLoad(action.address))
     yield take(RESELLERS_LOADED)
   } catch (error) {
     console.log(`error:${error}`)

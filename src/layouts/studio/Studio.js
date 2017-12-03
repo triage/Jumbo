@@ -1,7 +1,7 @@
 import React from 'react'
 import StudioContainer from 'src/ui/studio/StudioContainer'
 
-const Dashboard = props => (
+const Studio = props => (
   <main className="container">
     <div className="pure-g">
       <div className="pure-u-1-1">
@@ -11,4 +11,4 @@ const Dashboard = props => (
   </main>
 )
 
-export default Dashboard
+export default Studio

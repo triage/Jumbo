@@ -148,3 +148,24 @@ code {
 td, th {
   padding: 10pt 0pt;
 }
+
+/* detail */
+
+.address {
+  width: 70;
+  white-space: 'nowrap';
+  overflow: 'hidden';
+  text-overflow: 'ellipsis';
+  float: 'left';
+}
+
+.name {
+  font-size: 24pt !important;
+}
+
+.contactDetails {
+  color: "grey";
+  clear: 'both';
+  white-space: 'pre-line';
+  margin-top: "32pt";
+}

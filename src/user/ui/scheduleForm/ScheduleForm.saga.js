@@ -8,7 +8,6 @@ function* doScheduleSubmit(action) {
   const Studio = eth.Studio()
 
   try {
-    // const estimateScheduleNew = web3.eth.estimateGas({ data: Schedule.new })
     const values = action.values;
     const studio = yield Studio.deployed()
     yield apply(
@@ -27,7 +26,6 @@ function* doScheduleSubmit(action) {
       ]
     )
     const user = yield select(state => state.user.data)
-    // const estimateScheduleAdded = web3.eth.estimateGas({ data: Schedule.scheduleAdded })
     yield put(schedulesLoad(user.address))
     yield call(action.history.push, '/dashboard')
   } catch (error) {

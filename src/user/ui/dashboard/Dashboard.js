@@ -83,8 +83,6 @@ const Dashboard = props => {
     })
   }
 
-
-
   const earliestSchedulableClassHoursBefore = 1
   const defaultView = user.data.type === UserType.studio ? 'week' : 'agenda'
   const views = user.data.type === UserType.studio ? ['week', 'day', 'agenda'] : ['agenda']

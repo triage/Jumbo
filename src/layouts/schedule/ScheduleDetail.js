@@ -1,8 +1,7 @@
 import React from 'react'
 import ScheduleDetailContainer from 'user/ui/schedule/ScheduleDetailContainer'
 
-const Schedule = props => {
-  return (
+const ScheduleDetail = props => (
   <main className="container">
     <div className="pure-g">
       <div className="pure-u-1-1">
@@ -10,7 +9,6 @@ const Schedule = props => {
       </div>
     </div>
   </main>
-  )
-}
+)
 
-export default Schedule
+export default ScheduleDetail

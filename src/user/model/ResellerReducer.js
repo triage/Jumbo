@@ -1,4 +1,3 @@
-import { CLASSES_LOADED } from './ClassesActions'
 import { USER_PURGE } from 'src/user/model/UserActions'
 import { RESELLER_LOADED } from './ResellerActions'
 

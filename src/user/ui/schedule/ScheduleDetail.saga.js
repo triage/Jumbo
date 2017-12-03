@@ -9,7 +9,8 @@ import {
   SPOT_CANCEL,
   spotPurchased,
   spotCancelled,
-  scheduleCompleted
+  scheduleCompleted,
+  scheduleCancelled
 } from './ScheduleDetailActions'
 
 export function* doScheduleCancel(action) {
@@ -23,7 +24,8 @@ export function* doScheduleCancel(action) {
     const studio = yield Studio.deployed()
     yield apply(schedule, schedule.cancel, [action.reason, from])
     yield apply(studio, studio.scheduleRemoved, [schedule.address, from])
-    yield put(schedulesLoad())
+    yield put(schedulesLoad(eth.defaultAccount))
+    yield put(scheduleCancelled(action.schedule))
     yield call(action.history.push, '/dashboard')
   } catch (error) {
     console.log(error)

@@ -7,13 +7,13 @@ import { schedulesLoaded, scheduleLoaded, SCHEDULES_LOAD, SCHEDULE_LOAD } from '
 function* doSchedulesLoad(action) {
   try {
     const studio = yield eth.Studio().deployed()
-    const schedulesCount = yield studio.schedulesCount.call(eth.from())
+    const schedulesCount = yield studio.schedulesCount.call(action.address)
     const classes = yield select(state => state.studio.classes);
     let schedules = []
     
     // todo: don't totally wipe out the schedules here ... only replace if necessary so as to prevent a refresh
     for (let i = 0; i < parseInt(schedulesCount.valueOf(10), 10); i++) {
-      const address = yield studio.scheduleAtIndex.call(i, eth.from())
+      const address = yield studio.scheduleAtIndex.call(action.address, i)
       const schedule = eth.Schedule().at(address)
       const instructor = yield schedule.instructor.call()
       const dates = yield schedule.dates.call()
@@ -42,8 +42,9 @@ function* doSchedulesLoad(action) {
         }),
       })
     }
-    yield put(schedulesLoaded(schedules))
+    yield put(schedulesLoaded(action.address, schedules))
   } catch (error) {
+    debugger
     console.log(`error:${error}`)
   }
 }
@@ -52,7 +53,6 @@ function* doScheduleLoad(action) {
   try {
     const individual = yield eth.Individual().deployed()
     const Studio = yield eth.Studio().deployed()
-    // const reseller = yield eth.Reseller().deployed()
     const user = yield select(state => state.user.data)
     const address = action.address
     const schedule = eth.Schedule().at(address)

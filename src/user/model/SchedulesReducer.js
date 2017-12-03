@@ -1,9 +1,11 @@
-import { SCHEDULE_LOADED, SCHEDULES_LOADED } from './ScheduleActions'
-import { SPOT_PURCHASED, SPOT_CANCELLED, SCHEDULE_COMPLETED } from 'user/ui/schedule/ScheduleDetailActions'
+//Individual schedule state
+import { SCHEDULE_LOADED } from './ScheduleActions'
+import { INDIVIDUAL_LOADED } from 'user/model/IndividualActions'
+import { SPOT_PURCHASED, SPOT_CANCELLED } from 'user/ui/schedule/ScheduleDetailActions'
 
 const initialState = []
 
-const studioReducer = (state = initialState, action) => {
+const schedulesReducer = (state = initialState, action) => {
   if (action.type === 'persist/REHYDRATE') {
     return action.payload.schedules || initialState
   } else if (action.type === SCHEDULE_LOADED) {
@@ -19,8 +21,8 @@ const studioReducer = (state = initialState, action) => {
     }
 
     return schedules
-  } else if (action.type === SCHEDULES_LOADED) {
-    return action.schedules
+  } else if (action.type === INDIVIDUAL_LOADED) {
+    return Array.from(action.schedules)
   } else if (action.type === SPOT_PURCHASED) {
     const schedules = Array.from(state).map(schedule => {
       if (schedule.address === action.schedule.address) {
@@ -41,10 +43,8 @@ const studioReducer = (state = initialState, action) => {
       return schedule
     })
     return schedules
-  } else if (action.type === SCHEDULE_COMPLETED) {
-    return Array.from(state).filter(schedule => schedule.address !== action.schedule)
   }
   return state
 }
 
-export default studioReducer
+export default schedulesReducer

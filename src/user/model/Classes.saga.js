@@ -5,11 +5,10 @@ import eth from 'src/util/eth'
 export function* doClassesLoad(action) {
   try {
     const studio = yield eth.Studio().deployed()
-
-    const classesCount = yield studio.classesCount(eth.from())
+    const classesCount = yield studio.classesCount(action.address)
     let classes = []
     for(let classIndex = 0; classIndex < classesCount.toNumber(); classIndex++) {
-      const address = yield studio.classAtIndex.call(classIndex, eth.from())
+      const address = yield studio.classAtIndex.call(action.address, classIndex)
       const instance = eth.Class().at(address)
       const name = yield instance.name.call()
       const description = yield instance.description.call()
@@ -22,7 +21,7 @@ export function* doClassesLoad(action) {
     }
     yield put(classesLoaded(classes))
   } catch (error) {
-    // yield put({ type: "CLASS_CREATE_FAILED", error })
+    debugger
     console.log(`error:${error}`)
   }
 }

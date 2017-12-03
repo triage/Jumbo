@@ -1,8 +1,8 @@
 export const CLASSES_LOAD = 'CLASSES_LOAD'
-export const classesLoad = (studio) => {
+export const classesLoad = address => {
   return {
     type: CLASSES_LOAD,
-    studio,
+    address,
   }
 }
 

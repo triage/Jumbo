@@ -81,20 +81,20 @@ contract Studio is Killable {
 		ContactDetailsUpdated(msg.sender, contactDetails[msg.sender]);
 	}
 
-	function classesCount() public view returns (uint) {
-		return classes[msg.sender].length;
+	function classesCount(address studio) public view returns (uint) {
+		return classes[studio].length;
 	}
 
-	function classAtIndex(uint index) public view returns (address) {
-		return classes[msg.sender][index];
+	function classAtIndex(address studio, uint index) public view returns (address) {
+		return classes[studio][index];
 	}
 
-	function schedulesCount() public view returns (uint) {
-		return schedules[msg.sender].length;
+	function schedulesCount(address studio) public view returns (uint) {
+		return schedules[studio].length;
 	}
 
-	function scheduleAtIndex(uint index) public view returns (address) {
-		return schedules[msg.sender][index];
+	function scheduleAtIndex(address studio, uint index) public view returns (address) {
+		return schedules[studio][index];
 	}
 
 	function scheduleRemoved(address schedule) public authenticated {

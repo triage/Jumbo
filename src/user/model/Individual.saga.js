@@ -2,8 +2,7 @@ import { put, takeEvery, call } from 'redux-saga/effects'
 import moment from 'moment'
 import UserType from 'src/user/model/UserType'
 import eth from 'src/util/eth'
-import { INDIVIDUAL_LOAD } from './IndividualActions'
-import { schedulesLoaded } from './ScheduleActions'
+import { INDIVIDUAL_LOAD, individualLoaded } from './IndividualActions'
 
 function* doIndividualLoad(action) {
   const Individual = eth.Individual()
@@ -54,8 +53,7 @@ function* doIndividualLoad(action) {
         }
       })
     }
-    yield put(schedulesLoaded(schedules))
-
+    yield put(individualLoaded(schedules))
   } catch (error) {
     console.log(`error:${error}`)
     debugger
