@@ -90,13 +90,17 @@ const Dashboard = props => {
   const toolbar = user.data.type === UserType.studio ? true : false
 
   eth.Studio().deployed().then(deployed => {
-    const event = deployed.ScheduleAdded({ studio: eth.defaultAccount }, { fromBlock: 0 })
-    event.get((error, result) => {
-      if (error) {
-        console.log(`error:${error}`)
-      } else if (result) {
-        console.log(result)
-      }
+    const events = [{ name: "Schedule - Added", event: deployed.ScheduleAdded}, { name: 'Schedule - Removed', event:deployed.ScheduleRemoved }]
+    events.forEach(event => {
+      event.event({ studio: eth.defaultAccount }, { fromBlock: 0 }).get((error, result) => {
+        console.log(event.name)
+        if (error) {
+          console.log(`error:${error}`)
+        } else if (result) {
+          console.log(result)
+        }
+      })
+      console.log('\n\n')
     })
   })
 

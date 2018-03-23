@@ -50,8 +50,9 @@ contract Schedule is Killable {
 	}
 
 	event Cancel(string reason);
-	event SpotPurchased(uint spotType, address attendee, address reseller, uint index);
-	event SpotCancelled(uint spotType, address attendee, address reseller);
+	event SpotPurchased(uint spotType, address attendee, address reseller, uint index, uint spotsAvailable);
+	event SpotCancelled(uint spotType, address attendee, address reseller, uint spotsAvailable);
+	event ResellerPriceUpdated(address indexed contractAddress, uint newPrice);
 
 	function Schedule(address _class, string _instructor, uint _dateStart, uint _dateEnd, uint _nSpots, uint _nSpotsReseller, uint priceIndividual, uint priceReseller) public {
 		studioContract = Studio(msg.sender);
@@ -84,7 +85,7 @@ contract Schedule is Killable {
 		//todo: address of reseller
 		spot = Spot(spotType, attendee, msg.sender, reseller);
 		spots[index] = spot;
-		SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index);
+		SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index, nSpots - getNumberOfAttendees());
 	}
 
 	function spotCancel(address attendee, address reseller) withinDeadlineCancellation external {
@@ -97,7 +98,12 @@ contract Schedule is Killable {
 		if (!destination.send(spotPrice)) {
 			revert();
 		}
-		SpotCancelled(uint(spot.spotType), attendee, 0x0);
+		SpotCancelled(uint(spot.spotType), attendee, 0x0, nSpots - getNumberOfAttendees());
+	}
+
+	function priceResellerUpdate(uint _priceReseller) public {
+		price[uint(SpotType.Reseller)] = _priceReseller;
+		ResellerPriceUpdated(this, _priceReseller);
 	}
 
 	function complete() public onlyOwner {
