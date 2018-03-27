@@ -32,7 +32,7 @@ library ClassFactory {
 
 library Array {
 
-    function NOT_FOUND() public constant returns (int) {
+    function NOT_FOUND() public pure returns (int) {
         return -1;
     }
 
@@ -94,13 +94,13 @@ contract Studio is Killable {
     function classCreate(string _name, string _description) public {
         address class = ClassFactory.create(msg.sender, _name, _description);
         classes[msg.sender].push(class);
-        emit ClassAdded(msg.sender, address(class));
+        ClassAdded(msg.sender, address(class));
     }
 
     function scheduleCreate(address class, string instructor, uint dateStart, uint dateEnd, uint nSpots, uint nSpotsReseller, uint priceIndividual, uint priceReseller) public {
         address schedule = ScheduleFactory.create(msg.sender, class, instructor, dateStart, dateEnd, nSpots, nSpotsReseller, priceIndividual, priceReseller);
         schedules[msg.sender].push(schedule);
-        emit ScheduleAdded(msg.sender, class, schedule);
+        ScheduleAdded(msg.sender, class, schedule);
     }
 
     function signup(string _name) public {
@@ -123,7 +123,7 @@ contract Studio is Killable {
 
     function updateContactDetails(string _contactDetails) authenticated public {
         contactDetails[msg.sender] = _contactDetails;
-        emit ContactDetailsUpdated(msg.sender, contactDetails[msg.sender]);
+        ContactDetailsUpdated(msg.sender, contactDetails[msg.sender]);
     }
 
     function classesCount(address studio) public view returns (uint) {
@@ -143,19 +143,17 @@ contract Studio is Killable {
     }
 
     function scheduleRemoved(address schedule) public authenticated {
-        bool removed;
-        schedules[msg.sender] = Array.remove(schedules[msg.sender], schedule);
-        // for (uint i = 0; i < schedules[msg.sender].length; i++) {
-        //     if (schedules[msg.sender][i] == schedule) {
-        //         if (i < schedules[msg.sender].length - 1) {
-        //             schedules[msg.sender][i] = schedules[msg.sender][i+1];
-        //         }
-        //         delete schedules[msg.sender][schedules[msg.sender].length - 1];
-        //         schedules[msg.sender].length--;
-        //         emit ScheduleRemoved(msg.sender, schedule);
-        //         break;
-        //     }
-        // }
+        for (uint i = 0; i < schedules[msg.sender].length; i++) {
+            if (schedules[msg.sender][i] == schedule) {
+                if (i < schedules[msg.sender].length - 1) {
+                    schedules[msg.sender][i] = schedules[msg.sender][i+1];
+                }
+                delete schedules[msg.sender][schedules[msg.sender].length - 1];
+                schedules[msg.sender].length--;
+                ScheduleRemoved(msg.sender, schedule);
+                break;
+            }
+        }
     }
 
     function resellersCount() authenticated public view returns (uint) {

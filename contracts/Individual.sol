@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.19;
 import "./zeppelin/lifecycle/Killable.sol";
 import { Schedule } from "./Schedule.sol";
 import { Authentication } from "./Authentication.sol";
@@ -36,7 +36,7 @@ contract Individual is Killable {
 
     function updateContactDetails(string _contactDetails) authenticated public {
         contactDetails[msg.sender] = _contactDetails;
-        emit ContactDetailsUpdated(msg.sender, contactDetails[msg.sender]);
+        ContactDetailsUpdated(msg.sender, contactDetails[msg.sender]);
     }
 
     function getSchedulesCount() public view returns (uint) {

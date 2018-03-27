@@ -33,8 +33,8 @@ module.exports = {
       // gas: 5600000,
       //gasPrice: 2000000000,
       // gasPrice: 5000000000, //didn't work
-      gasPrice: 20000000000,
-      // gasPrice: 10000000000,
+      // gasPrice: 20000000000,
+      gasPrice: 10000000000,
       provider: () => {
         return new HDWalletProvider(
           'lottery hold latin index cool renew scatter cradle begin evil rich cream',

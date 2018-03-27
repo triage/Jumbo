@@ -88,7 +88,7 @@ contract Schedule is Killable {
         //todo: address of reseller
         spot = Spot(spotType, attendee, msg.sender, reseller);
         spots[index] = spot;
-        emit SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index, nSpots - getNumberOfAttendees());
+        SpotPurchased(uint(spot.spotType), spot.attendee, spot.reseller, index, nSpots - getNumberOfAttendees());
     }
 
     function spotCancel(address attendee, address reseller) withinDeadlineCancellation external {
@@ -104,12 +104,12 @@ contract Schedule is Killable {
         if (!destination.send(spotPrice)) {
             revert();
         }
-        emit SpotCancelled(uint(spot.spotType), attendee, 0x0, nSpots - getNumberOfAttendees());
+        SpotCancelled(uint(spot.spotType), attendee, 0x0, nSpots - getNumberOfAttendees());
     }
 
     function priceResellerUpdate(uint _priceReseller) public {
         price[uint(SpotType.Reseller)] = _priceReseller;
-        emit ResellerPriceUpdated(this, _priceReseller);
+        ResellerPriceUpdated(this, _priceReseller);
     }
 
     function complete() public onlyOwner {
@@ -120,7 +120,7 @@ contract Schedule is Killable {
 
     function cancel(string reason) public onlyOwner {
         //studio needs to cancel this schedule. Refund all spots, notify all attendees of the reason.
-        emit Cancel(reason);
+        Cancel(reason);
 
         //process withdrawals
         for (uint spotIndex = 0; spotIndex < nSpots; spotIndex ++) {
