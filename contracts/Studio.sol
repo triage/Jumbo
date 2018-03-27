@@ -4,64 +4,9 @@ import { Authentication } from "./Authentication.sol";
 import { Class } from "./Class.sol";
 import { Schedule } from "./Schedule.sol";
 import { Reseller } from "./Reseller.sol";
-
-library ScheduleFactory {
-    function create(address sender, address class, string instructor, uint dateStart, uint dateEnd, uint nSpots, uint nSpotsReseller, uint priceIndividual, uint priceReseller) public returns (address) {
-        require(class != 0x0);
-        require(dateStart > 0);
-        require(dateEnd > 0);
-        require(nSpots > nSpotsReseller);
-        require(priceIndividual > 0);
-        require(priceReseller > 0);
-        
-        Schedule schedule = new Schedule(class, instructor, dateStart, dateEnd, nSpots, nSpotsReseller, priceIndividual, priceReseller);
-        schedule.transferOwnership(sender);
-        assert(schedule.owner() == sender);
-        return schedule;
-    }
-}
-
-library ClassFactory {
-    function create(address sender, string name, string description) public returns (address) {
-        Class class = new Class(name, description);
-        class.transferOwnership(sender);
-        assert(class.owner() == sender);
-        return class;
-    }
-}
-
-library Array {
-
-    function NOT_FOUND() public pure returns (int) {
-        return -1;
-    }
-
-    function contains(address[] haystack, address needle) public pure returns (int) {
-        bool exists = false;
-        int atIndex = NOT_FOUND();
-        for (uint i = 0; i < haystack.length; i++) {
-            if (haystack[i] == needle) {
-                exists = true;
-                atIndex = int(i);
-                break;
-            }
-        }
-        return atIndex;
-    }
-
-    function remove(address[] haystack, address needle) public pure returns (address[]) {
-        for (uint i = 0; i < haystack.length; i++) {
-            if (haystack[i] == needle) {
-                if (i < haystack.length - 1) {
-                    haystack[i] = haystack[i+1];
-                }
-                delete haystack[haystack.length - 1];
-                break;
-            }
-        }
-        return haystack;
-    }
-}
+import { ScheduleFactory } from "./ScheduleFactory.sol";
+import { ClassFactory } from "./ClassFactory.sol";
+import { Array } from "./Array.sol";
 
 contract Studio is Killable {
     
