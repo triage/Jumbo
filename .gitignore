@@ -7,7 +7,6 @@ node_modules
 coverage
 
 # production
-build
 build_webpack
 
 # misc
@@ -15,3 +14,4 @@ build_webpack
 .env
 npm-debug.log
 .truffle-solidity-loader
+

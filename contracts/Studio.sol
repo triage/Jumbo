@@ -25,7 +25,7 @@ contract Studio is Killable {
 
 	address public authentication;
 	address public reseller;
-	
+
 	function setAuthentication(address _authentication) public onlyOwner {
 		authentication = _authentication;
 	}
