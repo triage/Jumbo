@@ -37,5 +37,7 @@ module.exports = function(deployer) {
     return reseller.setStudio(studio.address)
   }).then(() => {
     return studio.setReseller(reseller.address)
+  }).catch(error => {
+    console.log(`error:${error}`)
   })
 };
