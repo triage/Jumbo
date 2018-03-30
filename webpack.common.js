@@ -10,8 +10,9 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.json'],
     alias: {
+      contracts: path.resolve(__dirname, 'build/contracts/'),
       src: path.resolve(__dirname, 'src/'),
-      user: path.resolve(__dirname, 'src/user/')
+      user: path.resolve(__dirname, 'src/user/'),
     },
   },
   plugins: [
@@ -22,6 +23,7 @@ module.exports = {
   ],
   module: {
     loaders: [
+      { test: /\.(jpe?g|gif|png|svg|woff|woff2|ttf|eot|wav|mp3)$/, loader: "file" },
       {
         test: /\.json$/,
         loader: 'json-loader'
