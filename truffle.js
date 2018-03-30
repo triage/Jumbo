@@ -1,16 +1,15 @@
+// Allows us to use ES6 in our migrations and tests.
+require('babel-register')
+
 const HDWalletProvider = require("truffle-hdwallet-provider");
 
 module.exports = {
+  build: "webpack --config webpack.config.js",
   migrations_directory: "./migrations",
   networks: {
     development: {
       host: 'localhost',
-      // gasPrice: 100000000000 //default
-      // gasPrice: 2000000000,
       gasPrice: 20000000000,
-      // gasPrice: 50000000000
-      // gasPrice: 10000000000,
-      // gasPrice: 7000000000 //7 gwei
       port: 7545,
       network_id: "*" // Match any network id
     },
@@ -28,11 +27,7 @@ module.exports = {
       },
     },
     ropsten: {
-      //gas: 8007776,
       gas: 4600000,
-      // gas: 5600000,
-      //gasPrice: 2000000000,
-      // gasPrice: 5000000000, //didn't work
       // gasPrice: 10000000000, //too long
       gasPrice: 20000000000,
       provider: () => {
