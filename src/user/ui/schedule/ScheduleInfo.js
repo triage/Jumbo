@@ -10,27 +10,11 @@ const format = {
   date: 'ddd, MMM D'
 }
 const style = {
-  address: {
-    width: 70,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    float: 'left',
-  },
   balance: {
     fontSize: 30,
   },
   cancel: {
 
-  },
-  name: {
-    fontSize: 24,
-  },
-  contactDetails: {
-    color: "grey",
-    clear: 'both',
-    whiteSpace: 'pre-line',
-    marginTop: "32pt"
   },
   userActions: {
     float: 'right',
@@ -70,9 +54,9 @@ const ScheduleInfo = props => {
     <div>
       <div className="section z-depth-2">
         <div style={style.left}>
-          <div style={style.name}>{schedule.class.name} at <a href={url.studio}>{schedule.studio.name}</a></div>
-          <div style={style.address}><a href={url.schedule} target="_blank">{schedule.address}</a></div>
-          <div style={style.contactDetails}>{schedule.studio.contactDetails}</div>
+          <div className="name">{schedule.class.name} at <a href={url.studio}>{schedule.studio.name}</a></div>
+          <div className="address"><a href={url.schedule} target="_blank">{schedule.address}</a></div>
+          <div className="contactDetails">{schedule.studio.contactDetails}</div>
         </div>
         <div style={style.userActions}>
           <Balance {...props} />

@@ -7,23 +7,22 @@ pragma solidity ^0.4.18;
  * Provides onlyOwner modifier, which prevents function from running if it is called by anyone other than the owner.
  */
 contract Ownable {
-  address public owner;
+    address public owner;
 
-  function Ownable() public {
-    owner = msg.sender;
-  }
+    function Ownable() public {
+        owner = msg.sender;
+    }
 
-  modifier onlyOwner() {
-    if (msg.sender == owner)
-      _;
-  }
+    modifier onlyOwner() {
+        if (msg.sender == owner)
+            _;
+    }
 
-  event OwnershipChanged(address from, address to);
+    event OwnershipChanged(address from, address to);
 
-  function transferOwnership(address newOwner) public onlyOwner {
-    require(newOwner != 0x0);
-    OwnershipChanged(owner, newOwner);
-    owner = newOwner;
-  }
-
+    function transferOwnership(address newOwner) public onlyOwner {
+        require(newOwner != 0x0);
+        OwnershipChanged(owner, newOwner);
+        owner = newOwner;
+    }
 }

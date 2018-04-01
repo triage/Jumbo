@@ -6,12 +6,14 @@ export const STUDIO_LOAD = 'STUDIO_LOAD'
 export const RESELLERS_LOAD = 'RESELLERS_LOAD'
 export const RESELLERS_LOADED = 'RESELLERS_LOADED'
 
-export const studioInfoLoad = () => ({
-  type: STUDIO_INFO_LOAD
+export const studioInfoLoad = address => ({
+  type: STUDIO_INFO_LOAD,
+  address
 })
 
-export const studioLoad = () => ({
-  type: STUDIO_LOAD
+export const studioLoad = address => ({
+  type: STUDIO_LOAD,
+  address
 })
 
 export const studioInfoLoaded = (name, contactDetails) => ({

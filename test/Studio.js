@@ -39,10 +39,10 @@ contract("Studio", (accounts) => {
 
 	it("should add, then remove a class", done => {
 		studio.deployed.classCreate("Class name", "Class description", { from: barrys.from }).then(() => {
-			return studio.deployed.classesCount.call({ from: barrys.from })
+			return studio.deployed.classesCount.call(barrys.from)
 		}).then(count => {
 			assert.equal(count, 1, "class count should == 1")
-			return studio.deployed.classAtIndex.call(0, { from: barrys.from })
+			return studio.deployed.classAtIndex.call(barrys.from, 0)
 		}).then(address => {
 			assert.notEqual(address, 0x0, "classAtIndex[0] should not be 0x0")
 			done()
@@ -51,18 +51,18 @@ contract("Studio", (accounts) => {
 	
 	it("should add, then remove a schedule", done => {
 		studio.deployed.classCreate("Class name", "Class description", { from: barrys.from }).then(() => {
-			return studio.deployed.classAtIndex.call(0, { from: barrys.from })
+			return studio.deployed.classAtIndex.call(barrys.from, 0)
 		}).then(classAddress => {
 			return studio.deployed.scheduleCreate(classAddress, 'eric', 1, 2, 10, 3, 100, 100, { from: barrys.from })
 		}).then(() => {
-			return studio.deployed.schedulesCount.call()
+			return studio.deployed.schedulesCount.call(barrys.from)
 		}).then(count => {
 			assert.equal(count, 1, "schedules count should == 1")
-			return studio.deployed.scheduleAtIndex(0, { from: barrys.from })
+			return studio.deployed.scheduleAtIndex(barrys.from, 0)
 		}).then(address => {
 			return studio.deployed.scheduleRemoved(address, { from: barrys.from })
 		}).then(() => {
-			return studio.deployed.schedulesCount.call({ from: barrys.from })
+			return studio.deployed.schedulesCount.call(barrys.from)
 		}).then(count => {
 			assert.equal(count, 0, "should have 0 classes after cancellation")
 			done()

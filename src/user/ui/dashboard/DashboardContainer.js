@@ -3,12 +3,17 @@ import Dashboard from './Dashboard'
 import { studioLoad } from '../../model/StudioActions'
 import { individualLoad } from '../../model/IndividualActions'
 import { withRouter } from 'react-router-dom'
+import UserType from 'src/user/model/UserType'
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, ownProps) => {
+
+  const schedules = state.user.data.type === UserType.individual ? state.schedules : state.studio.schedules
+
+  return {
   user: state.user,
   studio: state.studio,
   reseller: state.reseller,
-  events: state.schedules.map(schedule => {
+  events: schedules ? schedules.map(schedule => {
     const obj = {
       address: schedule.address,
       start: new Date(schedule.dates.start),
@@ -19,8 +24,9 @@ const mapStateToProps = (state, ownProps) => ({
       studio: schedule.class.studio || state.studio,
     }
     return obj
-  })
-})
+  }) : [],
+}
+}
 
 const mapDispatchToProps = ({
   studioLoad,

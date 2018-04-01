@@ -112,9 +112,9 @@ contract("Schedule", (accounts) => {
 				{ from: barrys.from }
 			)
 		}).then(() => {
-			return studio.deployed.classesCount({ from: barrys.from })
+			return studio.deployed.classesCount.call(barrys.from)
 		}).then(count => {
-			return studio.deployed.classAtIndex(count - 1, { from: barrys.from })
+			return studio.deployed.classAtIndex(barrys.from, count - 1)
 		}).then(address => {
 			legsAss.instance = Class.at(address);
 			return legsAss.instance.name()
@@ -135,7 +135,7 @@ contract("Schedule", (accounts) => {
 				{ from: barrys.from }
 			)
 		}).then(() => {
-			return studio.deployed.scheduleAtIndex(0, { from: barrys.from});
+			return studio.deployed.scheduleAtIndex(barrys.from, 0);
 	    }).then(schedule => {
 			legsAss12pm.instance = Schedule.at(schedule)
 			return legsAss12pm.instance.spotTypeWithSender(classpass.from)

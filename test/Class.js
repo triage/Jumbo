@@ -18,9 +18,9 @@ contract("Class", (accounts) => {
 				{ from: barrys.from }
 			)
 		}).then(() => {
-			return studio.instance.classesCount({ from: barrys.from })
+			return studio.instance.classesCount(barrys.from)
 		}).then(count => {
-			return studio.instance.classAtIndex(count - 1, { from: barrys.from })
+			return studio.instance.classAtIndex(barrys.from, count - 1)
 		}).then(address => {
 			legsAss.instance = Class.at(address);
 			return legsAss.instance.name.call()
@@ -43,9 +43,9 @@ contract("Class", (accounts) => {
 				{ from: barrys.from }
 			)	
 		}).then(() => {
-			return studio.instance.classesCount({ from: barrys.from })
+			return studio.instance.classesCount(barrys.from)
 		}).then(count => {
-			return studio.instance.classAtIndex(count - 1, { from: barrys.from })
+			return studio.instance.classAtIndex(barrys.from, count - 1)
 		}).then(address => {
 			legsAss.instance = Class.at(address);
 			return legsAss.instance.setName(legsAss.name, { from: barrys.from })

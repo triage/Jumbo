@@ -3,14 +3,17 @@ import { CLASS_CREATED } from 'src/user/ui/class/CreateClassActions'
 import { SCHEDULES_LOADED } from './ScheduleActions'
 import { USER_PURGE } from 'src/user/model/UserActions'
 import { STUDIO_LOAD, STUDIO_INFO_LOADED } from './StudioActions'
+import { SCHEDULE_COMPLETED, SCHEDULE_CANCELLED } from 'user/ui/schedule/ScheduleDetailActions'
 import { USER_UPDATED } from '../ui/profile/ProfileActions'
 
 const initialState = {
+  address: null,
   loading: false,
   loaded: false,
   classes: null,
   name: null,
-  contactDetails: null
+  contactDetails: null,
+  schedules: [],
 }
 
 const studioReducer = (state = initialState, action) => {
@@ -23,7 +26,8 @@ const studioReducer = (state = initialState, action) => {
     })
   } else if (action.type === STUDIO_LOAD) {
     return Object.assign({}, state, {
-      loading: true
+      loading: true,
+      address: action.address,
     })
   } else if (action.type === 'persist/REHYDRATE') {
     return action.payload.studio | initialState;
@@ -40,7 +44,12 @@ const studioReducer = (state = initialState, action) => {
   } else if (action.type === SCHEDULES_LOADED) {
     return Object.assign({}, state, {
       loaded: true,
-      loading: false
+      loading: false,
+      schedules: Array.from(action.schedules),
+    })
+  } else if (action.type === SCHEDULE_COMPLETED || action.type === SCHEDULE_CANCELLED) {
+    return Object.assign({}, state, {
+      schedules: state.schedules.filter(schedule => schedule.address !== action.schedule)
     })
   }
   return state

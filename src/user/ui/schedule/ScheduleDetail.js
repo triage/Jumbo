@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { reduxForm } from 'redux-form'
+import eth from 'src/util/eth'
 import UserType from 'src/user/model/UserType'
 import ClassInfo from './ClassInfo'
 import ScheduleInfo from './ScheduleInfo'
@@ -22,6 +23,17 @@ class Schedule extends PureComponent {
         scheduleLoad(address)
       return null
     }
+
+    eth.Schedule().at(schedule.address).then(deployed => {
+      const event = deployed.SpotPurchased({ spotType: 1 }, { fromBlock: 0 })
+      event.get((error, result) => {
+        if (error) {
+          console.log(`error:${error}`)
+        } else if (result) {
+          console.log(result)
+        }
+      })
+    })
 
     document.title = `${schedule.class.name}`
 

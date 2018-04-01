@@ -1,16 +1,26 @@
 import { connect } from 'react-redux'
 import Studio from './Studio'
-// import { studioLoad } from '../../model/StudioActions'
+import { studioLoad } from '../../user/model/StudioActions'
 import { withRouter } from 'react-router-dom'
 
 const mapStateToProps = (state, ownProps) => {
-  if (!state.studios) {
-    return {}
+  const {
+    match
+  } = ownProps
+
+  if (state.studio.address !== match.params.address || state.studio.loading) {
+    return {
+      address: match.params.address,
+      loading: state.studio.loading,
+      loaded: state.studio.loaded
+    }
   }
 
   return {
-    studio: state.studios[ownProps.address],
-    events: state.studios[ownProps.address].schedules.map(schedule => {
+    loaded: true,
+    loading: false,
+    studio: state.studio,
+    events: state.studio.schedules ? state.studio.schedules.map(schedule => {
       const obj = {
         address: schedule.address,
         start: new Date(schedule.dates.start),
@@ -21,12 +31,12 @@ const mapStateToProps = (state, ownProps) => {
         studio: schedule.class.studio || state.studio,
       }
       return obj
-    })
+    }) : [],
   }
 }
 
 const mapDispatchToProps = ({
-  // studioLoad,
+  studioLoad,
 })
 
 const StudioContainer = connect(
