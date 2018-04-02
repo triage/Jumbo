@@ -1,6 +1,6 @@
 //Individual schedule state
 import { SCHEDULE_LOADED } from './ScheduleActions'
-import { INDIVIDUAL_LOADED } from 'user/model/IndividualActions'
+import { INDIVIDUAL_LOADED } from '../../user/model/IndividualActions'
 import { SPOT_PURCHASED, SPOT_CANCELLED } from 'user/ui/schedule/ScheduleDetailActions'
 
 const initialState = []

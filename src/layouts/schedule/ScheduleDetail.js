@@ -1,5 +1,5 @@
 import React from 'react'
-import ScheduleDetailContainer from 'user/ui/schedule/ScheduleDetailContainer'
+import ScheduleDetailContainer from '../../user/ui/schedule/ScheduleDetailContainer'
 
 const ScheduleDetail = props => (
   <main className="container">

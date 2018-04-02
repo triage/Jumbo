@@ -4,8 +4,8 @@ require('babel-register')
 const HDWalletProvider = require("truffle-hdwallet-provider");
 
 module.exports = {
-  build: "webpack --config webpack.config.js",
   migrations_directory: "./migrations",
+  contracts_build_directory: "./src/contracts",
   networks: {
     development: {
       host: 'localhost',

@@ -1,5 +1,5 @@
 import React from 'react'
-import StudioContainer from 'src/ui/studio/StudioContainer'
+import StudioContainer from '../../ui/studio/StudioContainer'
 
 const Studio = props => (
   <main className="container">
