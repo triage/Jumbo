@@ -1,6 +1,6 @@
 import { put, apply, takeEvery } from 'redux-saga/effects'
 import { RESELLER_ADD, resellerAdded, RESELLER_REMOVE, resellerRemoved } from './ResellerActions'
-import eth from 'src/util/eth'
+import eth from 'util/eth'
 import { reset } from 'redux-form'
 import { formName } from './Resellers'
 

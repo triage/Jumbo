@@ -1,12 +1,13 @@
-import Web3 from 'web3'
-import ClassContract from 'contracts/Class.json'
-import StudioContract from 'contracts/Studio.json'
-import ScheduleContract from 'contracts/Schedule.json'
-import AuthenticationContract from 'contracts/Authentication.json'
-import ResellerContract from 'contracts/Reseller.json'
-import IndividualContract from 'contracts/Individual.json'
 import contract from 'truffle-contract'
-import UserType from 'src/user/model/UserType'
+import Web3 from 'web3'
+import ClassContract from '../contracts/Class.json'
+import StudioContract from '../contracts/Studio.json'
+import ScheduleContract from '../contracts/Schedule.json'
+import AuthenticationContract from '../contracts/Authentication.json'
+import ResellerContract from '../contracts/Reseller.json'
+import IndividualContract from '../contracts/Individual.json'
+
+import UserType from '../user/model/UserType'
 
 export const addresses = {
   blank: '0x0000000000000000000000000000000000000000'

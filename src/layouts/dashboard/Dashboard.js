@@ -1,5 +1,5 @@
 import React from 'react'
-import DashboardContainer from '../../user/ui/dashboard/DashboardContainer'
+import DashboardContainer from 'user/ui/dashboard/DashboardContainer'
 
 const Dashboard = props => (
   <main className="container">

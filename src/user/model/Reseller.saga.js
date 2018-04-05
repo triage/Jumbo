@@ -1,5 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects'
-import eth from 'src/util/eth'
+import eth from 'util/eth'
 import { RESELLER_LOAD, resellerLoaded } from './ResellerActions'
 
 function* doResellerLoad(action) {

@@ -1,7 +1,7 @@
 import { USER_UPDATE, userUpdated } from './ProfileActions'
 import { put, select, apply, takeEvery } from 'redux-saga/effects'
-import UserType from 'src/user/model/UserType'
-import eth from 'src/util/eth'
+import UserType from 'user/model/UserType'
+import eth from 'util/eth'
 
 function* doUserUpdate(action) {
 

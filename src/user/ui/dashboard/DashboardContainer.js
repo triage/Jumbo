@@ -3,7 +3,7 @@ import Dashboard from './Dashboard'
 import { studioLoad } from '../../model/StudioActions'
 import { individualLoad } from '../../model/IndividualActions'
 import { withRouter } from 'react-router-dom'
-import UserType from 'src/user/model/UserType'
+import UserType from 'user/model/UserType'
 
 const mapStateToProps = (state, ownProps) => {
 
