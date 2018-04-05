@@ -85,7 +85,7 @@
     "truffle-hdwallet-provider": "0.0.3"
   },
   "scripts": {
-    "deploy": "gh-pages -d ./dist -r https://github.com/triage/chia.fit.git -b master",
+    "deploy": "gh-pages -d ./build -r https://github.com/triage/chia.fit.git -b master",
     "test:solidity": "scripty",
     "start": "react-scripts start",
     "build": "react-scripts build",
