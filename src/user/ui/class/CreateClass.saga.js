@@ -1,7 +1,7 @@
 import { put, call, takeEvery, apply } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import { CLASS_CREATE, classCreated } from './CreateClassActions'
-import eth from 'src/util/eth'
+import eth from 'util/eth'
 
 export function* doCreateClass(action) {
 

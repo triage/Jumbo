@@ -1,5 +1,5 @@
 import React from 'react'
-import eth from 'src/util/eth'
+import eth from 'util/eth'
 import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
 import { Link } from 'react-router-dom'
 

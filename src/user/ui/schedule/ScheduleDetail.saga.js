@@ -1,7 +1,7 @@
 import { put, call, apply, select, takeEvery } from 'redux-saga/effects'
-import eth from 'src/util/eth'
+import eth from 'util/eth'
 import { schedulesLoad } from 'user/model/ScheduleActions'
-import UserType from 'src/user/model/UserType'
+import UserType from 'user/model/UserType'
 import {
   SCHEDULE_CANCEL,
   SCHEDULE_COMPLETE,

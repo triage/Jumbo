@@ -1,7 +1,7 @@
 import { put, apply, select, call, take, takeEvery } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import { schedulesLoad, SCHEDULES_LOADED } from 'user/model/ScheduleActions'
-import eth from 'src/util/eth'
+import eth from 'util/eth'
 import { SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
 
 function* doScheduleSubmit(action) {

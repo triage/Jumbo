@@ -1,6 +1,6 @@
 import { RESELLERS_LOADED } from './StudioActions'
 import { RESELLER_ADDED, RESELLER_REMOVED } from '../ui/profile/ResellerActions'
-import { addresses } from 'src/util/eth'
+import { addresses } from 'util/eth'
 
 const initialState = []
 

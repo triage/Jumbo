@@ -2,7 +2,7 @@ import { put, takeEvery, take } from 'redux-saga/effects'
 import { STUDIO_INFO_LOAD, STUDIO_INFO_LOADED, STUDIO_LOAD, RESELLERS_LOADED, RESELLERS_LOAD, resellersLoad, resellersLoaded, studioInfoLoad, studioInfoError, studioInfoLoaded } from './StudioActions'
 import { classesLoad, CLASSES_LOADED } from './ClassesActions'
 import { schedulesLoad, SCHEDULES_LOADED } from './ScheduleActions'
-import eth from 'src/util/eth'
+import eth from 'util/eth'
 
 function* studioInfoSaga(action) {
   try {

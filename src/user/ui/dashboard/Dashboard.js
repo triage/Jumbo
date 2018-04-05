@@ -1,8 +1,8 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
-import UserType from 'src/user/model/UserType'
-import eth from 'src/util/eth'
+import UserType from 'user/model/UserType'
+import eth from 'util/eth'
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)

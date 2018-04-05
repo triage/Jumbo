@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
-import UserType from 'src/user/model/UserType'
+import UserType from 'user/model/UserType'
 
 const SignUpForm = props => {
 

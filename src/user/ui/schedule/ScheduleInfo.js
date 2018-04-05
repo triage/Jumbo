@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
-import eth from 'src/util/eth'
-import UserType from 'src/user/model/UserType'
+import eth from 'util/eth'
+import UserType from 'user/model/UserType'
 import UserActions from './UserActions'
 
 const format = {

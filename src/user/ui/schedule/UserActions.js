@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
-import UserType from 'src/user/model/UserType'
-import eth from 'src/util/eth'
 import { reduxForm, Field } from 'redux-form'
+import UserType from 'user/model/UserType'
+import eth from 'util/eth'
 
 class UserActions extends PureComponent {
 

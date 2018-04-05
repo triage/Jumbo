@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
 import NumericInput from 'react-numeric-input';
-import ClassesSelector from 'src/user/ui/class/classes/ClassesSelector'
+import ClassesSelector from 'user/ui/class/classes/ClassesSelector'
 
 import 'react-date-picker/index.css'
 

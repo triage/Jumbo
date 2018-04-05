@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Studio from './Studio'
-import { studioLoad } from '../../user/model/StudioActions'
+import { studioLoad } from 'user/model/StudioActions'
 import { withRouter } from 'react-router-dom'
 
 const mapStateToProps = (state, ownProps) => {
