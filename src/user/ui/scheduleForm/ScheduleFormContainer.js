@@ -1,20 +1,20 @@
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import ScheduleForm from './ScheduleForm'
-import { scheduleSubmit } from './ScheduleFormActions'
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import ScheduleForm from './ScheduleForm';
+import { scheduleSubmit } from './ScheduleFormActions';
 
 const mapStateToProps = state => ({
   user: state.user,
-  classes: state.studio.classes || []
-})
+  classes: state.studio.classes || [],
+});
 
 const mapDispatchToProps = ({
-  scheduleSubmit
-})
+  scheduleSubmit,
+});
 
 const ScheduleFormContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
-)(ScheduleForm)
+  mapDispatchToProps,
+)(ScheduleForm);
 
-export default withRouter(ScheduleFormContainer)
+export default withRouter(ScheduleFormContainer);

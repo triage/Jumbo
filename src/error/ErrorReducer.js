@@ -1,15 +1,13 @@
-import { ERROR_DISPATCH, ERROR_ACKNOWLEDGE } from './ErrorActions'
+import { ERROR_DISPATCH, ERROR_ACKNOWLEDGE } from './ErrorActions';
 
-const initialState = []
+const initialState = [];
 
 export default (state = initialState, action) => {
   if (action.type === ERROR_DISPATCH) {
-    return [].concat(state.errors, [action.error])
+    return [].concat(state.errors, [action.error]);
   } else if (action.type === ERROR_ACKNOWLEDGE) {
-    return state.filter(error => {
-      return error !== action.error
-    })
+    return state.filter(error => error !== action.error);
   }
-  return state
-}
+  return state;
+};
 

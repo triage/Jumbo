@@ -1,32 +1,31 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class Profile extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       contactDetails: this.props.user.contactDetails,
-      name: this.props.user.name
-    }
-    console.log(this.props)
+      name: this.props.user.name,
+    };
+    console.log(this.props);
   }
 
   onInputChange(event) {
-    this.setState({ name: event.target.value })
+    this.setState({ name: event.target.value });
   }
 
   onContactDetailsChanged(event) {
-    this.setState({ contactDetails: event.target.value })
+    this.setState({ contactDetails: event.target.value });
   }
 
   handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
 
-    if (this.state.name.length < 2)
-    {
-      return alert('Please fill in your name.')
+    if (this.state.name.length < 2) {
+      return alert('Please fill in your name.');
     }
 
-    this.props.userUpdate(this.state.name, this.state.contactDetails)
+    this.props.userUpdate(this.state.name, this.state.contactDetails);
   }
 
   render() {
@@ -40,24 +39,27 @@ class Profile extends Component {
               type="text"
               value={this.state.name}
               onChange={this.onInputChange.bind(this)}
-              placeholder="Name" />
+              placeholder="Name"
+            />
             <textarea
               name="contactDetails"
               placeholder="Contact Details"
               onChange={this.onContactDetailsChanged.bind(this)}
               defaultValue={this.props.user.contactDetails}
-              style={{ height: 160 }} />
+              style={{ height: 160 }}
+            />
             <br />
             <button
               type="submit"
-              className="pure-button pure-button-primary">
+              className="pure-button pure-button-primary"
+            >
               Update
             </button>
           </fieldset>
         </form>
       </div>
-    )
+    );
   }
 }
 
-export default Profile
+export default Profile;

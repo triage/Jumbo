@@ -1,14 +1,14 @@
-import React from 'react'
-import moment from 'moment'
-import eth from 'util/eth'
-import UserType from 'user/model/UserType'
-import UserActions from './UserActions'
+import React from 'react';
+import moment from 'moment';
+import eth from 'util/eth';
+import UserType from 'user/model/UserType';
+import UserActions from './UserActions';
 
 const format = {
   long: 'ddd, MMM D, H:mm a',
   short: 'H:mm a',
-  date: 'ddd, MMM D'
-}
+  date: 'ddd, MMM D',
+};
 const style = {
   balance: {
     fontSize: 30,
@@ -25,30 +25,30 @@ const style = {
   },
   left: {
     float: 'left',
-  }
-}
+  },
+};
 
-const Balance = props => {
-  const { schedule, user } = props
+const Balance = (props) => {
+  const { schedule, user } = props;
   if (user.type !== UserType.studio) {
-    return null
+    return null;
   }
-  const balance = eth.web3().fromWei(schedule.balance)
-  return <div style={style.balance}>{balance} eth</div>
-}
+  const balance = eth.web3().fromWei(schedule.balance);
+  return <div style={style.balance}>{balance} eth</div>;
+};
 
-const ScheduleInfo = props => {
+const ScheduleInfo = (props) => {
   const {
     schedule,
-  } = props
+  } = props;
 
   const url = {
     schedule: `http://localhost:8000/#/address/${schedule.address}`,
     studio: `/studio/${schedule.studio.address}`,
-  }
-  const date = moment(schedule.dates.start).format(format.date)
-  const start = moment(schedule.dates.start).format(format.short)
-  const end = moment(schedule.dates.end).format(format.short)
+  };
+  const date = moment(schedule.dates.start).format(format.date);
+  const start = moment(schedule.dates.start).format(format.short);
+  const end = moment(schedule.dates.end).format(format.short);
 
   return (
     <div>
@@ -70,7 +70,7 @@ const ScheduleInfo = props => {
         <div style={{ clear: 'both' }} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ScheduleInfo
+export default ScheduleInfo;

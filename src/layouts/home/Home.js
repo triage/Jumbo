@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const Home = ((isAuthenticated) => {
-  if(isAuthenticated.isAuthenticated) {
+  if (isAuthenticated.isAuthenticated) {
     return (
       <main className="container">
         <div className="pure-g">
@@ -11,10 +11,10 @@ const Home = ((isAuthenticated) => {
           </div>
         </div>
       </main>
-    )
+    );
   }
 
-  return(
+  return (
     <main className="container">
       <div className="pure-g">
         <div className="pure-u-1-1">
@@ -23,7 +23,7 @@ const Home = ((isAuthenticated) => {
         </div>
       </div>
     </main>
-  )
-})
+  );
+});
 
-export default Home
+export default Home;

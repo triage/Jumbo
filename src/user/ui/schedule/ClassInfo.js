@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-const ClassInfo = props => {
+const ClassInfo = (props) => {
   const {
-    schedule
-  } = props
+    schedule,
+  } = props;
   return (<div className="section z-depth-2">
     <h5>About this class:</h5>
     <p style={{ whiteSpace: 'pre-line' }}>{schedule.class.description}</p>
-  </div>)
-}
+  </div>);
+};
 
-export default ClassInfo
+export default ClassInfo;

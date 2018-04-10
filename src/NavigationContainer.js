@@ -1,16 +1,16 @@
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import Navigation from './Navigation'
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import Navigation from './Navigation';
 
 const mapStateToProps = state => ({
-  user: state.user
-})
+  user: state.user,
+});
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {};
 
 const NavigationContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Navigation))
+  mapDispatchToProps,
+)(withRouter(Navigation));
 
-export default NavigationContainer
+export default NavigationContainer;

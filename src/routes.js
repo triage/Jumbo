@@ -13,11 +13,11 @@ export default routes = [
   },
   {
     pattern: '/schedule/:address',
-    component: ScheduleDetail
+    component: ScheduleDetail,
   },
   {
     pattern: '/class/new',
-    component: CreateClass
+    component: CreateClass,
   },
   {
     pattern: '/signup',

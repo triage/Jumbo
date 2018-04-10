@@ -1,40 +1,39 @@
-import React from 'react'
-import UserType from 'user/model/UserType'
+import React from 'react';
+import UserType from 'user/model/UserType';
 
 const styles = {
   container: {
     float: 'left',
     width: 200,
-    marginRight: 20
+    marginRight: 20,
   },
-}
+};
 
 const studioOnly = (userType, component) => {
   if (userType === UserType.studio) {
-    return component
+    return component;
   }
-  return null
-}
+  return null;
+};
 
-const SideNavigation = props => {
+const SideNavigation = (props) => {
+  const {
+    user,
+  } = props;
 
-    const {
-      user,
-    } = props
+  if (!user || user.type !== UserType.studio) {
+    console.log('render nothing');
+    return null;
+  }
 
-    if (!user || user.type !== UserType.studio) {
-      console.log('render nothing')
-      return null
-    }
+  return (
+    <div style={styles.container}>
+      <ul>
+        {studioOnly(UserType.studio, <li><a href="/profile">Profile</a></li>)}
+        {studioOnly(UserType.studio, <li><a href="/profile/resellers">Resellers</a></li>)}
+      </ul>
+    </div>
+  );
+};
 
-    return (
-        <div style={styles.container}>
-            <ul>
-                {studioOnly(UserType.studio, <li><a href="/profile">Profile</a></li>)}
-                {studioOnly(UserType.studio, <li><a href="/profile/resellers">Resellers</a></li>)}
-            </ul>
-        </div>
-    )
-}
-
-export default SideNavigation
+export default SideNavigation;

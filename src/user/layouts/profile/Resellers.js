@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import ResellersContainer from '../../ui/profile/ResellersContainer'
-import SideNavigationContainer from '../../ui/profile/SideNavigationContainer'
+import React, { Component } from 'react';
+import ResellersContainer from '../../ui/profile/ResellersContainer';
+import SideNavigationContainer from '../../ui/profile/SideNavigationContainer';
 
 class Resellers extends Component {
   render() {
-    return(
+    return (
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
@@ -16,8 +16,8 @@ class Resellers extends Component {
           </div>
         </div>
       </main>
-    )
+    );
   }
 }
 
-export default Resellers
+export default Resellers;

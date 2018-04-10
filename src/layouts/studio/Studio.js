@@ -1,5 +1,5 @@
-import React from 'react'
-import StudioContainer from '../../ui/studio/StudioContainer'
+import React from 'react';
+import StudioContainer from '../../ui/studio/StudioContainer';
 
 const Studio = props => (
   <main className="container">
@@ -9,6 +9,6 @@ const Studio = props => (
       </div>
     </div>
   </main>
-)
+);
 
-export default Studio
+export default Studio;
