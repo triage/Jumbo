@@ -54,6 +54,7 @@ function* doResellersLoad(action) {
     }
     yield put(resellersLoaded(resellers))
   } catch (error) {
+    console.log(`error:${error}`)
     debugger
   }
 }

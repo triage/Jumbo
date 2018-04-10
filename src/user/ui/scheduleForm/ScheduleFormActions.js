@@ -10,9 +10,3 @@ export const scheduleCreated = contract => ({
     type: SCHEDULE_CREATED,
     contract: contract
 })
-
-export const SCHEDULE_CREATE_ERROR = "SCHEDULE_CREATE_ERROR"
-export const scheduleCreateError = error => ({
-  type: SCHEDULE_CREATE_ERROR,
-  error
-})

@@ -1,8 +1,9 @@
 import { put, call, takeEvery, apply } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
+import { stopSubmit, startSubmit } from 'redux-form';
 import eth from 'util/eth'
 import { CLASS_CREATE, classCreated } from './CreateClassActions'
-import { errorDispatch } from '../../../error/ErrorActions'
+import { formName } from './CreateClassForm'
 
 const value = obj => {
   return parseInt(obj.valueOf(10), 10)
@@ -12,6 +13,8 @@ export function* doCreateClass(action) {
 
   const Studio = eth.Studio()
 
+  startSubmit(formName)
+  
   try {
     const studio = yield Studio.deployed()
     const count = yield studio.classesCount.call(eth.defaultAccount)
@@ -34,6 +37,7 @@ export function* doCreateClass(action) {
       name: action.name,
       description: action.description
     }))
+    yield put(stopSubmit(formName));
     yield call(
       action.history.push,
       '/schedule/new',
@@ -41,7 +45,7 @@ export function* doCreateClass(action) {
     )
   } catch (error) {
     console.log(error)
-    yield put(errorDispatch(error));
+    yield put(stopSubmit(formName));
   }
 }
 

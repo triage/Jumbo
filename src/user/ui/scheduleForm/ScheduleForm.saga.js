@@ -1,13 +1,16 @@
 import { put, apply, select, call, take, takeEvery } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
+import { stopSubmit, startSubmit } from 'redux-form';
 import { schedulesLoad, SCHEDULES_LOADED } from 'user/model/ScheduleActions'
 import eth from 'util/eth'
-import { SCHEDULE_SUBMIT, scheduleCreateError } from './ScheduleFormActions'
+import { SCHEDULE_SUBMIT } from './ScheduleFormActions'
+import { formName } from './ScheduleForm'
 
 function* doScheduleSubmit(action) {
 
   const Studio = eth.Studio()
 
+  startSubmit(formName)
   try {
     const values = action.values;
     const studio = yield Studio.deployed()
@@ -43,7 +46,7 @@ function* doScheduleSubmit(action) {
     yield call(action.history.push, '/dashboard')
   } catch (error) {
     console.log(`error:${error}`)
-    yield put (scheduleCreateError(error))
+    yield put(stopSubmit(formName));
   }
 }
 

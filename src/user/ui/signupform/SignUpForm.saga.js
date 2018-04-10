@@ -1,5 +1,5 @@
 import { apply, put, call, takeEvery } from 'redux-saga/effects'
-import { SubmissionError, stopSubmit, startSubmit } from 'redux-form';
+import { stopSubmit, startSubmit } from 'redux-form';
 import { delay } from 'redux-saga'
 import eth from 'util/eth'
 import UserType from 'user/model/UserType'

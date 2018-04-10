@@ -7,6 +7,16 @@ import ClassesSelector from 'user/ui/class/classes/ClassesSelector'
 
 import 'react-date-picker/index.css'
 
+export const formName = 'scheduleForm'
+
+const style = {
+  loadingIcon: {
+    position: 'relative',
+    top: 3,
+    left: 3,
+  },
+}
+
 const format = {
   long: 'ddd, MMM D, H:mm a',
   short: 'H:mm a'
@@ -46,7 +56,9 @@ const ScheduleForm = props => {
         if (!values.class && location.state.class) {
           values.class = { address: location.state.class }
         }
-        scheduleSubmit(Object.assign({}, values, { date }), history)
+        return new Promise((resolve, reject) => {
+          scheduleSubmit(Object.assign({}, values, { date }), history)
+        })
       })}
     >
       <div className="section z-depth-2">
@@ -149,14 +161,17 @@ const ScheduleForm = props => {
         </div>
       </div>
       <button
-        disabled={pristine || submitting}
-        type="submit"
-        className="pure-button pure-button-primary cta">Create Schedule</button>
+            disabled={submitting || pristine}
+            type="submit"
+            className="cta">
+              <span>Create Schedule</span>
+              {submitting && <span style={style.loadingIcon}>{<img src="/ajax-loader.gif" />}</span>}
+          </button>
     </form>
   )
 }
 
 export default reduxForm({
   // a unique name for the form
-  form: 'schedule'
+  form: formName,
 })(ScheduleForm)
