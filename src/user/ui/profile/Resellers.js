@@ -28,7 +28,7 @@ class Resellers extends PureComponent {
       inputValid: false,
       name: null,
       timer: setTimeout(() => {
-        eth.Reseller().deployed().then(reseller => reseller.getName.call(event.target.value)).then((name) => {
+        eth.Reseller().deployed().then(reseller => reseller.getName.call(event.target.value)).then(name => {
           this.setState({
             inputValid: name.length > 0,
             buttonTitle: name.length > 0 ? `Add Reseller (${name})` : 'Add Reseller',
@@ -53,7 +53,7 @@ class Resellers extends PureComponent {
       <div>
         <form
           className="pure-form pure-form-stacked"
-          onSubmit={handleSubmit((values) => {
+          onSubmit={handleSubmit(values => {
                         resellerAdd(values.address, this.state.name)
                         this.setState({
                             name: null,

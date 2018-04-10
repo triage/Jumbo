@@ -28,7 +28,7 @@ const style = {
   },
 }
 
-const Balance = (props) => {
+const Balance = props => {
   const { schedule, user } = props
   if (user.type !== UserType.studio) {
     return null
@@ -37,7 +37,7 @@ const Balance = (props) => {
   return <div style={style.balance}>{balance} eth</div>
 }
 
-const ScheduleInfo = (props) => {
+const ScheduleInfo = props => {
   const {
     schedule,
   } = props

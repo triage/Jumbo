@@ -1,7 +1,7 @@
 import React from 'react'
 import UserType from 'user/model/UserType'
 
-const Attendees = (props) => {
+const Attendees = props => {
   const {
     schedule,
     user,

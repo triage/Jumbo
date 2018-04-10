@@ -22,7 +22,7 @@ const format = {
   short: 'H:mm a',
 }
 
-const ScheduleForm = (props) => {
+const ScheduleForm = props => {
   const {
     user,
     classes,
@@ -51,12 +51,13 @@ const ScheduleForm = (props) => {
   return (
     <form
       className="pure-form pure-form-stacked"
-      onSubmit={handleSubmit((values) => {
-        if (!values.class && location.state.class) {
-          values.class = { address: location.state.class }
+      onSubmit={handleSubmit(values => {
+        const submitValues = values
+        if (!submitValues.class && location.state.class) {
+          submitValues.class = { address: location.state.class }
         }
-        return new Promise((resolve, reject) => {
-          scheduleSubmit(Object.assign({}, values, { date }), history)
+        return new Promise(() => {
+          scheduleSubmit(Object.assign({}, submitValues, { date }), history)
         })
       })}
     >
@@ -88,15 +89,15 @@ const ScheduleForm = (props) => {
         <h5>Number of spots</h5>
         <div className="left">
           <Field
-            component={(props) => {
+            component={inputProps => {
               const {
                 input,
-              } = props
+              } = inputProps
               return (<NumericInput
                 min={0}
                 max={20}
                 value={input.value}
-                onChange={(value) => {
+                onChange={value => {
                   input.onChange(value)
                 }}
               />)
@@ -106,7 +107,7 @@ const ScheduleForm = (props) => {
         </div>
         <div className="left">
           <Field
-            component={(props) => {
+            component={props => {
               const {
                 input,
               } = props
@@ -114,7 +115,7 @@ const ScheduleForm = (props) => {
                 {...priceProps}
                 placeholder="$"
                 value={input.value}
-                onChange={(value) => {
+                onChange={value => {
                   input.onChange(value)
                 }}
               />)
@@ -128,15 +129,15 @@ const ScheduleForm = (props) => {
         <h5># of Reseller Spots</h5>
         <div className="left">
           <Field
-            component={(props) => {
+            component={inputProps => {
               const {
               input,
-            } = props
+            } = inputProps
               return (<NumericInput
                 min={0}
                 max={20}
                 value={input.value}
-                onChange={(value) => {
+                onChange={value => {
                   input.onChange(value)
                 }}
               />)
@@ -146,15 +147,15 @@ const ScheduleForm = (props) => {
         </div>
         <div className="left">
           <Field
-            component={(props) => {
+            component={inputProps => {
               const {
               input,
-            } = props
+            } = inputProps
               return (<NumericInput
                 {...priceProps}
                 placeholder="$"
                 value={input.value}
-                onChange={(value) => {
+                onChange={value => {
                   input.onChange(value)
                 }}
               />)
@@ -169,7 +170,7 @@ const ScheduleForm = (props) => {
         className="cta"
       >
         <span>Create Schedule</span>
-        {submitting && <span style={style.loadingIcon}>{<img src="/ajax-loader.gif" />}</span>}
+        {submitting && <span style={style.loadingIcon}>{<img alt="loader" src="/ajax-loader.gif" />}</span>}
       </button>
     </form>
   )

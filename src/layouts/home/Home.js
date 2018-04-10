@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Home = ((isAuthenticated) => {
+const Home = (isAuthenticated => {
   if (isAuthenticated.isAuthenticated) {
     return (
       <main className="container">

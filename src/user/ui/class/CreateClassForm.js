@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 
 export const formName = 'createClassForm'
 
-const CreateClassForm = (props) => {
+const CreateClassForm = props => {
   const style = {
     field: {
       marginBottom: 20,

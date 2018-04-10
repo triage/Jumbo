@@ -11,7 +11,7 @@ const Event = ({ event }) => (
   </span>
 )
 
-const Studio = (props) => {
+const Studio = props => {
   const {
     studio, address, loaded, loading, studioLoad, history,
   } = props
@@ -49,7 +49,7 @@ const Studio = (props) => {
           events={events}
           step={15}
           selectable
-          onSelectEvent={(event) => {
+          onSelectEvent={event => {
           history.push(`/schedule/${event.address}`)
         }}
           components={{

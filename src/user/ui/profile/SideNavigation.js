@@ -16,7 +16,7 @@ const studioOnly = (userType, component) => {
   return null
 }
 
-const SideNavigation = (props) => {
+const SideNavigation = props => {
   const {
     user,
   } = props

@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 // Redux Store
 import store from './store'
-import { userLoggedIn } from './user/ui/signupform/SignUpFormActions.js'
+import { userLoggedIn } from './user/ui/signupform/SignUpFormActions'
 import { start, SigninError } from './util/eth'
 import App from './App'
 import { userPurge } from './user/model/UserActions'
@@ -29,7 +29,7 @@ function render() {
   )
 }
 
-start().then((user) => {
+start().then(user => {
   isLoggedIn = true
   console.log(user)
   store.dispatch(userLoggedIn(user))
@@ -41,7 +41,7 @@ start().then((user) => {
     store.dispatch(resellerLoad(user.address))
   }
   render()
-}).catch((error) => {
+}).catch(error => {
   switch (error) {
     case SigninError.unauthorized:
       console.log('unauthorized')

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ClassInfo = (props) => {
+const ClassInfo = props => {
   const {
     schedule,
   } = props

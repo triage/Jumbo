@@ -21,7 +21,7 @@ const schedulesReducer = (state = initialState, action) => {
   } else if (action.type === INDIVIDUAL_LOADED) {
     return Array.from(action.schedules)
   } else if (action.type === SPOT_PURCHASED) {
-    const schedules = Array.from(state).map((schedule) => {
+    const schedules = Array.from(state).map(schedule => {
       if (schedule.address === action.schedule.address) {
         return Object.assign({}, schedule, {
           reserved: true,
@@ -31,7 +31,7 @@ const schedulesReducer = (state = initialState, action) => {
     })
     return schedules
   } else if (action.type === SPOT_CANCELLED) {
-    const schedules = Array.from(state).map((schedule) => {
+    const schedules = Array.from(state).map(schedule => {
       if (schedule.address === action.schedule.address) {
         return Object.assign({}, schedule, {
           reserved: false,

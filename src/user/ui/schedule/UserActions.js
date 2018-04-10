@@ -19,7 +19,7 @@ class UserActions extends PureComponent {
       inputValid: false,
       name: null,
       timer: setTimeout(() => {
-        eth.Individual().deployed().then(reseller => reseller.getName.call(event.target.value)).then((name) => {
+        eth.Individual().deployed().then(reseller => reseller.getName.call(event.target.value)).then(name => {
           this.setState({
             inputValid: false,
             name,
@@ -52,7 +52,7 @@ class UserActions extends PureComponent {
       if (new Date() < new Date(schedule.dates.start)) {
         return (
           <form
-            onSubmit={handleSubmit((values) => {
+            onSubmit={handleSubmit(values => {
               scheduleCancel(schedule.address, values.reason, history)
             })}
           >
@@ -76,7 +76,7 @@ class UserActions extends PureComponent {
       return (
         <button
           className="cta"
-          onClick={(event) => {
+          onClick={event => {
             console.log('clicked')
             scheduleComplete(schedule.address, history)
           }}
@@ -105,7 +105,7 @@ class UserActions extends PureComponent {
         if (user.type === UserType.reseller) {
           return (
             <form
-              onSubmit={handleSubmit((values) => {
+              onSubmit={handleSubmit(values => {
                   spotPurchase(schedule, values.address, history, location)
                 })}
             >
@@ -137,7 +137,7 @@ class UserActions extends PureComponent {
             <button
               type="button"
               className="cta"
-              onClick={(event) => {
+              onClick={event => {
                   spotPurchase(schedule, user.address, history, location)
                 }}
             >

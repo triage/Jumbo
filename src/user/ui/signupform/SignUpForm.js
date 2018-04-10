@@ -4,7 +4,7 @@ import UserType from 'user/model/UserType'
 
 export const formName = 'SignupForm'
 
-const SignUpForm = (props) => {
+const SignUpForm = props => {
   const style = {
     loadingIcon: {
       position: 'relative',
@@ -35,7 +35,6 @@ const SignUpForm = (props) => {
   } = props
 
   document.title = 'Sign up!'
-  console.log(`submitting:${submitting}`)
 
   return (
     <div className="section">

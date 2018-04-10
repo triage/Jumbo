@@ -22,7 +22,7 @@ class Schedule extends PureComponent {
       return null
     }
 
-    eth.Schedule().at(schedule.address).then((deployed) => {
+    eth.Schedule().at(schedule.address).then(deployed => {
       const event = deployed.SpotPurchased({ spotType: 1 }, { fromBlock: 0 })
       event.get((error, result) => {
         if (error) {

@@ -48,12 +48,9 @@ export function* doUserSignup(action) {
         address: eth.defaultAccount,
       }))
       yield call(history.push, '/dashboard')
-    } else {
-
     }
     yield put(stopSubmit(formName))
   } catch (error) {
-    const message = error.message ? error.message.split('\n')[0] : null
     yield put(stopSubmit(formName))
   }
 }

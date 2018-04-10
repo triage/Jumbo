@@ -5,7 +5,7 @@ import { USER_PURGE } from 'user/model/UserActions'
 import { STUDIO_LOAD, STUDIO_INFO_LOADED } from './StudioActions'
 import { USER_UPDATED } from '../ui/profile/ProfileActions'
 
-const initialStateStudio = (address) => {
+const initialStateStudio = address => {
   const studio = {}
   studio[address] = {
     loading: true,

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ClassesSelector = (props) => {
+const ClassesSelector = props => {
   const {
     classes,
     location,
@@ -21,7 +21,7 @@ const ClassesSelector = (props) => {
   return (
     <select
       value={location.state.class}
-      onChange={(event) => {
+      onChange={event => {
         if (event.target.selectedOptions[0].dataset.action === 'new') {
           history.push('/class/new', location.state)
           return

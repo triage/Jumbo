@@ -21,7 +21,7 @@ const EventAgenda = ({ event }) => (
   </div>
 )
 
-const DashboardReseller = (props) => {
+const DashboardReseller = props => {
   if (props.reseller.studios.length > 0) {
     return (<div className="section z-depth-2 half">
       <h5>Studios that recognize you as a reseller:</h5>
@@ -53,7 +53,7 @@ const DashboardReseller = (props) => {
   )
 }
 
-const Dashboard = (props) => {
+const Dashboard = props => {
   const {
     user,
     history,
@@ -98,7 +98,7 @@ const Dashboard = (props) => {
             end,
           })
         }}
-        onSelectEvent={(event) => {
+        onSelectEvent={event => {
           history.push(`schedule/${event.address}`)
         }}
         components={{

@@ -11,7 +11,7 @@ function* doScheduleSubmit(action) {
 
   startSubmit(formName)
   try {
-    const values = action.values
+    const { values } = action
     const studio = yield Studio.deployed()
     const count = yield studio.schedulesCount.call(eth.defaultAccount)
     const schedulesCountBefore = parseInt(count.valueOf(10), 10)
@@ -33,10 +33,9 @@ function* doScheduleSubmit(action) {
     const user = yield select(state => state.user.data)
     let schedulesCount = schedulesCountBefore
     while (schedulesCount === schedulesCountBefore) {
-      const count = yield studio.schedulesCount.call(eth.defaultAccount)
-      schedulesCount = parseInt(count.valueOf(10), 10)
+      const countAfter = yield studio.schedulesCount.call(eth.defaultAccount)
+      schedulesCount = parseInt(countAfter.valueOf(10), 10)
       if (schedulesCount !== schedulesCountBefore + 1) {
-        console.log('retrying')
         yield delay(200)
       }
     }
@@ -44,7 +43,6 @@ function* doScheduleSubmit(action) {
     yield take(SCHEDULES_LOADED)
     yield call(action.history.push, '/dashboard')
   } catch (error) {
-    console.log(`error:${error}`)
     yield put(stopSubmit(formName))
   }
 }

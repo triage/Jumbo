@@ -34,7 +34,7 @@ function* doSchedulesLoad(action) {
           cancellation: moment.unix(parseInt(dates[2].valueOf()) / 1000).toDate(),
           purchase: moment.unix(parseInt(dates[3].valueOf()) / 1000).toDate(),
         },
-        class: classes.find((found) => {
+        class: classes.find(found => {
           if (found.address === klass) {
             return found
           }

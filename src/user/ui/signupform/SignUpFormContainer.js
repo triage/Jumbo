@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import SignUpForm from './SignUpForm'
 import { userSignup } from './SignUpFormActions'
-import { withRouter } from 'react-router-dom'
 
 const mapStateToProps = state => ({
   error: state.error,

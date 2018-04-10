@@ -20,7 +20,7 @@ const mapStateToProps = (state, ownProps) => {
     loaded: true,
     loading: false,
     studio: state.studio,
-    events: state.studio.schedules ? state.studio.schedules.map((schedule) => {
+    events: state.studio.schedules ? state.studio.schedules.map(schedule => {
       const obj = {
         address: schedule.address,
         start: new Date(schedule.dates.start),

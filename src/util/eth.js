@@ -45,7 +45,7 @@ const eth = {
 
   web3: () => window.web3,
 
-  getBalance: address => new Promise((fulfill, reject) => {
+  getBalance: address => new Promise(fulfill => {
     eth.web3().eth.getBalance(address, (error, balance) => {
       if (error) {
         fulfill(0)
@@ -104,22 +104,22 @@ export const start = callback => new Promise((fulfill, reject) => {
 
     let authentication
     const account = {}
-    let contract
+    let contractInstance
 
-    eth.getDefaultAccount().then((defaultAccount) => {
+    eth.getDefaultAccount().then(defaultAccount => {
       account.address = defaultAccount
       return eth.Authentication().deployed()
-    }).then((instance) => {
+    }).then(instance => {
       authentication = instance
       return authentication.login(eth.from())
-    }).then((loggedIn) => {
+    }).then(loggedIn => {
       if (!loggedIn) {
         reject(SigninError.unauthorized)
-        return
+        return null
       }
       return authentication.userType(eth.from())
     })
-      .then((type) => {
+      .then(type => {
         account.type = type
         console.log(`type for ${account.address}: ${type}`)
         switch (type) {
@@ -133,23 +133,23 @@ export const start = callback => new Promise((fulfill, reject) => {
             return null
         }
       })
-      .then((deployed) => {
-        contract = deployed
+      .then(deployed => {
+        contractInstance = deployed
         return deployed.name.call(account.address)
       })
-      .then((name) => {
+      .then(name => {
         account.name = name
-        return contract.contactDetails.call(account.address)
+        return contractInstance.contactDetails.call(account.address)
       })
-      .then((contactDetails) => {
+      .then(contactDetails => {
         account.contactDetails = contactDetails
         return eth.getBalance(account.address)
       })
-      .then((balance) => {
+      .then(balance => {
         account.balance = balance
         fulfill(account)
       })
-      .catch((error) => {
+      .catch(() => {
         reject(SigninError.unauthorized)
       })
   })
