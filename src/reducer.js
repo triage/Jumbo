@@ -6,15 +6,17 @@ import studio from './user/model/StudioReducer'
 import schedules from './user/model/SchedulesReducer'
 import resellers from './user/model/ResellersReducer'
 import reseller from './user/model/ResellerReducer'
+import error from './error/ErrorReducer'
 
 const reducer = combineReducers({
+  error,
   routing,
   user,
   studio,
   form,
   resellers,
   reseller,
-  schedules
+  schedules,
 })
 
 export default reducer

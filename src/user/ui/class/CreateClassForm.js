@@ -1,12 +1,19 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 
+export const formName = 'createClassForm'
+
 const CreateClassForm = props => {
 
   const style = {
     field: {
       marginBottom: 20,
-    }
+    },
+    loadingIcon: {
+      position: 'relative',
+      top: 3,
+      left: 3,
+    },
   }
 
   const {
@@ -22,7 +29,9 @@ const CreateClassForm = props => {
     <form
       className="pure-form pure-form-stacked"
       onSubmit={handleSubmit(values => {
-        classCreate(values.name, values.description, history, location)
+        return new Promise((resolve, reject) => {
+          classCreate(values.name, values.description, history, location)
+        })
       })}
     >
       <fieldset>
@@ -35,9 +44,12 @@ const CreateClassForm = props => {
           <Field name="description" component="textarea" type="text" rows="7" style={{ height: 'inherit' }} placeholder="Description" />
         </div>
         <button
-          disabled={pristine || submitting}
-          type="submit"
-          className="pure-button pure-button-primary cta">Create Class</button>
+            disabled={submitting || pristine}
+            type="submit"
+            className="cta">
+              <span>Create Class</span>
+              {submitting && <span style={style.loadingIcon}>{<img src="/ajax-loader.gif" />}</span>}
+          </button>
       </fieldset>
     </form>
   )
@@ -45,5 +57,5 @@ const CreateClassForm = props => {
 
 export default reduxForm({
   // a unique name for the form
-  form: 'classCreate'
+  form: formName,
 })(CreateClassForm)

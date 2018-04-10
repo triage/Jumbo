@@ -5,13 +5,14 @@ const HDWalletProvider = require("truffle-hdwallet-provider");
 
 module.exports = {
   migrations_directory: "./migrations",
-  contracts_build_directory: "./src/contracts",
+  // contracts_build_directory: "./src/contracts",
   networks: {
     development: {
       host: 'localhost',
+      gas: 6721975,
       gasPrice: 20000000000,
       port: 7545,
-      network_id: "*" // Match any network id
+      network_id: "5777" // Match any network id
     },
     test: {
       host: 'localhost',

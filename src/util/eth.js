@@ -25,7 +25,7 @@ const eth = {
     if (!window.web3) {
       console.warn(`web3 not injected`)
     }
-    return window.web3 ? window.web3.currentProvider : new Web3.providers.HttpProvider('http://localhost:8545')
+    return window.web3 ? window.web3.currentProvider : new Web3.providers.HttpProvider('http://localhost:7545')
   },
 
   defaultAccount: null,
@@ -100,7 +100,7 @@ const eth = {
   },
 
   from: () => {
-    return { from: eth.defaultAccount, gas: 4476768 }
+    return { from: eth.defaultAccount, gas: 3000000 }
   }
 }
 export default eth
