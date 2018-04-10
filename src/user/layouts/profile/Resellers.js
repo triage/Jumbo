@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import ResellersContainer from '../../ui/profile/ResellersContainer';
-import SideNavigationContainer from '../../ui/profile/SideNavigationContainer';
+import React, { Component } from 'react'
+import ResellersContainer from '../../ui/profile/ResellersContainer'
+import SideNavigationContainer from '../../ui/profile/SideNavigationContainer'
 
 class Resellers extends Component {
   render() {
@@ -16,8 +16,8 @@ class Resellers extends Component {
           </div>
         </div>
       </main>
-    );
+    )
   }
 }
 
-export default Resellers;
+export default Resellers

@@ -1,10 +1,10 @@
-import React from 'react';
-import eth from 'util/eth';
-import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import eth from 'util/eth'
+import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
+import { Link } from 'react-router-dom'
 
 const OnlyAuthLinks = VisibleOnlyAuth((props) => {
-  const balance = parseFloat(eth.web3().fromWei(props.user.data.balance), 10).toFixed(2);
+  const balance = parseFloat(eth.web3().fromWei(props.user.data.balance), 10).toFixed(2)
 
   return (<span>
     <li>
@@ -26,22 +26,22 @@ const OnlyAuthLinks = VisibleOnlyAuth((props) => {
         </div>
       </Link>
     </li>
-  </span>);
-});
+  </span>)
+})
 
 const OnlyGuestLinks = HiddenOnlyAuth(() =>
   (<span>
     <li className="pure-menu-item">
       <Link to="/signup">Sign Up</Link>
     </li>]
-   </span>));
+   </span>))
 
 const Navigation = (props) => {
   const {
     user,
-  } = props;
+  } = props
 
-  const name = user.data ? user.data.name : 'JUMBO';
+  const name = user.data ? user.data.name : 'JUMBO'
   return (
     <nav className="navbar pure-menu-horizontal white darken-2">
       <Link to="/dashboard" style={{ fontSize: 30, marginLeft: 10, textTransform: 'uppercase' }}>{name}</Link>
@@ -50,7 +50,7 @@ const Navigation = (props) => {
         <OnlyAuthLinks user={user} />
       </ul>
     </nav>
-  );
-};
+  )
+}
 
-export default Navigation;
+export default Navigation

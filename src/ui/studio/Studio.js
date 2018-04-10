@@ -1,41 +1,41 @@
-import React from 'react';
-import BigCalendar from 'react-big-calendar';
-import moment from 'moment';
+import React from 'react'
+import BigCalendar from 'react-big-calendar'
+import moment from 'moment'
 
-BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
 const Event = ({ event }) => (
   <span>
     <strong>{event.name}</strong><br />
     {event.instructor}
   </span>
-);
+)
 
 const Studio = (props) => {
   const {
     studio, address, loaded, loading, studioLoad, history,
-  } = props;
+  } = props
 
-  let { events } = props;
+  let { events } = props
 
   if (!loading && !studio) {
-    studioLoad(address);
-    return null;
+    studioLoad(address)
+    return null
   } else if (!loaded) {
-    return null;
+    return null
   }
 
   const url = {
     studio: `http://localhost:8000/#/address/${studio.address}`,
-  };
+  }
 
-  const defaultView = 'week';
-  const views = ['week', 'day', 'agenda'];
-  const toolbar = true;
+  const defaultView = 'week'
+  const views = ['week', 'day', 'agenda']
+  const toolbar = true
 
   events = events.map(event => Object.assign({}, event, {
     url: `/schedule/${event.address}`,
-  }));
+  }))
 
   return (
     <div>
@@ -50,7 +50,7 @@ const Studio = (props) => {
           step={15}
           selectable
           onSelectEvent={(event) => {
-          history.push(`/schedule/${event.address}`);
+          history.push(`/schedule/${event.address}`)
         }}
           components={{
           event: Event,
@@ -66,7 +66,7 @@ const Studio = (props) => {
         <div style={{ clear: 'both' }} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Studio;
+export default Studio

@@ -1,8 +1,8 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import UserType from 'user/model/UserType';
+import React from 'react'
+import { Field, reduxForm } from 'redux-form'
+import UserType from 'user/model/UserType'
 
-export const formName = 'SignupForm';
+export const formName = 'SignupForm'
 
 const SignUpForm = (props) => {
   const style = {
@@ -24,7 +24,7 @@ const SignUpForm = (props) => {
     radioField: {
       marginLeft: 5,
     },
-  };
+  }
 
   const {
     userSignup,
@@ -32,10 +32,10 @@ const SignUpForm = (props) => {
     history,
     pristine,
     submitting,
-  } = props;
+  } = props
 
-  document.title = 'Sign up!';
-  console.log(`submitting:${submitting}`);
+  document.title = 'Sign up!'
+  console.log(`submitting:${submitting}`)
 
   return (
     <div className="section">
@@ -49,7 +49,7 @@ const SignUpForm = (props) => {
                   type: values.type,
                 },
                 history,
-              );
+              )
             }))
         }
       >
@@ -82,10 +82,10 @@ const SignUpForm = (props) => {
         </fieldset>
       </form>
     </div>
-  );
-};
+  )
+}
 
 export default reduxForm({
   // a unique name for the form
   form: formName,
-})(SignUpForm);
+})(SignUpForm)

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const ClassesSelector = (props) => {
   const {
@@ -6,7 +6,7 @@ const ClassesSelector = (props) => {
     location,
     history,
     input,
-  } = props;
+  } = props
 
   const options = classes.map(classObject => (
     <option
@@ -16,18 +16,18 @@ const ClassesSelector = (props) => {
     >
       {classObject.name}
     </option>
-  ));
+  ))
 
   return (
     <select
       value={location.state.class}
       onChange={(event) => {
         if (event.target.selectedOptions[0].dataset.action === 'new') {
-          history.push('/class/new', location.state);
-          return;
+          history.push('/class/new', location.state)
+          return
         }
-        const address = event.target.selectedOptions[0].dataset.address;
-        input.onChange({ address });
+        const address = event.target.selectedOptions[0].dataset.address
+        input.onChange({ address })
 }
       }
     >
@@ -35,7 +35,7 @@ const ClassesSelector = (props) => {
       {options}
       <option value="new" data-action="new" data-class={null}>Create new ...</option>
     </select>
-  );
-};
+  )
+}
 
-export default ClassesSelector;
+export default ClassesSelector

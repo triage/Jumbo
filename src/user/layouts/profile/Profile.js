@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import ProfileContainer from '../../ui/profile/ProfileContainer';
-import SideNavigationContainer from '../../ui/profile/SideNavigationContainer';
+import React, { Component } from 'react'
+import ProfileContainer from '../../ui/profile/ProfileContainer'
+import SideNavigationContainer from '../../ui/profile/SideNavigationContainer'
 
 class Profile extends Component {
   render() {
@@ -16,8 +16,8 @@ class Profile extends Component {
           </div>
         </div>
       </main>
-    );
+    )
   }
 }
 
-export default Profile;
+export default Profile

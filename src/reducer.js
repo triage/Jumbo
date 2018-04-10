@@ -1,12 +1,12 @@
-import { combineReducers } from 'redux';
-import { routerReducer as routing } from 'react-router-redux';
-import { reducer as form } from 'redux-form';
-import user from './user/userReducer';
-import studio from './user/model/StudioReducer';
-import schedules from './user/model/SchedulesReducer';
-import resellers from './user/model/ResellersReducer';
-import reseller from './user/model/ResellerReducer';
-import error from './error/ErrorReducer';
+import { combineReducers } from 'redux'
+import { routerReducer as routing } from 'react-router-redux'
+import { reducer as form } from 'redux-form'
+import user from './user/userReducer'
+import studio from './user/model/StudioReducer'
+import schedules from './user/model/SchedulesReducer'
+import resellers from './user/model/ResellersReducer'
+import reseller from './user/model/ResellerReducer'
+import error from './error/ErrorReducer'
 
 const reducer = combineReducers({
   error,
@@ -17,6 +17,6 @@ const reducer = combineReducers({
   resellers,
   reseller,
   schedules,
-});
+})
 
-export default reducer;
+export default reducer

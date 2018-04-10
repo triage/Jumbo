@@ -1,29 +1,29 @@
-import React, { PureComponent } from 'react';
-import { Field, reduxForm } from 'redux-form';
-import eth from 'util/eth';
+import React, { PureComponent } from 'react'
+import { Field, reduxForm } from 'redux-form'
+import eth from 'util/eth'
 
-export const formName = 'resellers';
+export const formName = 'resellers'
 const style = {
   addButton: {
     marginTop: '3pt',
     height: '34pt',
     marginLeft: '10pt',
   },
-};
+}
 
 class Resellers extends PureComponent {
   constructor() {
-    super();
+    super()
     this.state = {
       inputValid: true,
       name: null,
       timer: null,
       buttonTitle: 'Add Reseller',
-    };
+    }
   }
 
   onAddressChanged(event) {
-    clearTimeout(this.state.timer);
+    clearTimeout(this.state.timer)
     this.setState({
       inputValid: false,
       name: null,
@@ -33,10 +33,10 @@ class Resellers extends PureComponent {
             inputValid: name.length > 0,
             buttonTitle: name.length > 0 ? `Add Reseller (${name})` : 'Add Reseller',
             name,
-          });
-        });
+          })
+        })
       }, 1000),
-    });
+    })
   }
 
   render() {
@@ -47,17 +47,17 @@ class Resellers extends PureComponent {
       resellerRemove,
       pristine,
       submitting,
-    } = this.props;
+    } = this.props
 
     return (
       <div>
         <form
           className="pure-form pure-form-stacked"
           onSubmit={handleSubmit((values) => {
-                        resellerAdd(values.address, this.state.name);
+                        resellerAdd(values.address, this.state.name)
                         this.setState({
                             name: null,
-                        });
+                        })
                     })}
         >
           <fieldset>
@@ -86,8 +86,8 @@ class Resellers extends PureComponent {
                 {resellers.map(reseller => (
                   <li key={reseller.address}>{reseller.name} ({reseller.address}) - <a
                     href="#"
-onClick={() => {
-                                        resellerRemove(reseller.address);
+                    onClick={() => {
+                                        resellerRemove(reseller.address)
                                     }}
                   >x
                                                                                     </a>
@@ -98,11 +98,11 @@ onClick={() => {
           </fieldset>
         </form>
       </div>
-    );
+    )
   }
 }
 
 export default reduxForm({
   // a unique name for the form
   form: formName,
-})(Resellers);
+})(Resellers)

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import SignUpFormContainer from '../../ui/signupform/SignUpFormContainer';
+import React, { Component } from 'react'
+import SignUpFormContainer from '../../ui/signupform/SignUpFormContainer'
 
 class SignUp extends Component {
   render() {
@@ -14,8 +14,8 @@ class SignUp extends Component {
           </div>
         </div>
       </main>
-    );
+    )
   }
 }
 
-export default SignUp;
+export default SignUp

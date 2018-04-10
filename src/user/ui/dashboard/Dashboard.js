@@ -1,16 +1,16 @@
-import React from 'react';
-import BigCalendar from 'react-big-calendar';
-import moment from 'moment';
-import UserType from 'user/model/UserType';
+import React from 'react'
+import BigCalendar from 'react-big-calendar'
+import moment from 'moment'
+import UserType from 'user/model/UserType'
 
-BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
 const Event = ({ event }) => (
   <span>
     <strong>{event.name}</strong><br />
     {event.instructor}
   </span>
-);
+)
 
 const EventAgenda = ({ event }) => (
   <div>
@@ -19,7 +19,7 @@ const EventAgenda = ({ event }) => (
       {event.instructor}
     </a>
   </div>
-);
+)
 
 const DashboardReseller = (props) => {
   if (props.reseller.studios.length > 0) {
@@ -42,7 +42,7 @@ const DashboardReseller = (props) => {
           ))}
         </tbody>
       </table>
-    </div>);
+    </div>)
   }
 
   return (
@@ -50,37 +50,37 @@ const DashboardReseller = (props) => {
       <h5>Your address:</h5>
       <p>{props.user.data.address}</p>
     </div>
-  );
-};
+  )
+}
 
 const Dashboard = (props) => {
   const {
     user,
     history,
-  } = props;
+  } = props
 
   let {
     events,
-  } = props;
+  } = props
 
-  document.title = `JUMBO - ${user.data.name}`;
+  document.title = `JUMBO - ${user.data.name}`
 
   if (user.data.type === UserType.reseller) {
-    return <DashboardReseller {...props} />;
+    return <DashboardReseller {...props} />
   }
 
   events = events.map(event => Object.assign({}, event, {
     url: `schedule/${event.address}`,
-  }));
+  }))
 
   if (user.data.type === UserType.individual) {
-    events = events.filter(event => event.reserved);
+    events = events.filter(event => event.reserved)
   }
 
-  const earliestSchedulableClassHoursBefore = 1;
-  const defaultView = user.data.type === UserType.studio ? 'week' : 'agenda';
-  const views = user.data.type === UserType.studio ? ['week', 'day', 'agenda'] : ['agenda'];
-  const toolbar = user.data.type === UserType.studio;
+  const earliestSchedulableClassHoursBefore = 1
+  const defaultView = user.data.type === UserType.studio ? 'week' : 'agenda'
+  const views = user.data.type === UserType.studio ? ['week', 'day', 'agenda'] : ['agenda']
+  const toolbar = user.data.type === UserType.studio
 
   return (
     <div className="z-depth-2">
@@ -89,17 +89,17 @@ const Dashboard = (props) => {
         step={15}
         selectable
         onSelectSlot={({ start, end }) => {
-          const earliest = new Date().valueOf() - earliestSchedulableClassHoursBefore * 60 * 60 * 1000;
+          const earliest = new Date().valueOf() - earliestSchedulableClassHoursBefore * 60 * 60 * 1000
           if (new Date(start).valueOf() <= earliest) {
-            return;
+            return
           }
           history.push('schedule/new', {
             start,
             end,
-          });
+          })
         }}
         onSelectEvent={(event) => {
-          history.push(`schedule/${event.address}`);
+          history.push(`schedule/${event.address}`)
         }}
         components={{
           event: Event,
@@ -117,7 +117,7 @@ const Dashboard = (props) => {
       />
       <div style={{ clear: 'both' }} />
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

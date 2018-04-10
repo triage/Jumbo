@@ -1,20 +1,20 @@
-import { put, apply, select, call, take, takeEvery } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
-import { stopSubmit, startSubmit } from 'redux-form';
-import { schedulesLoad, SCHEDULES_LOADED } from 'user/model/ScheduleActions';
-import eth from 'util/eth';
-import { SCHEDULE_SUBMIT } from './ScheduleFormActions';
-import { formName } from './ScheduleForm';
+import { put, apply, select, call, take, takeEvery } from 'redux-saga/effects'
+import { delay } from 'redux-saga'
+import { stopSubmit, startSubmit } from 'redux-form'
+import { schedulesLoad, SCHEDULES_LOADED } from 'user/model/ScheduleActions'
+import eth from 'util/eth'
+import { SCHEDULE_SUBMIT } from './ScheduleFormActions'
+import { formName } from './ScheduleForm'
 
 function* doScheduleSubmit(action) {
-  const Studio = eth.Studio();
+  const Studio = eth.Studio()
 
-  startSubmit(formName);
+  startSubmit(formName)
   try {
-    const values = action.values;
-    const studio = yield Studio.deployed();
-    const count = yield studio.schedulesCount.call(eth.defaultAccount);
-    const schedulesCountBefore = parseInt(count.valueOf(10), 10);
+    const values = action.values
+    const studio = yield Studio.deployed()
+    const count = yield studio.schedulesCount.call(eth.defaultAccount)
+    const schedulesCountBefore = parseInt(count.valueOf(10), 10)
     yield apply(
       studio,
       studio.scheduleCreate,
@@ -29,26 +29,26 @@ function* doScheduleSubmit(action) {
         eth.web3().toWei(values.price.reseller),
         eth.from(),
       ],
-    );
-    const user = yield select(state => state.user.data);
-    let schedulesCount = schedulesCountBefore;
+    )
+    const user = yield select(state => state.user.data)
+    let schedulesCount = schedulesCountBefore
     while (schedulesCount === schedulesCountBefore) {
-      const count = yield studio.schedulesCount.call(eth.defaultAccount);
-      schedulesCount = parseInt(count.valueOf(10), 10);
+      const count = yield studio.schedulesCount.call(eth.defaultAccount)
+      schedulesCount = parseInt(count.valueOf(10), 10)
       if (schedulesCount !== schedulesCountBefore + 1) {
-        console.log('retrying');
-        yield delay(200);
+        console.log('retrying')
+        yield delay(200)
       }
     }
-    yield put(schedulesLoad(user.address));
-    yield take(SCHEDULES_LOADED);
-    yield call(action.history.push, '/dashboard');
+    yield put(schedulesLoad(user.address))
+    yield take(SCHEDULES_LOADED)
+    yield call(action.history.push, '/dashboard')
   } catch (error) {
-    console.log(`error:${error}`);
-    yield put(stopSubmit(formName));
+    console.log(`error:${error}`)
+    yield put(stopSubmit(formName))
   }
 }
 
 export function* watchScheduleSubmit() {
-  yield takeEvery(SCHEDULE_SUBMIT, doScheduleSubmit);
+  yield takeEvery(SCHEDULE_SUBMIT, doScheduleSubmit)
 }

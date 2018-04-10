@@ -1,19 +1,19 @@
-import { USER_PURGE } from 'user/model/UserActions';
-import { RESELLER_LOADED } from './ResellerActions';
+import { USER_PURGE } from 'user/model/UserActions'
+import { RESELLER_LOADED } from './ResellerActions'
 
 const initialState = {
   studios: [],
-};
+}
 
 const resellerReducer = (state = initialState, action) => {
   if (action.type === USER_PURGE) {
-    return initialState;
+    return initialState
   } else if (action.type === RESELLER_LOADED) {
     return Object.assign({}, state, {
       studios: action.studios,
-    });
+    })
   }
-  return state;
-};
+  return state
+}
 
-export default resellerReducer;
+export default resellerReducer

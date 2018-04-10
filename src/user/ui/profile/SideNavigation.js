@@ -1,5 +1,5 @@
-import React from 'react';
-import UserType from 'user/model/UserType';
+import React from 'react'
+import UserType from 'user/model/UserType'
 
 const styles = {
   container: {
@@ -7,23 +7,23 @@ const styles = {
     width: 200,
     marginRight: 20,
   },
-};
+}
 
 const studioOnly = (userType, component) => {
   if (userType === UserType.studio) {
-    return component;
+    return component
   }
-  return null;
-};
+  return null
+}
 
 const SideNavigation = (props) => {
   const {
     user,
-  } = props;
+  } = props
 
   if (!user || user.type !== UserType.studio) {
-    console.log('render nothing');
-    return null;
+    console.log('render nothing')
+    return null
   }
 
   return (
@@ -33,7 +33,7 @@ const SideNavigation = (props) => {
         {studioOnly(UserType.studio, <li><a href="/profile/resellers">Resellers</a></li>)}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default SideNavigation;
+export default SideNavigation

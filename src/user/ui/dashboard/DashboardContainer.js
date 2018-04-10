@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
-import Dashboard from './Dashboard';
-import { studioLoad } from '../../model/StudioActions';
-import { individualLoad } from '../../model/IndividualActions';
-import { withRouter } from 'react-router-dom';
-import UserType from 'user/model/UserType';
+import { connect } from 'react-redux'
+import Dashboard from './Dashboard'
+import { studioLoad } from '../../model/StudioActions'
+import { individualLoad } from '../../model/IndividualActions'
+import { withRouter } from 'react-router-dom'
+import UserType from 'user/model/UserType'
 
 const mapStateToProps = (state, ownProps) => {
-  const schedules = state.user.data.type === UserType.individual ? state.schedules : state.studio.schedules;
+  const schedules = state.user.data.type === UserType.individual ? state.schedules : state.studio.schedules
 
   return {
     user: state.user,
@@ -21,20 +21,20 @@ const mapStateToProps = (state, ownProps) => {
         instructor: schedule.instructor,
         reserved: schedule.reserved,
         studio: schedule.class.studio || state.studio,
-      };
-      return obj;
+      }
+      return obj
     }) : [],
-  };
-};
+  }
+}
 
 const mapDispatchToProps = ({
   studioLoad,
   individualLoad,
-});
+})
 
 const DashboardContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withRouter(Dashboard));
+)(withRouter(Dashboard))
 
-export default DashboardContainer;
+export default DashboardContainer

@@ -31,4 +31,4 @@ export default routes = [
     pattern: '/profile',
     component: UserIsAuthenticated(Profile),
   },
-];
+]

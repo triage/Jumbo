@@ -1,7 +1,7 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import React from 'react'
+import { Field, reduxForm } from 'redux-form'
 
-export const formName = 'createClassForm';
+export const formName = 'createClassForm'
 
 const CreateClassForm = (props) => {
   const style = {
@@ -13,7 +13,7 @@ const CreateClassForm = (props) => {
       top: 3,
       left: 3,
     },
-  };
+  }
 
   const {
     classCreate,
@@ -22,13 +22,13 @@ const CreateClassForm = (props) => {
     location,
     pristine,
     submitting,
-  } = props;
+  } = props
 
   return (
     <form
       className="pure-form pure-form-stacked"
       onSubmit={handleSubmit(values => new Promise((resolve, reject) => {
-          classCreate(values.name, values.description, history, location);
+          classCreate(values.name, values.description, history, location)
         }))}
     >
       <fieldset>
@@ -50,10 +50,10 @@ const CreateClassForm = (props) => {
         </button>
       </fieldset>
     </form>
-  );
-};
+  )
+}
 
 export default reduxForm({
   // a unique name for the form
   form: formName,
-})(CreateClassForm);
+})(CreateClassForm)

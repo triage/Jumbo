@@ -1,5 +1,5 @@
-import React from 'react';
-import ScheduleFormContainer from 'user/ui/scheduleForm/ScheduleFormContainer';
+import React from 'react'
+import ScheduleFormContainer from 'user/ui/scheduleForm/ScheduleFormContainer'
 
 const ScheduleNew = props => (
   <main className="container">
@@ -10,6 +10,6 @@ const ScheduleNew = props => (
       </div>
     </div>
   </main>
-);
+)
 
-export default ScheduleNew;
+export default ScheduleNew

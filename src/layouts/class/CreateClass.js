@@ -1,5 +1,5 @@
-import React from 'react';
-import CreateClassContainer from 'user/ui/class/CreateClassContainer';
+import React from 'react'
+import CreateClassContainer from 'user/ui/class/CreateClassContainer'
 
 const CreateClass = props => (
   <main className="container">
@@ -10,6 +10,6 @@ const CreateClass = props => (
       </div>
     </div>
   </main>
-);
+)
 
-export default CreateClass;
+export default CreateClass

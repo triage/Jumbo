@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
-import { reduxForm } from 'redux-form';
-import eth from 'util/eth';
-import UserType from 'user/model/UserType';
-import ClassInfo from './ClassInfo';
-import ScheduleInfo from './ScheduleInfo';
-import Attendees from './Attendees';
+import React, { PureComponent } from 'react'
+import { reduxForm } from 'redux-form'
+import eth from 'util/eth'
+import UserType from 'user/model/UserType'
+import ClassInfo from './ClassInfo'
+import ScheduleInfo from './ScheduleInfo'
+import Attendees from './Attendees'
 
 class Schedule extends PureComponent {
   render() {
@@ -13,27 +13,27 @@ class Schedule extends PureComponent {
       schedule,
       scheduleLoad,
       address,
-    } = this.props;
+    } = this.props
 
     if (!schedule ||
       (user.type === UserType.individual && schedule.reserved === undefined) ||
       (user.type === UserType.studio && schedule.attendees === undefined)) {
-      scheduleLoad(address);
-      return null;
+      scheduleLoad(address)
+      return null
     }
 
     eth.Schedule().at(schedule.address).then((deployed) => {
-      const event = deployed.SpotPurchased({ spotType: 1 }, { fromBlock: 0 });
+      const event = deployed.SpotPurchased({ spotType: 1 }, { fromBlock: 0 })
       event.get((error, result) => {
         if (error) {
-          console.log(`error:${error}`);
+          console.log(`error:${error}`)
         } else if (result) {
-          console.log(result);
+          console.log(result)
         }
-      });
-    });
+      })
+    })
 
-    document.title = `${schedule.class.name}`;
+    document.title = `${schedule.class.name}`
 
     return (
       <div>
@@ -41,11 +41,11 @@ class Schedule extends PureComponent {
         <Attendees {...this.props} />
         <ClassInfo {...this.props} />
       </div>
-    );
+    )
   }
 }
 
 export default reduxForm({
   // a unique name for the form
   form: 'cancel',
-})(Schedule);
+})(Schedule)

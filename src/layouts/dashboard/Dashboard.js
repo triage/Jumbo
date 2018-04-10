@@ -1,5 +1,5 @@
-import React from 'react';
-import DashboardContainer from 'user/ui/dashboard/DashboardContainer';
+import React from 'react'
+import DashboardContainer from 'user/ui/dashboard/DashboardContainer'
 
 const Dashboard = props => (
   <main className="container">
@@ -9,6 +9,6 @@ const Dashboard = props => (
       </div>
     </div>
   </main>
-);
+)
 
-export default Dashboard;
+export default Dashboard

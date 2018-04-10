@@ -1,19 +1,19 @@
-import { connect } from 'react-redux';
-import Studio from './Studio';
-import { studioLoad } from 'user/model/StudioActions';
-import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux'
+import Studio from './Studio'
+import { studioLoad } from 'user/model/StudioActions'
+import { withRouter } from 'react-router-dom'
 
 const mapStateToProps = (state, ownProps) => {
   const {
     match,
-  } = ownProps;
+  } = ownProps
 
   if (state.studio.address !== match.params.address || state.studio.loading) {
     return {
       address: match.params.address,
       loading: state.studio.loading,
       loaded: state.studio.loaded,
-    };
+    }
   }
 
   return {
@@ -29,19 +29,19 @@ const mapStateToProps = (state, ownProps) => {
         instructor: schedule.instructor,
         reserved: schedule.reserved,
         studio: schedule.class.studio || state.studio,
-      };
-      return obj;
+      }
+      return obj
     }) : [],
-  };
-};
+  }
+}
 
 const mapDispatchToProps = ({
   studioLoad,
-});
+})
 
 const StudioContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withRouter(Studio));
+)(withRouter(Studio))
 
-export default StudioContainer;
+export default StudioContainer

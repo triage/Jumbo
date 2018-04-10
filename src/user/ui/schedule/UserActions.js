@@ -1,20 +1,20 @@
-import React, { PureComponent } from 'react';
-import { reduxForm, Field } from 'redux-form';
-import UserType from 'user/model/UserType';
-import eth from 'util/eth';
+import React, { PureComponent } from 'react'
+import { reduxForm, Field } from 'redux-form'
+import UserType from 'user/model/UserType'
+import eth from 'util/eth'
 
 class UserActions extends PureComponent {
   constructor() {
-    super();
+    super()
     this.state = {
       name: null,
       timer: null,
       inputValid: false,
-    };
+    }
   }
 
   onAddressChanged(event) {
-    clearTimeout(this.state.timer);
+    clearTimeout(this.state.timer)
     this.setState({
       inputValid: false,
       name: null,
@@ -23,10 +23,10 @@ class UserActions extends PureComponent {
           this.setState({
             inputValid: false,
             name,
-          });
-        });
+          })
+        })
       }, 1000),
-    });
+    })
   }
 
   render() {
@@ -42,18 +42,18 @@ class UserActions extends PureComponent {
       spotPurchase,
       spotCancel,
       schedule,
-    } = this.props;
+    } = this.props
 
     if (user.type === UserType.studio) {
       // studio can complete contract
-      const balance = eth.web3().fromWei(schedule.balance);
+      const balance = eth.web3().fromWei(schedule.balance)
 
       // studio can only cancel if current date is before class
       if (new Date() < new Date(schedule.dates.start)) {
         return (
           <form
             onSubmit={handleSubmit((values) => {
-              scheduleCancel(schedule.address, values.reason, history);
+              scheduleCancel(schedule.address, values.reason, history)
             })}
           >
             <hr />
@@ -70,21 +70,21 @@ class UserActions extends PureComponent {
               value="Cancel"
             />
           </form>
-        );
+        )
       }
 
       return (
         <button
           className="cta"
           onClick={(event) => {
-            console.log('clicked');
-            scheduleComplete(schedule.address, history);
+            console.log('clicked')
+            scheduleComplete(schedule.address, history)
           }}
         >Complete class and withdraw ${balance}
         </button>
-      );
+      )
     } else if (user.type === UserType.individual || user.type === UserType.reseller) {
-      const price = user.type === UserType.individual ? schedule.price.individual : schedule.price.reseller;
+      const price = user.type === UserType.individual ? schedule.price.individual : schedule.price.reseller
       if (schedule.reserved) {
         if (new Date().valueOf() < new Date(schedule.dates.cancellation).valueOf()) {
           return (
@@ -95,18 +95,18 @@ class UserActions extends PureComponent {
             >
                 Cancel and refund
             </button>
-          );
+          )
         }
         return (
           <span>The cancellation window of this class has past.</span>
-        );
+        )
       }
       if (new Date().valueOf() < new Date(schedule.dates.purchase).valueOf()) {
         if (user.type === UserType.reseller) {
           return (
             <form
               onSubmit={handleSubmit((values) => {
-                  spotPurchase(schedule, values.address, history, location);
+                  spotPurchase(schedule, values.address, history, location)
                 })}
             >
               <div>
@@ -130,7 +130,7 @@ class UserActions extends PureComponent {
                 </button>
               </div>
             </form>
-          );
+          )
         }
         return (
           <div>
@@ -138,17 +138,17 @@ class UserActions extends PureComponent {
               type="button"
               className="cta"
               onClick={(event) => {
-                  spotPurchase(schedule, user.address, history, location);
+                  spotPurchase(schedule, user.address, history, location)
                 }}
             >
               {`Buy class for ${eth.web3().fromWei(price)}`}
             </button>
           </div>
-        );
+        )
       }
       return (
         <span>The purchase window of this class has past.</span>
-      );
+      )
     }
   }
 }
@@ -156,4 +156,4 @@ class UserActions extends PureComponent {
 export default reduxForm({
   // a unique name for the form
   form: 'userActions',
-})(UserActions);
+})(UserActions)
