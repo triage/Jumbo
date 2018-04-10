@@ -28,6 +28,10 @@ code {
   min-width: 150px;
 }
 
+.cta:disabled {
+  background: #cccccc;
+}
+
 .destructive {
   background: #ff0000;
 }

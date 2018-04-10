@@ -2,9 +2,16 @@ import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import UserType from 'user/model/UserType'
 
+export const formName = 'SignupForm'
+
 const SignUpForm = props => {
 
   const style = {
+    loadingIcon: {
+      position: 'relative',
+      top: 3,
+      left: 3,
+    },
     radio: {
       float: 'left',
       marginRight: 15,
@@ -29,19 +36,25 @@ const SignUpForm = props => {
   } = props
 
   document.title = 'Sign up!'
+  console.log(`submitting:${submitting}`)
 
   return (
     <div className="section">
       <form
         className="pure-form pure-form-stacked"
-        onSubmit={handleSubmit(values => {
-          userSignup({
-              name: values.name,
-              type: values.type
-            },
-            history
-          )
-        })}
+        onSubmit={
+          handleSubmit(values => {
+            return new Promise((resolve, reject) => {
+              userSignup(
+                {
+                  name: values.name,
+                  type: values.type
+                },
+                history
+              )
+            })
+          })
+        }
       >
         <fieldset>
           <label htmlFor="name">Name</label>
@@ -61,9 +74,13 @@ const SignUpForm = props => {
             </div>
           </div>
           <button
-            disabled={pristine || submitting}
+            disabled={submitting || pristine}
             type="submit"
-            className="cta">Sign Up</button>
+            className="cta">
+              <span>Sign Up</span>
+              {submitting && <span style={style.loadingIcon}>{<img src="/ajax-loader.gif" />}</span>}
+          </button>
+          
         </fieldset>
       </form>
     </div>
@@ -72,5 +89,5 @@ const SignUpForm = props => {
 
 export default reduxForm({
   // a unique name for the form
-  form: 'signup'
+  form: formName,
 })(SignUpForm)

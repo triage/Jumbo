@@ -3,7 +3,9 @@ import SignUpForm from './SignUpForm'
 import { userSignup } from './SignUpFormActions'
 import { withRouter } from 'react-router-dom'
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  error: state.error
+})
 
 const mapDispatchToProps = {
   userSignup
