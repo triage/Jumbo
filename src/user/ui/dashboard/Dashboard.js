@@ -2,7 +2,6 @@ import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import UserType from 'user/model/UserType'
-import eth from 'util/eth'
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
@@ -88,21 +87,6 @@ const Dashboard = props => {
   const defaultView = user.data.type === UserType.studio ? 'week' : 'agenda'
   const views = user.data.type === UserType.studio ? ['week', 'day', 'agenda'] : ['agenda']
   const toolbar = user.data.type === UserType.studio ? true : false
-
-  eth.Studio().deployed().then(deployed => {
-    const events = [{ name: "Schedule - Added", event: deployed.ScheduleAdded}, { name: 'Schedule - Removed', event:deployed.ScheduleRemoved }]
-    events.forEach(event => {
-      event.event({ studio: eth.defaultAccount }, { fromBlock: 0 }).get((error, result) => {
-        console.log(event.name)
-        if (error) {
-          console.log(`error:${error}`)
-        } else if (result) {
-          console.log(result)
-        }
-      })
-      console.log('\n\n')
-    })
-  })
 
   return (
     <div className="z-depth-2">
