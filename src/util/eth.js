@@ -6,7 +6,6 @@ import ScheduleContract from '../contracts/Schedule.json'
 import AuthenticationContract from '../contracts/Authentication.json'
 import ResellerContract from '../contracts/Reseller.json'
 import IndividualContract from '../contracts/Individual.json'
-
 import UserType from '../user/model/UserType'
 
 export const addresses = {
@@ -21,12 +20,7 @@ export const SigninError = {
 }
 
 const eth = {
-  provider: () => {
-    if (!window.web3) {
-      console.warn('web3 not injected')
-    }
-    return window.web3 ? window.web3.currentProvider : new Web3.providers.HttpProvider('http://localhost:7545')
-  },
+  provider: () => (window.web3 ? window.web3.currentProvider : null),
 
   defaultAccount: null,
 
@@ -35,8 +29,8 @@ const eth = {
       if (error) {
         reject(SigninError.general)
       } else if (accounts.length > 0) {
-        eth.defaultAccount = accounts[0]
-        fulfill(accounts[0])
+        const [defaultAccount] = accounts
+        fulfill(defaultAccount)
       } else {
         reject(SigninError.anonymous)
       }
@@ -95,7 +89,7 @@ const eth = {
 }
 export default eth
 
-export const start = callback => new Promise((fulfill, reject) => {
+export const start = () => new Promise((fulfill, reject) => {
   window.addEventListener('load', () => {
     if (!window.web3) {
       reject(SigninError.unsupported)
@@ -121,7 +115,6 @@ export const start = callback => new Promise((fulfill, reject) => {
     })
       .then(type => {
         account.type = type
-        console.log(`type for ${account.address}: ${type}`)
         switch (type) {
           case UserType.studio:
             return eth.Studio().deployed()
