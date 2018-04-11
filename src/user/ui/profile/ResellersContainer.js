@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import Resellers from './Resellers'
 import { resellerAdd, resellerRemove } from './ResellerActions'
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   name: state.user.data.name,
   resellers: state.resellers,
 })

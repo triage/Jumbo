@@ -1,7 +1,7 @@
 import { put, apply, takeEvery } from 'redux-saga/effects'
-import { RESELLER_ADD, resellerAdded, RESELLER_REMOVE, resellerRemoved } from './ResellerActions'
-import eth from 'util/eth'
 import { reset } from 'redux-form'
+import eth from 'util/eth'
+import { RESELLER_ADD, resellerAdded, RESELLER_REMOVE, resellerRemoved } from './ResellerActions'
 import { formName } from './Resellers'
 
 function* doResellerAdd(action) {

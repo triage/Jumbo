@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import Profile from './Profile'
 import { userUpdate } from './ProfileActions'
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   user: state.user.data,
 })
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import UserType from 'user/model/UserType'
 
 const Attendees = props => {
@@ -19,6 +19,17 @@ const Attendees = props => {
       {attendees}
     </div>
   )
+}
+
+Attendees.propTypes = {
+  schedule: PropTypes.shape({
+    attendees: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    })).isRequired,
+  }).isRequired,
+  user: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default Attendees

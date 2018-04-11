@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import UserType from 'user/model/UserType'
 
 const styles = {
@@ -22,7 +22,6 @@ const SideNavigation = props => {
   } = props
 
   if (!user || user.type !== UserType.studio) {
-    console.log('render nothing')
     return null
   }
 
@@ -34,6 +33,10 @@ const SideNavigation = props => {
       </ul>
     </div>
   )
+}
+
+SideNavigation.propTypes = {
+  user: PropTypes.object.isRequired,
 }
 
 export default SideNavigation

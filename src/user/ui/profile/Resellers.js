@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import eth from 'util/eth'
 
@@ -54,11 +54,11 @@ class Resellers extends PureComponent {
         <form
           className="pure-form pure-form-stacked"
           onSubmit={handleSubmit(values => {
-                        resellerAdd(values.address, this.state.name)
-                        this.setState({
-                            name: null,
-                        })
-                    })}
+            resellerAdd(values.address, this.state.name)
+            this.setState({
+              name: null,
+            })
+          })}
         >
           <fieldset>
             <div>
@@ -84,15 +84,16 @@ class Resellers extends PureComponent {
               <hr />
               <ul>
                 {resellers.map(reseller => (
-                  <li key={reseller.address}>{reseller.name} ({reseller.address}) - <a
-                    href="#"
-                    onClick={() => {
-                                        resellerRemove(reseller.address)
-                                    }}
-                  >x
-                                                                                    </a>
+                  <li key={reseller.address}>{reseller.name} ({reseller.address}) -
+                    <button
+                      onClick={() => {
+                        resellerRemove(reseller.address)
+                      }}
+                    >
+                      x
+                    </button>
                   </li>
-                                ))}
+                ))}
               </ul>
             </div>
           </fieldset>
@@ -100,6 +101,15 @@ class Resellers extends PureComponent {
       </div>
     )
   }
+}
+
+Resellers.propTypes = {
+  resellers: PropTypes.array.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  resellerAdd: PropTypes.func.isRequired,
+  resellerRemove: PropTypes.func.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
 }
 
 export default reduxForm({
