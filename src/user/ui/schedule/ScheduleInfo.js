@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import eth from 'util/eth'
 import UserType from 'user/model/UserType'
@@ -37,6 +38,11 @@ const Balance = props => {
   return <div style={style.balance}>{balance} eth</div>
 }
 
+Balance.propTypes = {
+  schedule: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+}
+
 const ScheduleInfo = props => {
   const {
     schedule,
@@ -71,6 +77,11 @@ const ScheduleInfo = props => {
       </div>
     </div>
   )
+}
+
+ScheduleInfo.propTypes = {
+  schedule: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 }
 
 export default ScheduleInfo

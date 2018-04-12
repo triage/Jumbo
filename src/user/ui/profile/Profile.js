@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
-class Profile extends Component {
+class Profile extends PureComponent {
   static propTypes = {
     contactDetails: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,

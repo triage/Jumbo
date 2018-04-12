@@ -1,5 +1,4 @@
 import contract from 'truffle-contract'
-import Web3 from 'web3'
 import ClassContract from '../contracts/Class.json'
 import StudioContract from '../contracts/Studio.json'
 import ScheduleContract from '../contracts/Schedule.json'

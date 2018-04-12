@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "detect-port": "^1.1.0",
+    "history": "^4.7.2",
     "moment": "^2.18.1",
     "prop-types": "^15.6.1",
     "rc-time-picker": "^2.4.0",

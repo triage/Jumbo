@@ -1,8 +1,7 @@
 import { connect } from 'react-redux'
 import ScheduleDetail from './ScheduleDetail'
 import { scheduleLoad } from '../../model/ScheduleActions'
-import { scheduleCancel, scheduleComplete } from './ScheduleDetailActions'
-import { spotPurchase, spotCancel } from './ScheduleDetailActions'
+import { spotPurchase, spotCancel, scheduleCancel, scheduleComplete } from './ScheduleDetailActions'
 
 const mapStateToProps = (state, ownProps) => {
   const schedule = state.schedules.find(found => found.address === ownProps.match.params.address)

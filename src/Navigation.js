@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import eth from './util/eth'
 import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers'
@@ -9,6 +10,7 @@ const OnlyAuthLinks = VisibleOnlyAuth(props => {
   return (
     <span>
       <li>
+        {/* eslint-disable jsx-a11y/anchor-is-valid */}
         <Link to="/profile">
           <div style={{ marginRight: 10, float: 'left' }}>
             {balance} ETH
@@ -54,6 +56,10 @@ const Navigation = props => {
       </ul>
     </nav>
   )
+}
+
+Navigation.propTypes = {
+  user: PropTypes.object.isRequired,
 }
 
 export default Navigation
