@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class Profile extends Component {
+  static propTypes = {
+    contactDetails: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    user: PropTypes.object.isRequired,
+    userUpdate: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
       contactDetails: this.props.user.contactDetails,
       name: this.props.user.name,
     }
-    console.log(this.props)
   }
 
   onInputChange(event) {
@@ -22,6 +29,7 @@ class Profile extends Component {
     event.preventDefault()
 
     if (this.state.name.length < 2) {
+      /* eslint-disable no-alert */
       return alert('Please fill in your name.')
     }
 

@@ -4,7 +4,7 @@ import UserType from 'user/model/UserType'
 import eth from 'util/eth'
 import { INDIVIDUAL_LOAD, individualLoaded } from './IndividualActions'
 
-function* doIndividualLoad(action) {
+function* doIndividualLoad() {
   const Individual = eth.Individual()
   const Class = eth.Class()
   const Schedule = eth.Schedule()
@@ -14,7 +14,7 @@ function* doIndividualLoad(action) {
     const individual = yield Individual.deployed()
     const count = yield individual.getSchedulesCount.call(from)
     const schedules = []
-    for (let i = 0; i < parseInt(count.valueOf(10), 10); i++) {
+    for (let i = 0; i < parseInt(count.valueOf(10), 10); i += 1) {
       const address = yield individual.getSchedule.call(i, from)
       const schedule = Schedule.at(address)
       const dates = yield schedule.dates.call()
@@ -55,10 +55,12 @@ function* doIndividualLoad(action) {
     }
     yield put(individualLoaded(schedules))
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error:${error}`)
   }
 }
 
+/* eslint-disable import/prefer-default-export */
 export function* watchIndividualLoad() {
   yield takeEvery(INDIVIDUAL_LOAD, doIndividualLoad)
 }

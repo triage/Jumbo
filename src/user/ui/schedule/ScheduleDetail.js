@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { reduxForm } from 'redux-form'
 import eth from 'util/eth'
 import UserType from 'user/model/UserType'
@@ -7,6 +8,13 @@ import ScheduleInfo from './ScheduleInfo'
 import Attendees from './Attendees'
 
 class Schedule extends PureComponent {
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+    schedule: PropTypes.object.isRequired,
+    scheduleLoad: PropTypes.func.isRequired,
+    address: PropTypes.string.isRequired,
+  }
+
   render() {
     const {
       user,
@@ -24,13 +32,7 @@ class Schedule extends PureComponent {
 
     eth.Schedule().at(schedule.address).then(deployed => {
       const event = deployed.SpotPurchased({ spotType: 1 }, { fromBlock: 0 })
-      event.get((error, result) => {
-        if (error) {
-          console.log(`error:${error}`)
-        } else if (result) {
-          console.log(result)
-        }
-      })
+      event.get(() => {})
     })
 
     document.title = `${schedule.class.name}`

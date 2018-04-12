@@ -1,7 +1,7 @@
-import { USER_UPDATE, userUpdated } from './ProfileActions'
 import { put, select, apply, takeEvery } from 'redux-saga/effects'
 import UserType from 'user/model/UserType'
 import eth from 'util/eth'
+import { USER_UPDATE, userUpdated } from './ProfileActions'
 
 function* doUserUpdate(action) {
   const { name, contactDetails } = action
@@ -26,11 +26,12 @@ function* doUserUpdate(action) {
     yield apply(entity, entity.updateContactDetails.sendTransaction, [contactDetails, eth.from()])
     yield put(userUpdated(name, contactDetails))
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error:${error}`)
   }
 }
 
-
+/* eslint-disable import/prefer-default-export */
 export function* watchUserUpdate() {
   yield takeEvery(USER_UPDATE, doUserUpdate)
 }

@@ -27,6 +27,7 @@ export function* doScheduleCancel(action) {
     yield put(scheduleCancelled(action.schedule))
     yield call(action.history.push, '/dashboard')
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(error)
     yield put({ type: 'SCHEDULE_CANCEL_FAILED', error })
   }
@@ -44,6 +45,7 @@ function* doScheduleComplete(action) {
     yield put(schedulesLoad())
     action.history.push('/dashboard')
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error completing schedule:${error}`)
   }
 }
@@ -54,6 +56,7 @@ function* doSpotCancel(action) {
     yield apply(individual, individual.spotCancel.sendTransaction, [action.schedule.address, eth.from()])
     yield put(spotCancelled(action.schedule, action.history))
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(error)
   }
 }
@@ -79,6 +82,7 @@ function* doSpotPurchase(action) {
 
     yield put(spotPurchased(action.schedule, action.history))
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(error)
   }
 }

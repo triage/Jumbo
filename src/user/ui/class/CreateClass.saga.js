@@ -22,8 +22,8 @@ export function* doCreateClass(action) {
     // todo: something more elegant
     let classCount = classCountBefore
     while (classCount === classCountBefore) {
-      const count = yield studio.classesCount.call(eth.defaultAccount)
-      classCount = value(count)
+      const countOnContract = yield studio.classesCount.call(eth.defaultAccount)
+      classCount = value(countOnContract)
       if (classCount !== classCountBefore + 1) {
         yield delay(200)
       }
@@ -41,6 +41,7 @@ export function* doCreateClass(action) {
       Object.assign({}, action.location.state, { class: address }),
     )
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(error)
     yield put(stopSubmit(formName))
   }

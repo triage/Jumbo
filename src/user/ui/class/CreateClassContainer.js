@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import CreateClassForm from './CreateClassForm'
 import { classCreate } from './CreateClassActions'
 
-const mapStateToProps = state => ({})
+const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {
   classCreate,

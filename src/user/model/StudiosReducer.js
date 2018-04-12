@@ -1,9 +1,8 @@
-import { CLASSES_LOADED } from './ClassesActions'
 import { CLASS_CREATED } from 'user/ui/class/CreateClassActions'
-import { SCHEDULES_LOADED } from './ScheduleActions'
 import { USER_PURGE } from 'user/model/UserActions'
+import { CLASSES_LOADED } from './ClassesActions'
+import { SCHEDULES_LOADED } from './ScheduleActions'
 import { STUDIO_LOAD, STUDIO_INFO_LOADED } from './StudioActions'
-import { USER_UPDATED } from '../ui/profile/ProfileActions'
 
 const initialStateStudio = address => {
   const studio = {}
@@ -32,7 +31,7 @@ const studioReducer = (state = initialState, action) => {
   } else if (action.type === STUDIO_LOAD) {
     return Object.assign({}, state, initialStateStudio(address))
   } else if (action.type === 'persist/REHYDRATE') {
-    return action.payload.studios | initialState
+    return action.payload.studios || initialState
   } else if (action.type === CLASS_CREATED) {
     const classes = state.classes ? Array.from(state.classes) : []
     classes.push(action.class)

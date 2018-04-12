@@ -14,6 +14,7 @@ function* doResellerAdd(action) {
     yield put(resellerAdded(address, name))
     yield put(reset(formName))
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error:${error}`)
   }
 }
@@ -27,10 +28,12 @@ function* doResellerRemove(action) {
     yield apply(studio, studio.removeReseller.sendTransaction, [address, eth.from()])
     yield put(resellerRemoved(address))
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error:${error}`)
   }
 }
 
+/* eslint-disable import/prefer-default-export */
 export function* watchResellers() {
   yield takeEvery(RESELLER_ADD, doResellerAdd)
   yield takeEvery(RESELLER_REMOVE, doResellerRemove)

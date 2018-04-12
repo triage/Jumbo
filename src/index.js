@@ -31,7 +31,6 @@ function render() {
 
 start().then(user => {
   isLoggedIn = true
-  console.log(user)
   store.dispatch(userLoggedIn(user))
   if (user.type === UserType.studio) {
     store.dispatch(studioLoad(user.address))
@@ -44,12 +43,15 @@ start().then(user => {
 }).catch(error => {
   switch (error) {
     case SigninError.unauthorized:
+      /* eslint-disable no-console */
       console.log('unauthorized')
       break
     case SigninError.anonymous:
+      /* eslint-disable no-console */
       console.log('anonymous')
       break
     case SigninError.unsupported:
+      /* eslint-disable no-console */
       console.log('unsupported')
       break
     default:
@@ -58,6 +60,7 @@ start().then(user => {
   }
 
   store.dispatch(userPurge())
+  /* eslint-disable no-console */
   console.log(`error:${error}`)
 
   isLoggedIn = false

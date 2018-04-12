@@ -47,6 +47,7 @@ function* doScheduleSubmit(action) {
   }
 }
 
+/* eslint-disable import/prefer-default-export */
 export function* watchScheduleSubmit() {
   yield takeEvery(SCHEDULE_SUBMIT, doScheduleSubmit)
 }

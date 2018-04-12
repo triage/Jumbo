@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import SideNavigation from './SideNavigation'
 import { withRouter } from 'react-router-dom'
+import SideNavigation from './SideNavigation'
 
 const mapStateToProps = state => ({
   user: state.user.data,

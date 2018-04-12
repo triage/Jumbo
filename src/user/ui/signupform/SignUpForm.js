@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form'
 import UserType from 'user/model/UserType'
 
@@ -41,7 +42,7 @@ const SignUpForm = props => {
       <form
         className="pure-form pure-form-stacked"
         onSubmit={
-          handleSubmit(values => new Promise((resolve, reject) => {
+          handleSubmit(values => new Promise(() => {
               userSignup(
                 {
                   name: values.name,
@@ -75,13 +76,21 @@ const SignUpForm = props => {
             className="cta"
           >
             <span>Sign Up</span>
-            {submitting && <span style={style.loadingIcon}>{<img src="/ajax-loader.gif" />}</span>}
+            {submitting && <span style={style.loadingIcon}>{<img alt="loader" src="/ajax-loader.gif" />}</span>}
           </button>
 
         </fieldset>
       </form>
     </div>
   )
+}
+
+SignUpForm.propTypes = {
+  userSignup: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
 }
 
 export default reduxForm({

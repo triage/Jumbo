@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import UserType from 'user/model/UserType'
@@ -12,6 +13,13 @@ const Event = ({ event }) => (
   </span>
 )
 
+Event.propTypes = {
+  event: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    instructor: PropTypes.string.isRequired,
+  }).isRequired,
+}
+
 const EventAgenda = ({ event }) => (
   <div>
     <a href={event.url}>
@@ -21,28 +29,41 @@ const EventAgenda = ({ event }) => (
   </div>
 )
 
+EventAgenda.propTypes = {
+  event: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    instructor: PropTypes.string.isRequired,
+  }).isRequired,
+}
+
 const DashboardReseller = props => {
   if (props.reseller.studios.length > 0) {
-    return (<div className="section z-depth-2 half">
-      <h5>Studios that recognize you as a reseller:</h5>
-      <table className="bordered">
-        <thead>
-          <tr>
-            <th>
-              Name
-            </th>
-            <th>
-              Address
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {props.reseller.studios.map(reseller => (
-            <tr key={reseller.address}><td>{reseller.name}</td><td>{reseller.address}}</td></tr>
-          ))}
-        </tbody>
-      </table>
-    </div>)
+    return (
+      <div className="section z-depth-2 half">
+        <h5>Studios that recognize you as a reseller:</h5>
+        <table className="bordered">
+          <thead>
+            <tr>
+              <th>
+                Name
+              </th>
+              <th>
+                Address
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.reseller.studios.map(reseller => (
+              <tr key={reseller.address}>
+                <td>{reseller.name}</td>
+                <td>{reseller.address}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
   }
 
   return (
@@ -51,6 +72,20 @@ const DashboardReseller = props => {
       <p>{props.user.data.address}</p>
     </div>
   )
+}
+
+DashboardReseller.propTypes = {
+  user: PropTypes.shape({
+    data: PropTypes.shape({
+      address: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+  reseller: PropTypes.shape({
+    studios: PropTypes.arrayOf(PropTypes.shape({
+      address: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })).isRequired,
+  }).isRequired,
 }
 
 const Dashboard = props => {
@@ -89,7 +124,7 @@ const Dashboard = props => {
         step={15}
         selectable
         onSelectSlot={({ start, end }) => {
-          const earliest = new Date().valueOf() - earliestSchedulableClassHoursBefore * 60 * 60 * 1000
+          const earliest = new Date().valueOf() - (earliestSchedulableClassHoursBefore * 60 * 60 * 1000)
           if (new Date(start).valueOf() <= earliest) {
             return
           }
@@ -118,6 +153,12 @@ const Dashboard = props => {
       <div style={{ clear: 'both' }} />
     </div>
   )
+}
+
+Dashboard.propTypes = {
+  user: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  events: PropTypes.array.isRequired,
 }
 
 export default Dashboard

@@ -1,9 +1,23 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { reduxForm, Field } from 'redux-form'
 import UserType from 'user/model/UserType'
 import eth from 'util/eth'
 
 class UserActions extends PureComponent {
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    pristine: PropTypes.bool.isRequired,
+    submitting: PropTypes.bool.isRequired,
+    scheduleCancel: PropTypes.func.isRequired,
+    scheduleComplete: PropTypes.func.isRequired,
+    spotPurchase: PropTypes.func.isRequired,
+    spotCancel: PropTypes.func.isRequired,
+    schedule: PropTypes.object.isRequired,
+  }
   constructor() {
     super()
     this.state = {
@@ -76,8 +90,7 @@ class UserActions extends PureComponent {
       return (
         <button
           className="cta"
-          onClick={event => {
-            console.log('clicked')
+          onClick={() => {
             scheduleComplete(schedule.address, history)
           }}
         >Complete class and withdraw ${balance}
@@ -91,7 +104,7 @@ class UserActions extends PureComponent {
             <button
               type="button"
               className="cta destructive"
-              onClick={event => spotCancel(schedule, user.address, history, location)}
+              onClick={() => spotCancel(schedule, user.address, history, location)}
             >
                 Cancel and refund
             </button>
@@ -137,7 +150,7 @@ class UserActions extends PureComponent {
             <button
               type="button"
               className="cta"
-              onClick={event => {
+              onClick={() => {
                   spotPurchase(schedule, user.address, history, location)
                 }}
             >

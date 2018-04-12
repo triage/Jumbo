@@ -4,10 +4,18 @@
     "browser": true,
     "mocha": true
   },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
   "rules": {
     // These are nice-to-haves but not currently possible for us
     // Other projects should have these enabled
     "react/jsx-no-bind": 0,
+    "jsx-a11y/label-has-for": 0,
     "import/no-named-default": 0,
     "react/require-default-props": 0,
     "react/forbid-prop-types": 0,

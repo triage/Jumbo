@@ -1,13 +1,13 @@
 import { put, takeEvery } from 'redux-saga/effects'
-import { CLASSES_LOAD, classesLoaded } from './ClassesActions'
 import eth from 'util/eth'
+import { CLASSES_LOAD, classesLoaded } from './ClassesActions'
 
 export function* doClassesLoad(action) {
   try {
     const studio = yield eth.Studio().deployed()
     const classesCount = yield studio.classesCount(action.address)
     const classes = []
-    for (let classIndex = 0; classIndex < classesCount.toNumber(); classIndex++) {
+    for (let classIndex = 0; classIndex < classesCount.toNumber(); classIndex += 1) {
       const address = yield studio.classAtIndex.call(action.address, classIndex)
       const instance = eth.Class().at(address)
       const name = yield instance.name.call()
@@ -21,6 +21,7 @@ export function* doClassesLoad(action) {
     }
     yield put(classesLoaded(classes))
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error:${error}`)
   }
 }

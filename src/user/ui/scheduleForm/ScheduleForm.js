@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
@@ -107,10 +108,10 @@ const ScheduleForm = props => {
         </div>
         <div className="left">
           <Field
-            component={props => {
+            component={inputProps => {
               const {
                 input,
-              } = props
+              } = inputProps
               return (<NumericInput
                 {...priceProps}
                 placeholder="$"
@@ -174,6 +175,17 @@ const ScheduleForm = props => {
       </button>
     </form>
   )
+}
+
+ScheduleForm.propTypes = {
+  user: PropTypes.object.isRequired,
+  classes: PropTypes.array.isRequired,
+  scheduleSubmit: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
 }
 
 export default reduxForm({

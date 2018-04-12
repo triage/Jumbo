@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form'
 
 export const formName = 'createClassForm'
@@ -27,7 +28,7 @@ const CreateClassForm = props => {
   return (
     <form
       className="pure-form pure-form-stacked"
-      onSubmit={handleSubmit(values => new Promise((resolve, reject) => {
+      onSubmit={handleSubmit(values => new Promise(() => {
           classCreate(values.name, values.description, history, location)
         }))}
     >
@@ -46,11 +47,20 @@ const CreateClassForm = props => {
           className="cta"
         >
           <span>Create Class</span>
-          {submitting && <span style={style.loadingIcon}>{<img src="/ajax-loader.gif" />}</span>}
+          {submitting && <span style={style.loadingIcon}>{<img alt="loader" src="/ajax-loader.gif" />}</span>}
         </button>
       </fieldset>
     </form>
   )
+}
+
+CreateClassForm.propTypes = {
+  classCreate: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
 }
 
 export default reduxForm({

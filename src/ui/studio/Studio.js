@@ -1,5 +1,6 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
@@ -10,6 +11,10 @@ const Event = ({ event }) => (
     {event.instructor}
   </span>
 )
+
+Event.propTypes = {
+  event: PropTypes.object.isRequired,
+}
 
 const Studio = props => {
   const {
@@ -67,6 +72,16 @@ const Studio = props => {
       </div>
     </div>
   )
+}
+
+Studio.propTypes = {
+  studio: PropTypes.object.isRequired,
+  address: PropTypes.string.isRequired,
+  loaded: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  studioLoad: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  events: PropTypes.array.isRequired,
 }
 
 export default Studio
