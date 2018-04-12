@@ -31,6 +31,7 @@ export function* doUserSignup(action) {
   startSubmit(formName)
 
   try {
+    debugger
     const deployed = yield entity.deployed()
     yield apply(deployed, deployed.signup, [data.name, eth.from()])
     const authentication = yield eth.Authentication().deployed()
@@ -51,6 +52,8 @@ export function* doUserSignup(action) {
     }
     yield put(stopSubmit(formName))
   } catch (error) {
+    console.log(`error:${error}`)
+    debugger
     yield put(stopSubmit(formName))
   }
 }

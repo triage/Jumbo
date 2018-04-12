@@ -1,7 +1,7 @@
 import React from 'react'
 import SignUpFormContainer from '../../ui/signupform/SignUpFormContainer'
 
-export default (
+export default () => (
   <main className="container">
     <div className="pure-g">
       <div

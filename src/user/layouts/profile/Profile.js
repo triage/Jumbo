@@ -2,7 +2,7 @@ import React from 'react'
 import ProfileContainer from '../../ui/profile/ProfileContainer'
 import SideNavigationContainer from '../../ui/profile/SideNavigationContainer'
 
-export default (
+export default () => (
   <main className="container">
     <div className="pure-g">
       <div className="pure-u-1-1">
