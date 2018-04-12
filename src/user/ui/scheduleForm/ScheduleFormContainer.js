@@ -5,16 +5,16 @@ import { scheduleSubmit } from './ScheduleFormActions'
 
 const mapStateToProps = state => ({
   user: state.user,
-  classes: state.studio.classes || []
+  classes: state.studio.classes || [],
 })
 
 const mapDispatchToProps = ({
-  scheduleSubmit
+  scheduleSubmit,
 })
 
 const ScheduleFormContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ScheduleForm)
 
 export default withRouter(ScheduleFormContainer)

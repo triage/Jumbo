@@ -4,11 +4,11 @@ export const classCreate = (name, description, history, location) => ({
   name,
   description,
   history,
-  location
+  location,
 })
 
 export const CLASS_CREATED = 'CLASS_CREATED'
 export const classCreated = classObject => ({
   type: CLASS_CREATED,
-  class: classObject
+  class: classObject,
 })

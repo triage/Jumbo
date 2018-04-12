@@ -1,18 +1,18 @@
 import { connect } from 'react-redux'
-import Studio from './Studio'
 import { studioLoad } from 'user/model/StudioActions'
 import { withRouter } from 'react-router-dom'
+import Studio from './Studio'
 
 const mapStateToProps = (state, ownProps) => {
   const {
-    match
+    match,
   } = ownProps
 
   if (state.studio.address !== match.params.address || state.studio.loading) {
     return {
       address: match.params.address,
       loading: state.studio.loading,
-      loaded: state.studio.loaded
+      loaded: state.studio.loaded,
     }
   }
 
@@ -41,7 +41,7 @@ const mapDispatchToProps = ({
 
 const StudioContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(Studio))
 
 export default StudioContainer

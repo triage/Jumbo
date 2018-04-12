@@ -10,6 +10,7 @@ import { watchResellers } from './user/ui/profile/Resellers.saga'
 import { watchUserUpdate } from './user/ui/profile/Profile.saga'
 import { watchResellerLoad } from './user/model/Reseller.saga'
 
+/* eslint-disable import/prefer-default-export */
 export function* rootSaga() {
   yield [
     watchCreateClass(),
@@ -22,6 +23,6 @@ export function* rootSaga() {
     watchIndividualLoad(),
     watchResellers(),
     watchUserUpdate(),
-    watchResellerLoad()
+    watchResellerLoad(),
   ]
 }

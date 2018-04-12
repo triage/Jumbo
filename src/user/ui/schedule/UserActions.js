@@ -1,10 +1,23 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { reduxForm, Field } from 'redux-form'
 import UserType from 'user/model/UserType'
 import eth from 'util/eth'
 
 class UserActions extends PureComponent {
-
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    pristine: PropTypes.bool.isRequired,
+    submitting: PropTypes.bool.isRequired,
+    scheduleCancel: PropTypes.func.isRequired,
+    scheduleComplete: PropTypes.func.isRequired,
+    spotPurchase: PropTypes.func.isRequired,
+    spotCancel: PropTypes.func.isRequired,
+    schedule: PropTypes.object.isRequired,
+  }
   constructor() {
     super()
     this.state = {
@@ -20,21 +33,19 @@ class UserActions extends PureComponent {
       inputValid: false,
       name: null,
       timer: setTimeout(() => {
-        eth.Individual().deployed().then(reseller => {
-          return reseller.getName.call(event.target.value)
-        }).then(name => {
+        eth.Individual().deployed().then(reseller => reseller.getName.call(event.target.value)).then(name => {
           this.setState({
             inputValid: false,
-            name
+            name,
           })
         })
-      }, 1000)
+      }, 1000),
     })
   }
 
   render() {
     const {
-    user,
+      user,
       location,
       history,
       handleSubmit,
@@ -45,14 +56,13 @@ class UserActions extends PureComponent {
       spotPurchase,
       spotCancel,
       schedule,
-  } = this.props;
+    } = this.props
 
     if (user.type === UserType.studio) {
-
-      //studio can complete contract
+      // studio can complete contract
       const balance = eth.web3().fromWei(schedule.balance)
-      
-      //studio can only cancel if current date is before class
+
+      // studio can only cancel if current date is before class
       if (new Date() < new Date(schedule.dates.start)) {
         return (
           <form
@@ -75,15 +85,17 @@ class UserActions extends PureComponent {
             />
           </form>
         )
-      } else {
-        
-        return (
-          <button className="cta" onClick={event => {
-            console.log('clicked')
-            scheduleComplete(schedule.address, history)
-          }}>Complete class and withdraw ${balance}</button>
-        )
       }
+
+      return (
+        <button
+          className="cta"
+          onClick={() => {
+            scheduleComplete(schedule.address, history)
+          }}
+        >Complete class and withdraw ${balance}
+        </button>
+      )
     } else if (user.type === UserType.individual || user.type === UserType.reseller) {
       const price = user.type === UserType.individual ? schedule.price.individual : schedule.price.reseller
       if (schedule.reserved) {
@@ -92,69 +104,69 @@ class UserActions extends PureComponent {
             <button
               type="button"
               className="cta destructive"
-              onClick={event => spotCancel(schedule, user.address, history, location)}>
+              onClick={() => spotCancel(schedule, user.address, history, location)}
+            >
                 Cancel and refund
-          </button>
-          )
-        } else {
-          return (
-            <span>The cancellation window of this class has past.</span>
+            </button>
           )
         }
-      } else {
-        if (new Date().valueOf() < new Date(schedule.dates.purchase).valueOf()) {
-          if (user.type === UserType.reseller) {
-            return (
-              <form
-                onSubmit={handleSubmit(values => {
+        return (
+          <span>The cancellation window of this class has past.</span>
+        )
+      }
+      if (new Date().valueOf() < new Date(schedule.dates.purchase).valueOf()) {
+        if (user.type === UserType.reseller) {
+          return (
+            <form
+              onSubmit={handleSubmit(values => {
                   spotPurchase(schedule, values.address, history, location)
                 })}
-              >
+            >
+              <div>
                 <div>
-                  <div>
-                    <Field
-                      style={{ float: 'left' }}
-                      name="address" component="input"
-                      type="text"
-                      placeholder="User Address"
+                  <Field
+                    style={{ float: 'left' }}
+                    name="address"
+                    component="input"
+                    type="text"
+                    placeholder="User Address"
                     onChange={event => this.onAddressChanged(event)}
-                    />
-                    {this.state.name}
-                  </div>
-                  <button
-                    type="submit"
-                    className="cta"
-                    disabled={pristine || submitting || this.state.inputValid}
-                  >
-                    {`Buy class for ${eth.web3().fromWei(price)}`}
-                  </button>
+                  />
+                  {this.state.name}
                 </div>
-              </form>
-            )
-          }
-          return (
-            <div>
-              <button
-                type="button"
-                className="cta"
-                onClick={event => {
-                  spotPurchase(schedule, user.address, history, location)
-                }}>
-                {`Buy class for ${eth.web3().fromWei(price)}`}
-              </button>
-            </div>
-          )
-        } else {
-          return (
-            <span>The purchase window of this class has past.</span>
+                <button
+                  type="submit"
+                  className="cta"
+                  disabled={pristine || submitting || this.state.inputValid}
+                >
+                  {`Buy class for ${eth.web3().fromWei(price)}`}
+                </button>
+              </div>
+            </form>
           )
         }
+        return (
+          <div>
+            <button
+              type="button"
+              className="cta"
+              onClick={() => {
+                  spotPurchase(schedule, user.address, history, location)
+                }}
+            >
+              {`Buy class for ${eth.web3().fromWei(price)}`}
+            </button>
+          </div>
+        )
       }
+      return (
+        <span>The purchase window of this class has past.</span>
+      )
     }
   }
 }
 
 export default reduxForm({
   // a unique name for the form
-  form: 'userActions'
+  form: 'userActions',
 })(UserActions)

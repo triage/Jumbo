@@ -1,8 +1,7 @@
 import React from 'react'
 import ScheduleFormContainer from 'user/ui/scheduleForm/ScheduleFormContainer'
 
-const ScheduleNew = props => {
-  return (
+const ScheduleNew = props => (
   <main className="container">
     <div className="pure-g">
       <div className="pure-u-1-1 half">
@@ -11,7 +10,6 @@ const ScheduleNew = props => {
       </div>
     </div>
   </main>
-  )
-}
+)
 
 export default ScheduleNew

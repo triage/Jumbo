@@ -2,7 +2,7 @@ import { USER_PURGE } from 'user/model/UserActions'
 import { RESELLER_LOADED } from './ResellerActions'
 
 const initialState = {
-  studios: []
+  studios: [],
 }
 
 const resellerReducer = (state = initialState, action) => {
@@ -10,7 +10,7 @@ const resellerReducer = (state = initialState, action) => {
     return initialState
   } else if (action.type === RESELLER_LOADED) {
     return Object.assign({}, state, {
-      studios: action.studios
+      studios: action.studios,
     })
   }
   return state

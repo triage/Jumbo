@@ -1,7 +1,6 @@
-//Individual schedule state
-import { SCHEDULE_LOADED } from './ScheduleActions'
 import { INDIVIDUAL_LOADED } from 'user/model/IndividualActions'
 import { SPOT_PURCHASED, SPOT_CANCELLED } from 'user/ui/schedule/ScheduleDetailActions'
+import { SCHEDULE_LOADED } from './ScheduleActions'
 
 const initialState = []
 
@@ -9,12 +8,9 @@ const schedulesReducer = (state = initialState, action) => {
   if (action.type === 'persist/REHYDRATE') {
     return action.payload.schedules || initialState
   } else if (action.type === SCHEDULE_LOADED) {
-    
     const schedules = Array.from(state)
-    const existing = schedules.findIndex(found => {
-      return found.address === action.schedule.address
-    })
-    if (existing >=0 ) {
+    const existing = schedules.findIndex(found => found.address === action.schedule.address)
+    if (existing >= 0) {
       schedules[existing] = action.schedule
     } else {
       schedules.push(action.schedule)
@@ -27,7 +23,7 @@ const schedulesReducer = (state = initialState, action) => {
     const schedules = Array.from(state).map(schedule => {
       if (schedule.address === action.schedule.address) {
         return Object.assign({}, schedule, {
-          reserved: true
+          reserved: true,
         })
       }
       return schedule
@@ -37,7 +33,7 @@ const schedulesReducer = (state = initialState, action) => {
     const schedules = Array.from(state).map(schedule => {
       if (schedule.address === action.schedule.address) {
         return Object.assign({}, schedule, {
-          reserved: false
+          reserved: false,
         })
       }
       return schedule

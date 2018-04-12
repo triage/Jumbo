@@ -1,10 +1,9 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 
-BigCalendar.setLocalizer(
-  BigCalendar.momentLocalizer(moment)
-);
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
 const Event = ({ event }) => (
   <span>
@@ -13,10 +12,14 @@ const Event = ({ event }) => (
   </span>
 )
 
+Event.propTypes = {
+  event: PropTypes.object.isRequired,
+}
+
 const Studio = props => {
   const {
-    studio, address, loaded, loading, studioLoad, history
-  } = props;
+    studio, address, loaded, loading, studioLoad, history,
+  } = props
 
   let { events } = props
 
@@ -35,11 +38,9 @@ const Studio = props => {
   const views = ['week', 'day', 'agenda']
   const toolbar = true
 
-  events = events.map(event => {
-    return Object.assign({}, event, {
-      url: `/schedule/${event.address}`
-    })
-  })
+  events = events.map(event => Object.assign({}, event, {
+    url: `/schedule/${event.address}`,
+  }))
 
   return (
     <div>
@@ -49,27 +50,38 @@ const Studio = props => {
         <div className="contactDetails">{studio.contactDetails}</div>
       </div>
       <div className="z-depth-2">
-      <BigCalendar
-        events={events}
-        step={15}
-        selectable
-        onSelectEvent={event => {
+        <BigCalendar
+          events={events}
+          step={15}
+          selectable
+          onSelectEvent={event => {
           history.push(`/schedule/${event.address}`)
         }}
-        components={{
+          components={{
           event: Event,
         }}
-        min={moment({ hour: 5 }).toDate()}
-        max={moment({ hour: 21 }).toDate()}
-        timeslots={4}
-        toolbar={toolbar}
-        views={views}
-        defaultView={defaultView}
-        defaultDate={new Date()} />
-      <div style={{ clear: 'both' }} />
-    </div>
+          min={moment({ hour: 5 }).toDate()}
+          max={moment({ hour: 21 }).toDate()}
+          timeslots={4}
+          toolbar={toolbar}
+          views={views}
+          defaultView={defaultView}
+          defaultDate={new Date()}
+        />
+        <div style={{ clear: 'both' }} />
+      </div>
     </div>
   )
+}
+
+Studio.propTypes = {
+  studio: PropTypes.object.isRequired,
+  address: PropTypes.string.isRequired,
+  loaded: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  studioLoad: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  events: PropTypes.array.isRequired,
 }
 
 export default Studio

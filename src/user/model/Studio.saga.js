@@ -1,8 +1,8 @@
 import { put, takeEvery, take } from 'redux-saga/effects'
+import eth from 'util/eth'
 import { STUDIO_INFO_LOAD, STUDIO_INFO_LOADED, STUDIO_LOAD, RESELLERS_LOADED, RESELLERS_LOAD, resellersLoad, resellersLoaded, studioInfoLoad, studioInfoError, studioInfoLoaded } from './StudioActions'
 import { classesLoad, CLASSES_LOADED } from './ClassesActions'
 import { schedulesLoad, SCHEDULES_LOADED } from './ScheduleActions'
-import eth from 'util/eth'
 
 function* studioInfoSaga(action) {
   try {
@@ -12,6 +12,7 @@ function* studioInfoSaga(action) {
     const contactDetails = yield studio.contactDetails.call(address)
     yield put(studioInfoLoaded(name, contactDetails))
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error:${error}`)
     yield put(studioInfoError(error))
   }
@@ -34,32 +35,33 @@ function* studioLoadSaga(action) {
     yield put(resellersLoad(action.address))
     yield take(RESELLERS_LOADED)
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error:${error}`)
   }
 }
 
-function* doResellersLoad(action) {
+function* doResellersLoad() {
   try {
     const studio = yield eth.Studio().deployed()
     const reseller = yield eth.Reseller().deployed()
     const count = yield studio.resellersCount.call()
     const resellers = []
-    for (let index = 0; index < count; index++) {
-      const address = yield studio.resellerAtIndex.call(index);
+    for (let index = 0; index < count; index += 1) {
+      const address = yield studio.resellerAtIndex.call(index)
       const name = yield reseller.getName.call(address)
       resellers.push({
         address,
-        name
-      });
+        name,
+      })
     }
     yield put(resellersLoaded(resellers))
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error:${error}`)
-    debugger
   }
 }
 
-
+/* eslint-disable import/prefer-default-export */
 export function* watchStudioLoad() {
   yield takeEvery(STUDIO_INFO_LOAD, studioInfoSaga)
   yield takeEvery(STUDIO_LOAD, studioLoadSaga)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers.js'
+import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers'
 import NavigationContainer from './NavigationContainer'
 
 // Layouts
@@ -19,23 +19,20 @@ import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
-const App = () => {
-
-  return (
-    <div className="App">
-      <NavigationContainer />
-      <Switch>
-        <Route path="/schedule/new" component={UserIsAuthenticated(ScheduleForm)} />
-        <Route path="/studio/:address" component={Studio} />
-        <Route path="/schedule/:address" component={ScheduleDetail} />
-        <Route path="/class/new" component={UserIsAuthenticated(CreateClass)} />
-        <Route path="/signup" component={UserIsNotAuthenticated(SignUp)} />
-        <Route path="/profile/resellers" component={UserIsAuthenticated(Resellers)} />
-        <Route path="/profile" component={UserIsAuthenticated(Profile)} />
-        <Route path="/" component={UserIsAuthenticated(Dashboard)} />
-      </Switch>
-    </div>
-  );
-}
+const App = () => (
+  <div className="App">
+    <NavigationContainer />
+    <Switch>
+      <Route path="/schedule/new" component={UserIsAuthenticated(ScheduleForm)} />
+      <Route path="/studio/:address" component={Studio} />
+      <Route path="/schedule/:address" component={ScheduleDetail} />
+      <Route path="/class/new" component={UserIsAuthenticated(CreateClass)} />
+      <Route path="/signup" component={UserIsNotAuthenticated(SignUp)} />
+      <Route path="/profile/resellers" component={UserIsAuthenticated(Resellers)} />
+      <Route path="/profile" component={UserIsAuthenticated(Profile)} />
+      <Route path="/" component={UserIsAuthenticated(Dashboard)} />
+    </Switch>
+  </div>
+)
 
 export default withRouter(App)

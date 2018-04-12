@@ -9,6 +9,6 @@ export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export function userLoggedIn(user) {
   return {
     type: USER_LOGGED_IN,
-    data: user
+    data: user,
   }
 }

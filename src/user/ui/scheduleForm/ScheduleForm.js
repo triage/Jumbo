@@ -1,8 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
-import NumericInput from 'react-numeric-input';
+import NumericInput from 'react-numeric-input'
 import ClassesSelector from 'user/ui/class/classes/ClassesSelector'
 
 import 'react-date-picker/index.css'
@@ -19,11 +20,10 @@ const style = {
 
 const format = {
   long: 'ddd, MMM D, H:mm a',
-  short: 'H:mm a'
+  short: 'H:mm a',
 }
 
 const ScheduleForm = props => {
-
   const {
     user,
     classes,
@@ -32,8 +32,8 @@ const ScheduleForm = props => {
     history,
     location,
     pristine,
-    submitting
-  } = props;
+    submitting,
+  } = props
 
   document.title = `${user.data.name} - Create a Schedule`
 
@@ -53,11 +53,12 @@ const ScheduleForm = props => {
     <form
       className="pure-form pure-form-stacked"
       onSubmit={handleSubmit(values => {
-        if (!values.class && location.state.class) {
-          values.class = { address: location.state.class }
+        const submitValues = values
+        if (!submitValues.class && location.state.class) {
+          submitValues.class = { address: location.state.class }
         }
-        return new Promise((resolve, reject) => {
-          scheduleSubmit(Object.assign({}, values, { date }), history)
+        return new Promise(() => {
+          scheduleSubmit(Object.assign({}, submitValues, { date }), history)
         })
       })}
     >
@@ -87,36 +88,38 @@ const ScheduleForm = props => {
 
       <div className="section z-depth-2" style={{ overflow: 'hidden' }}>
         <h5>Number of spots</h5>
-        <div className="left">  
+        <div className="left">
           <Field
-            component={props => {
+            component={inputProps => {
               const {
-                input
-              } = props;
-              return <NumericInput
+                input,
+              } = inputProps
+              return (<NumericInput
                 min={0}
                 max={20}
                 value={input.value}
                 onChange={value => {
                   input.onChange(value)
-                }} />
+                }}
+              />)
             }}
             name="spots.total"
           />
         </div>
         <div className="left">
           <Field
-            component={props => {
+            component={inputProps => {
               const {
-                input
-              } = props;
-              return <NumericInput
+                input,
+              } = inputProps
+              return (<NumericInput
                 {...priceProps}
                 placeholder="$"
                 value={input.value}
                 onChange={value => {
                   input.onChange(value)
-                }} />
+                }}
+              />)
             }}
             name="price.individual"
           />
@@ -127,48 +130,62 @@ const ScheduleForm = props => {
         <h5># of Reseller Spots</h5>
         <div className="left">
           <Field
-            component={props => {
+            component={inputProps => {
               const {
-              input
-            } = props;
-              return <NumericInput
+              input,
+            } = inputProps
+              return (<NumericInput
                 min={0}
                 max={20}
                 value={input.value}
                 onChange={value => {
                   input.onChange(value)
-                }} />
+                }}
+              />)
             }}
             name="spots.reseller"
           />
         </div>
         <div className="left">
           <Field
-            component={props => {
+            component={inputProps => {
               const {
-              input
-            } = props;
-              return <NumericInput
+              input,
+            } = inputProps
+              return (<NumericInput
                 {...priceProps}
                 placeholder="$"
                 value={input.value}
                 onChange={value => {
                   input.onChange(value)
-                }} />
+                }}
+              />)
             }}
             name="price.reseller"
           />
         </div>
       </div>
       <button
-            disabled={submitting || pristine}
-            type="submit"
-            className="cta">
-              <span>Create Schedule</span>
-              {submitting && <span style={style.loadingIcon}>{<img src="/ajax-loader.gif" />}</span>}
-          </button>
+        disabled={submitting || pristine}
+        type="submit"
+        className="cta"
+      >
+        <span>Create Schedule</span>
+        {submitting && <span style={style.loadingIcon}>{<img alt="loader" src="/ajax-loader.gif" />}</span>}
+      </button>
     </form>
   )
+}
+
+ScheduleForm.propTypes = {
+  user: PropTypes.object.isRequired,
+  classes: PropTypes.array.isRequired,
+  scheduleSubmit: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
 }
 
 export default reduxForm({

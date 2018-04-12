@@ -1,13 +1,20 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 
-class Profile extends Component {
+class Profile extends PureComponent {
+  static propTypes = {
+    contactDetails: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    user: PropTypes.object.isRequired,
+    userUpdate: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
       contactDetails: this.props.user.contactDetails,
-      name: this.props.user.name
+      name: this.props.user.name,
     }
-    console.log(this.props)
   }
 
   onInputChange(event) {
@@ -21,8 +28,8 @@ class Profile extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    if (this.state.name.length < 2)
-    {
+    if (this.state.name.length < 2) {
+      /* eslint-disable no-alert */
       return alert('Please fill in your name.')
     }
 
@@ -40,17 +47,20 @@ class Profile extends Component {
               type="text"
               value={this.state.name}
               onChange={this.onInputChange.bind(this)}
-              placeholder="Name" />
+              placeholder="Name"
+            />
             <textarea
               name="contactDetails"
               placeholder="Contact Details"
               onChange={this.onContactDetailsChanged.bind(this)}
               defaultValue={this.props.user.contactDetails}
-              style={{ height: 160 }} />
+              style={{ height: 160 }}
+            />
             <br />
             <button
               type="submit"
-              className="pure-button pure-button-primary">
+              className="pure-button pure-button-primary"
+            >
               Update
             </button>
           </fieldset>

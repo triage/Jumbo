@@ -1,5 +1,5 @@
 import { apply, put, call, takeEvery } from 'redux-saga/effects'
-import { stopSubmit, startSubmit } from 'redux-form';
+import { stopSubmit, startSubmit } from 'redux-form'
 import { delay } from 'redux-saga'
 import eth from 'util/eth'
 import UserType from 'user/model/UserType'
@@ -9,11 +9,11 @@ import { USER_SIGNUP, userLoggedIn } from './SignUpFormActions'
 export function* doUserSignup(action) {
   const {
     data,
-    history
+    history,
   } = action
 
   let entity
-  switch(data.type) {
+  switch (data.type) {
     case UserType.studio:
       entity = eth.Studio()
       break
@@ -31,6 +31,7 @@ export function* doUserSignup(action) {
   startSubmit(formName)
 
   try {
+    debugger
     const deployed = yield entity.deployed()
     yield apply(deployed, deployed.signup, [data.name, eth.from()])
     const authentication = yield eth.Authentication().deployed()
@@ -48,13 +49,12 @@ export function* doUserSignup(action) {
         address: eth.defaultAccount,
       }))
       yield call(history.push, '/dashboard')
-    } else {
-      debugger
     }
-    yield put(stopSubmit(formName));
+    yield put(stopSubmit(formName))
   } catch (error) {
-    const message = error.message ? error.message.split("\n")[0] : null
-    yield put(stopSubmit(formName));
+    console.log(`error:${error}`)
+    debugger
+    yield put(stopSubmit(formName))
   }
 }
 

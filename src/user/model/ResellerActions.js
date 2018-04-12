@@ -6,5 +6,5 @@ export const resellerLoad = () => ({
 export const RESELLER_LOADED = 'RESELLER_LOADED'
 export const resellerLoaded = studios => ({
   type: RESELLER_LOADED,
-  studios
+  studios,
 })

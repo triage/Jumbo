@@ -10,11 +10,10 @@ import {
   spotPurchased,
   spotCancelled,
   scheduleCompleted,
-  scheduleCancelled
+  scheduleCancelled,
 } from './ScheduleDetailActions'
 
 export function* doScheduleCancel(action) {
-
   const Schedule = eth.Schedule()
   const Studio = eth.Studio()
   const from = eth.from()
@@ -28,8 +27,9 @@ export function* doScheduleCancel(action) {
     yield put(scheduleCancelled(action.schedule))
     yield call(action.history.push, '/dashboard')
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(error)
-    yield put({ type: "SCHEDULE_CANCEL_FAILED", error })
+    yield put({ type: 'SCHEDULE_CANCEL_FAILED', error })
   }
 }
 function* doScheduleComplete(action) {
@@ -45,8 +45,8 @@ function* doScheduleComplete(action) {
     yield put(schedulesLoad())
     action.history.push('/dashboard')
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error completing schedule:${error}`)
-    debugger
   }
 }
 
@@ -55,9 +55,9 @@ function* doSpotCancel(action) {
     const individual = yield eth.Individual().deployed()
     yield apply(individual, individual.spotCancel.sendTransaction, [action.schedule.address, eth.from()])
     yield put(spotCancelled(action.schedule, action.history))
-  } catch(error) {
+  } catch (error) {
+    /* eslint-disable no-console */
     console.log(error)
-    debugger
   }
 }
 
@@ -81,8 +81,8 @@ function* doSpotPurchase(action) {
     }
 
     yield put(spotPurchased(action.schedule, action.history))
-    
-  } catch(error) {
+  } catch (error) {
+    /* eslint-disable no-console */
     console.log(error)
   }
 }

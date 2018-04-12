@@ -5,34 +5,34 @@ import { USER_UPDATED } from 'user/ui/profile/ProfileActions'
 
 const initialState = {
   data: null,
-  date: new Date()
+  date: new Date(),
 }
 
 const userReducer = (state = initialState, action) => {
   if (action.type === USER_PURGE) {
     return Object.assign({}, state, {
-      data: null
+      data: null,
     })
   } else if (action.type === USER_LOGGED_IN) {
     return Object.assign({}, state, {
-      data: action.data
+      data: action.data,
     })
-  } else if (action.type === USER_UPDATED ) {
+  } else if (action.type === USER_UPDATED) {
     return Object.assign({}, state, {
       data: Object.assign({}, state.data, {
-        contactDetails: action.contactDetails
-      })
+        contactDetails: action.contactDetails,
+      }),
     })
   } else if (action.type === SPOT_PURCHASED || action.type === SPOT_CANCELLED) {
     return Object.assign({}, state, {
-      date: new Date()
+      date: new Date(),
     })
   } else if (action.type === 'USER_LOGGED_OUT') {
     return Object.assign({}, state, {
-      data: null
+      data: null,
     })
   } else if (action.type === BALANCE_UPDATED) {
-    let copy = Object.assign({}, state)
+    const copy = Object.assign({}, state)
     copy.data.balance = action.balance
     return copy
   }

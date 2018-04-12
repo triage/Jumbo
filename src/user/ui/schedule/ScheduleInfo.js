@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import eth from 'util/eth'
 import UserType from 'user/model/UserType'
@@ -7,7 +8,7 @@ import UserActions from './UserActions'
 const format = {
   long: 'ddd, MMM D, H:mm a',
   short: 'H:mm a',
-  date: 'ddd, MMM D'
+  date: 'ddd, MMM D',
 }
 const style = {
   balance: {
@@ -25,7 +26,7 @@ const style = {
   },
   left: {
     float: 'left',
-  }
+  },
 }
 
 const Balance = props => {
@@ -35,6 +36,11 @@ const Balance = props => {
   }
   const balance = eth.web3().fromWei(schedule.balance)
   return <div style={style.balance}>{balance} eth</div>
+}
+
+Balance.propTypes = {
+  schedule: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 }
 
 const ScheduleInfo = props => {
@@ -71,6 +77,11 @@ const ScheduleInfo = props => {
       </div>
     </div>
   )
+}
+
+ScheduleInfo.propTypes = {
+  schedule: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 }
 
 export default ScheduleInfo

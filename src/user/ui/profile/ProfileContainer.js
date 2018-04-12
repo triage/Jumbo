@@ -2,17 +2,17 @@ import { connect } from 'react-redux'
 import Profile from './Profile'
 import { userUpdate } from './ProfileActions'
 
-const mapStateToProps = (state, ownProps) => ({
-  user: state.user.data
+const mapStateToProps = state => ({
+  user: state.user.data,
 })
 
 const mapDispatchToProps = {
-  userUpdate
+  userUpdate,
 }
 
 const ProfileContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Profile)
 
 export default ProfileContainer

@@ -1,21 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import SignUpFormContainer from '../../ui/signupform/SignUpFormContainer'
 
-class SignUp extends Component {
-  render() {
-    return(
-      <main className="container">
-        <div className="pure-g">
-          <div
-            className="pure-u-1-1 half"
-          >
-            <h1>Sign Up</h1>
-            <SignUpFormContainer />
-          </div>
-        </div>
-      </main>
-    )
-  }
-}
-
-export default SignUp
+export default () => (
+  <main className="container">
+    <div className="pure-g">
+      <div
+        className="pure-u-1-1 half"
+      >
+        <h1>Sign Up</h1>
+        <SignUpFormContainer />
+      </div>
+    </div>
+  </main>
+)

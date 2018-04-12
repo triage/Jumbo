@@ -1,11 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form'
 import UserType from 'user/model/UserType'
 
 export const formName = 'SignupForm'
 
 const SignUpForm = props => {
-
   const style = {
     loadingIcon: {
       position: 'relative',
@@ -20,11 +20,11 @@ const SignUpForm = props => {
       marginTop: 10,
       marginBottom: 10,
       clear: 'both',
-      height: 30
+      height: 30,
     },
     radioField: {
       marginLeft: 5,
-    }
+    },
   }
 
   const {
@@ -32,28 +32,25 @@ const SignUpForm = props => {
     handleSubmit,
     history,
     pristine,
-    submitting
+    submitting,
   } = props
 
   document.title = 'Sign up!'
-  console.log(`submitting:${submitting}`)
 
   return (
     <div className="section">
       <form
         className="pure-form pure-form-stacked"
         onSubmit={
-          handleSubmit(values => {
-            return new Promise((resolve, reject) => {
+          handleSubmit(values => new Promise(() => {
               userSignup(
                 {
                   name: values.name,
-                  type: values.type
+                  type: values.type,
                 },
-                history
+                history,
               )
-            })
-          })
+            }))
         }
       >
         <fieldset>
@@ -76,15 +73,24 @@ const SignUpForm = props => {
           <button
             disabled={submitting || pristine}
             type="submit"
-            className="cta">
-              <span>Sign Up</span>
-              {submitting && <span style={style.loadingIcon}>{<img src="/ajax-loader.gif" />}</span>}
+            className="cta"
+          >
+            <span>Sign Up</span>
+            {submitting && <span style={style.loadingIcon}>{<img alt="loader" src="/ajax-loader.gif" />}</span>}
           </button>
-          
+
         </fieldset>
       </form>
     </div>
   )
+}
+
+SignUpForm.propTypes = {
+  userSignup: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
 }
 
 export default reduxForm({
