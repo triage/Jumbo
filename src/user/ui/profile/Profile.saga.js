@@ -1,5 +1,5 @@
 import { put, select, apply, takeEvery } from 'redux-saga/effects'
-import UserType from 'user/model/UserType'
+import UserType from 'user/data/user/UserType'
 import eth from 'util/eth'
 import { USER_UPDATE, userUpdated } from './ProfileActions'
 

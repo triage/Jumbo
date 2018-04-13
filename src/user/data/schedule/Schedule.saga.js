@@ -1,7 +1,7 @@
 import { put, call, takeEvery, select } from 'redux-saga/effects'
 import moment from 'moment'
 import eth from 'util/eth'
-import UserType from 'user/model/UserType'
+import UserType from 'user/data/user/UserType'
 import { schedulesLoaded, scheduleLoaded, SCHEDULES_LOAD, SCHEDULE_LOAD } from './ScheduleActions'
 
 function* doSchedulesLoad(action) {

@@ -1,7 +1,7 @@
 import { put, apply, select, call, take, takeEvery } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import { stopSubmit, startSubmit } from 'redux-form'
-import { schedulesLoad, SCHEDULES_LOADED } from 'user/model/ScheduleActions'
+import { schedulesLoad, SCHEDULES_LOADED } from 'user/data/schedule/ScheduleActions'
 import eth from 'util/eth'
 import { SCHEDULE_SUBMIT } from './ScheduleFormActions'
 import { formName } from './ScheduleForm'

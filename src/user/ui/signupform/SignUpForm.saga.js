@@ -2,7 +2,7 @@ import { apply, put, call, takeEvery } from 'redux-saga/effects'
 import { stopSubmit, startSubmit } from 'redux-form'
 import { delay } from 'redux-saga'
 import eth from 'util/eth'
-import UserType from 'user/model/UserType'
+import UserType from 'user/data/user/UserType'
 import { formName } from './SignUpForm'
 import { USER_SIGNUP, userLoggedIn } from './SignUpFormActions'
 
@@ -51,6 +51,7 @@ export function* doUserSignup(action) {
     }
     yield put(stopSubmit(formName))
   } catch (error) {
+    /* eslint-disable no-console */
     console.log(`error:${error}`)
     yield put(stopSubmit(formName))
   }

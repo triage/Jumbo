@@ -1,4 +1,4 @@
-import { INDIVIDUAL_LOADED } from 'user/model/IndividualActions'
+import { INDIVIDUAL_LOADED } from 'user/data/individual/IndividualActions'
 import { SPOT_PURCHASED, SPOT_CANCELLED } from 'user/ui/schedule/ScheduleDetailActions'
 import { SCHEDULE_LOADED } from './ScheduleActions'
 

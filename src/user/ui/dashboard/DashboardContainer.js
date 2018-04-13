@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import UserType from 'user/model/UserType'
+import UserType from 'user/data/user/UserType'
 import Dashboard from './Dashboard'
-import { studioLoad } from '../../model/StudioActions'
-import { individualLoad } from '../../model/IndividualActions'
+import { studioLoad } from '../../data/studio/StudioActions'
+import { individualLoad } from '../../data/individual/IndividualActions'
 
 const mapStateToProps = state => {
   const schedules = state.user.data.type === UserType.individual ? state.schedules : state.studio.schedules

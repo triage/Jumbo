@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
+// import { Schedule } from 'model/Schedule'
 import ScheduleDetail from './ScheduleDetail'
-import { scheduleLoad } from '../../model/ScheduleActions'
+import { scheduleLoad } from '../../data/schedule/ScheduleActions'
 import { spotPurchase, spotCancel, scheduleCancel, scheduleComplete } from './ScheduleDetailActions'
 
 const mapStateToProps = (state, ownProps) => {
@@ -10,6 +11,7 @@ const mapStateToProps = (state, ownProps) => {
     user: state.user.data,
     address: ownProps.match.params.address,
     schedule,
+    // scheduleTypescript: new Schedule(schedule),
     reserved,
     date: state.user.date, // this is shitty
   }

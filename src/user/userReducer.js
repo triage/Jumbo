@@ -1,5 +1,5 @@
 import { USER_LOGGED_IN } from 'user/ui/signupform/SignUpFormActions'
-import { USER_PURGE, BALANCE_UPDATED } from 'user/model/UserActions'
+import { USER_PURGE, BALANCE_UPDATED } from 'user/data/user/UserActions'
 import { SPOT_PURCHASED, SPOT_CANCELLED } from 'user/ui/schedule/ScheduleDetailActions'
 import { USER_UPDATED } from 'user/ui/profile/ProfileActions'
 

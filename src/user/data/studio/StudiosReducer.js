@@ -1,7 +1,7 @@
 import { CLASS_CREATED } from 'user/ui/class/CreateClassActions'
-import { USER_PURGE } from 'user/model/UserActions'
-import { CLASSES_LOADED } from './ClassesActions'
-import { SCHEDULES_LOADED } from './ScheduleActions'
+import { USER_PURGE } from 'user/data/user/UserActions'
+import { CLASSES_LOADED } from '../classes/ClassesActions'
+import { SCHEDULES_LOADED } from '../schedule/ScheduleActions'
 import { STUDIO_LOAD, STUDIO_INFO_LOADED } from './StudioActions'
 
 const initialStateStudio = address => {

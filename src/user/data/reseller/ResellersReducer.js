@@ -1,6 +1,6 @@
 import { addresses } from 'util/eth'
-import { RESELLERS_LOADED } from './StudioActions'
-import { RESELLER_ADDED, RESELLER_REMOVED } from '../ui/profile/ResellerActions'
+import { RESELLERS_LOADED } from '../studio/StudioActions'
+import { RESELLER_ADDED, RESELLER_REMOVED } from '../../ui/profile/ResellerActions'
 
 const initialState = []
 

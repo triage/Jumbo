@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form'
-import UserType from 'user/model/UserType'
+import UserType from 'user/data/user/UserType'
 
 export const formName = 'SignupForm'
 

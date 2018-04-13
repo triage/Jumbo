@@ -1,4 +1,4 @@
-import { USER_PURGE } from 'user/model/UserActions'
+import { USER_PURGE } from 'user/data/user/UserActions'
 import { RESELLER_LOADED } from './ResellerActions'
 
 const initialState = {

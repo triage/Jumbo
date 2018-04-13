@@ -5,7 +5,7 @@ import ScheduleContract from '../contracts/Schedule.json'
 import AuthenticationContract from '../contracts/Authentication.json'
 import ResellerContract from '../contracts/Reseller.json'
 import IndividualContract from '../contracts/Individual.json'
-import UserType from '../user/model/UserType'
+import UserType from '../user/data/user/UserType'
 
 export const addresses = {
   blank: '0x0000000000000000000000000000000000000000',

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
-import UserType from 'user/model/UserType'
+import UserType from 'user/data/user/UserType'
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 

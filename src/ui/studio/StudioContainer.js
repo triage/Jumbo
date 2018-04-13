@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { studioLoad } from 'user/model/StudioActions'
+import { studioLoad } from 'user/data/studio/StudioActions'
 import { withRouter } from 'react-router-dom'
 import Studio from './Studio'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import UserType from 'user/model/UserType'
+import UserType from 'user/data/user/UserType'
 
 const Attendees = props => {
   const {

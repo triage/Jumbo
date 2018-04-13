@@ -1,10 +1,10 @@
 import { CLASS_CREATED } from 'user/ui/class/CreateClassActions'
-import { USER_PURGE } from 'user/model/UserActions'
+import { USER_PURGE } from 'user/data/user/UserActions'
 import { SCHEDULE_COMPLETED, SCHEDULE_CANCELLED } from 'user/ui/schedule/ScheduleDetailActions'
-import { USER_UPDATED } from '../ui/profile/ProfileActions'
+import { USER_UPDATED } from 'user/ui/profile/ProfileActions'
+import { CLASSES_LOADED } from 'user/data/classes/ClassesActions'
+import { SCHEDULES_LOADED } from 'user/data/schedule/ScheduleActions'
 import { STUDIO_LOAD, STUDIO_INFO_LOADED } from './StudioActions'
-import { CLASSES_LOADED } from './ClassesActions'
-import { SCHEDULES_LOADED } from './ScheduleActions'
 
 const initialState = {
   address: null,
