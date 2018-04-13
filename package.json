@@ -4,6 +4,10 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/node": "^9.6.4",
+    "@types/react": "^16.3.10",
+    "@types/react-dom": "^16.0.5",
     "autoprefixer": "6.5.1",
     "awesome-typescript-loader": "^5.0.0",
     "babel-core": "^6.26.0",
@@ -48,7 +52,7 @@
     "react": "^16.3.0",
     "react-dev-utils": "^0.4.2",
     "react-dom": "^16.3.0",
-    "react-scripts": "1.1.1",
+    "react-scripts-ts": "2.14.0",
     "recursive-readdir": "2.1.0",
     "scripty": "^1.7.2",
     "solidity-coverage": "^0.3.5",
@@ -70,7 +74,10 @@
   "dependencies": {
     "@types/react": "^16.3.10",
     "@types/react-dom": "^16.0.5",
+    "@types/react-redux": "^5.0.16",
+    "@types/react-router-dom": "^4.2.6",
     "detect-port": "^1.1.0",
+    "eslint-plugin-typescript": "^0.11.0",
     "history": "^4.7.2",
     "moment": "^2.18.1",
     "prop-types": "^15.6.1",
@@ -100,41 +107,12 @@
     "test:solidity": "scripty",
     "build:contracts": "truffle compile && yarn contracts:sync-src",
     "contracts:sync-src": "rimraf src/contracts && cp -R build/contracts/ src/contracts",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
     "lint": "./node_modules/.bin/eslint src",
     "lint-fixup": "./node_modules/.bin/eslint src --ext .js,.jsx --fix"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
-    ],
-    "setupFiles": [
-      "<rootDir>\\config\\polyfills.js"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>[/\\\\](build|docs|node_modules)[/\\\\]"
-    ],
-    "testEnvironment": "node",
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>\\config\\jest\\cssTransform.js",
-      "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>\\config\\jest\\fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
-    ],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web"
-    }
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -13,24 +13,20 @@ import { resellerLoad } from './user/model/ResellerActions'
 import { individualLoad } from './user/model/IndividualActions'
 import UserType from './user/model/UserType'
 
-const isAnonymous = false
-let isLoggedIn = false
-
 function render() {
   ReactDOM.render(
     (
       <Provider store={store}>
         <BrowserRouter>
-          <App isLoggedIn={isLoggedIn} isAnonymous={isAnonymous} />
+          <App />
         </BrowserRouter>
       </Provider>
     ),
     document.getElementById('root'),
-  )
+  );
 }
 
 start().then(user => {
-  isLoggedIn = true
   store.dispatch(userLoggedIn(user))
   if (user.type === UserType.studio) {
     store.dispatch(studioLoad(user.address))
@@ -44,15 +40,12 @@ start().then(user => {
   switch (error) {
     case SigninError.unauthorized:
       /* eslint-disable no-console */
-      console.log('unauthorized')
       break
     case SigninError.anonymous:
       /* eslint-disable no-console */
-      console.log('anonymous')
       break
     case SigninError.unsupported:
       /* eslint-disable no-console */
-      console.log('unsupported')
       break
     default:
 
@@ -61,8 +54,5 @@ start().then(user => {
 
   store.dispatch(userPurge())
   /* eslint-disable no-console */
-  console.log(`error:${error}`)
-
-  isLoggedIn = false
   render()
 })
