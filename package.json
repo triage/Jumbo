@@ -5,6 +5,7 @@
   "private": true,
   "devDependencies": {
     "autoprefixer": "6.5.1",
+    "awesome-typescript-loader": "^5.0.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-jest": "17.0.2",
@@ -51,10 +52,12 @@
     "recursive-readdir": "2.1.0",
     "scripty": "^1.7.2",
     "solidity-coverage": "^0.3.5",
+    "source-map-loader": "^0.2.3",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
     "truffle-contract": "^3.0.0",
     "truffle-solidity-loader": "0.0.8",
+    "typescript": "^2.8.1",
     "url-loader": "0.5.7",
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.13",
@@ -65,6 +68,8 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "@types/react": "^16.3.10",
+    "@types/react-dom": "^16.0.5",
     "detect-port": "^1.1.0",
     "history": "^4.7.2",
     "moment": "^2.18.1",
@@ -87,11 +92,14 @@
     "redux-persist": "^4.8.0",
     "redux-saga": "^0.14.3",
     "redux-thunk": "^2.2.0",
+    "rimraf": "^2.6.2",
     "truffle-hdwallet-provider": "0.0.3"
   },
   "scripts": {
     "deploy": "gh-pages -d ./build -r https://github.com/triage/chia.fit.git -b master",
     "test:solidity": "scripty",
+    "build:contracts": "truffle compile && yarn contracts:sync-src",
+    "contracts:sync-src": "rimraf src/contracts && cp -R build/contracts/ src/contracts",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
