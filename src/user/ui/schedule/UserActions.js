@@ -63,7 +63,7 @@ class UserActions extends PureComponent {
       const balance = eth.web3().fromWei(schedule.balance)
 
       // studio can only cancel if current date is before class
-      if (new Date() < new Date(schedule.dates.start)) {
+      if (new Date() < schedule.dates.start.toDate()) {
         return (
           <form
             onSubmit={handleSubmit(values => {
@@ -99,7 +99,7 @@ class UserActions extends PureComponent {
     } else if (user.type === UserType.individual || user.type === UserType.reseller) {
       const price = user.type === UserType.individual ? schedule.price.individual : schedule.price.reseller
       if (schedule.reserved) {
-        if (new Date().valueOf() < new Date(schedule.dates.cancellation).valueOf()) {
+        if (new Date().valueOf() < schedule.dates.cancellation.toDate().valueOf()) {
           return (
             <button
               type="button"
@@ -114,7 +114,7 @@ class UserActions extends PureComponent {
           <span>The cancellation window of this class has past.</span>
         )
       }
-      if (new Date().valueOf() < new Date(schedule.dates.purchase).valueOf()) {
+      if (new Date().valueOf() < schedule.dates.purchase.toDate().valueOf()) {
         if (user.type === UserType.reseller) {
           return (
             <form

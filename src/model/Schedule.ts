@@ -1,11 +1,5 @@
 import moment from 'moment'
 
-const format = {
-  long: 'ddd, MMM D, H:mm a',
-  short: 'H:mm a',
-  date: 'ddd, MMM D',
-}
-
 interface ScheduleJSON {
   address: string
   balance: number
@@ -47,11 +41,11 @@ export class Schedule {
   instructor: string
   price: object
   dates: {
-    date: string
-    start: string
-    end: string
-    cancellation: string
-    purchase: string
+    date: moment.Moment
+    start: moment.Moment
+    end: moment.Moment
+    cancellation: moment.Moment
+    purchase: moment.Moment
   }
   class: {
     name: string
@@ -65,9 +59,11 @@ export class Schedule {
   constructor(public json: ScheduleJSON) {
     Object.assign(this, {}, json, {
       dates: {
-        date: json ? moment(json.dates.start).format(format.date) : null,
-        start: json ? moment(json.dates.start).format(format.short) : null,
-        end: json ? moment(json.dates.end).format(format.short) : null,
+        cancellation: json ? moment(json.dates.cancellation) : null,
+        purchase: json ? moment(json.dates.purchase) : null,
+        date: json ? moment(json.dates.start) : null,
+        start: json ? moment(json.dates.start) : null,
+        end: json ? moment(json.dates.end) : null,
       }
     })
   }
