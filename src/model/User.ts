@@ -13,7 +13,7 @@ export class User {
   contactDetails: string
   constructor(public json: UserJSON) {
     Object.assign(this, {}, json, {
-      balance: eth.web3().fromWei(json.balance)
+      balance: json ? eth.web3().fromWei(json.balance) : null
     })
   }
 }

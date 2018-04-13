@@ -9,6 +9,10 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
+    "paths": {
+      "model": ["model"],
+      "util": ["util"],
+    },
     "rootDir": "src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
