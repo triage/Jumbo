@@ -1,16 +1,17 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { reduxForm } from 'redux-form'
-import eth from 'util/eth'
+import { eth } from 'util/eth'
 import { Schedule } from 'model/Schedule'
+import { User } from 'model/User'
 import UserType from 'user/data/user/UserType'
 import ClassInfo from './ClassInfo'
-import ScheduleInfo from './ScheduleInfo'
+import { ScheduleInfo } from './ScheduleInfo'
 import Attendees from './Attendees'
 
 class ScheduleDetail extends PureComponent {
   static propTypes = {
-    user: PropTypes.object.isRequired,
+    user: PropTypes.instanceOf(User).isRequired,
     schedule: PropTypes.instanceOf(Schedule).isRequired,
     scheduleLoad: PropTypes.func.isRequired,
     address: PropTypes.string.isRequired,

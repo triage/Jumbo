@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form'
-import eth from 'util/eth'
+import { eth } from 'util/eth'
 
 export const formName = 'resellers'
 const style = {

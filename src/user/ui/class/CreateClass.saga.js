@@ -1,7 +1,7 @@
 import { put, call, takeEvery, apply } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import { stopSubmit, startSubmit } from 'redux-form'
-import eth from 'util/eth'
+import { eth } from 'util/eth'
 import { CLASS_CREATE, classCreated } from './CreateClassActions'
 import { formName } from './CreateClassForm'
 

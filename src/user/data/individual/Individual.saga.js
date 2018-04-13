@@ -1,7 +1,7 @@
 import { put, takeEvery, call } from 'redux-saga/effects'
 import moment from 'moment'
 import UserType from 'user/data/user/UserType'
-import eth from 'util/eth'
+import { eth } from 'util/eth'
 import { INDIVIDUAL_LOAD, individualLoaded } from './IndividualActions'
 
 function* doIndividualLoad() {

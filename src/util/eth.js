@@ -18,7 +18,7 @@ export const SigninError = {
   general: 'GENERAL',
 }
 
-const eth = {
+export const eth = {
   provider: () => (window.web3 ? window.web3.currentProvider : null),
 
   defaultAccount: null,
@@ -87,7 +87,6 @@ const eth = {
 
   from: () => ({ from: eth.defaultAccount, gas: 3000000 }),
 }
-export default eth
 
 export const start = () => new Promise((fulfill, reject) => {
   window.addEventListener('load', () => {

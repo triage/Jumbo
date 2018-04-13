@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import eth from './util/eth'
+import { eth } from './util/eth'
 import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers'
 
 const OnlyAuthLinks = VisibleOnlyAuth(props => {

@@ -1,5 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects'
-import eth from 'util/eth'
+import { eth } from 'util/eth'
 import { CLASSES_LOAD, classesLoaded } from './ClassesActions'
 
 export function* doClassesLoad(action) {

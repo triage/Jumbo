@@ -61,6 +61,24 @@ code {
   /* padding-top: 15pt; */
 }
 
+/* schedule detail */
+
+.balance {
+  font-size: 30pt;
+}
+
+.userActions {
+  float: right;
+  text-align: center;
+  background-color: #eceff1;
+  padding: 25pt;
+  width: 25%;
+}
+
+.left {
+  float: left;
+}
+
 /* NAVBAR */
 
 .navbar {

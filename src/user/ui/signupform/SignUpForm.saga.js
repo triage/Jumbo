@@ -1,7 +1,7 @@
 import { apply, put, call, takeEvery } from 'redux-saga/effects'
 import { stopSubmit, startSubmit } from 'redux-form'
 import { delay } from 'redux-saga'
-import eth from 'util/eth'
+import { eth } from 'util/eth'
 import UserType from 'user/data/user/UserType'
 import { formName } from './SignUpForm'
 import { USER_SIGNUP, userLoggedIn } from './SignUpFormActions'

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { reduxForm, Field } from 'redux-form'
 import UserType from 'user/data/user/UserType'
-import eth from 'util/eth'
+import { eth } from 'util/eth'
 
 class UserActions extends PureComponent {
   static propTypes = {

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "localhost",
+    "baseUrl": "src",
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
