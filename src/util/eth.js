@@ -29,6 +29,7 @@ const eth = {
         reject(SigninError.general)
       } else if (accounts.length > 0) {
         const [defaultAccount] = accounts
+        eth.defaultAccount = defaultAccount
         fulfill(defaultAccount)
       } else {
         reject(SigninError.anonymous)

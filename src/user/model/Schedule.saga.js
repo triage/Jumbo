@@ -55,7 +55,7 @@ function* doScheduleLoad(action) {
     const individual = yield eth.Individual().deployed()
     const Studio = yield eth.Studio().deployed()
     const user = yield select(state => state.user.data)
-    const [address] = action
+    const { address } = action
     const schedule = eth.Schedule().at(address)
     const instructor = yield call(schedule.instructor.call)
     const dates = yield call(schedule.dates.call)

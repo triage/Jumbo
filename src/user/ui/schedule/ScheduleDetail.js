@@ -7,10 +7,10 @@ import ClassInfo from './ClassInfo'
 import ScheduleInfo from './ScheduleInfo'
 import Attendees from './Attendees'
 
-class Schedule extends PureComponent {
+class ScheduleDetail extends PureComponent {
   static propTypes = {
     user: PropTypes.object.isRequired,
-    schedule: PropTypes.object.isRequired,
+    schedule: PropTypes.object,
     scheduleLoad: PropTypes.func.isRequired,
     address: PropTypes.string.isRequired,
   }
@@ -50,4 +50,4 @@ class Schedule extends PureComponent {
 export default reduxForm({
   // a unique name for the form
   form: 'cancel',
-})(Schedule)
+})(ScheduleDetail)
