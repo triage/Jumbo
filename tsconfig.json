@@ -11,7 +11,7 @@
     "moduleResolution": "node",
     "paths": {
       "model": ["model"],
-      "util": ["util"],
+      "util": ["util"]
     },
     "rootDir": "src",
     "forceConsistentCasingInFileNames": true,

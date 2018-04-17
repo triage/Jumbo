@@ -9,6 +9,11 @@ interface ScheduleInfoProps {
   schedule: Schedule
 }
 
+const format = {
+  date: 'ddd, MMM D',
+  short: 'H:mm a',
+}
+
 const Balance: React.SFC<ScheduleInfoProps> = props => {
   const { user, schedule } = props
   if (user.type !== UserType.studio) {
@@ -36,8 +41,8 @@ const ScheduleInfo: React.SFC<ScheduleInfoProps> = props => {
           <Balance {...props} />
           <p>
             Instructor: {schedule.instructor}<br />
-            {schedule.dates.date}<br />
-            {schedule.dates.start} - {schedule.dates.end}<br />
+            {schedule.dates.date.format(format.date)}<br />
+            {schedule.dates.start.format(format.short)} - {schedule.dates.end.format(format.short)}<br />
           </p>
           <UserActions {...props} className="userActions" />
         </div>
