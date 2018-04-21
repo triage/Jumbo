@@ -1,17 +1,26 @@
 import { connect } from 'react-redux'
-import { Schedule } from 'model/Schedule'
-import { User } from 'model/User'
+import { Schedule, ScheduleJSON } from 'model/Schedule'
+import { match } from 'react-router'
+import { User, UserJSON } from 'model/User'
 import ScheduleDetail from './ScheduleDetail'
 import { scheduleLoad } from '../../data/schedule/ScheduleActions'
 import { spotPurchase, spotCancel, scheduleCancel, scheduleComplete } from './ScheduleDetailActions'
 
-const mapStateToProps = (state, ownProps) => {
-  const schedule = state.schedules.find(found => found.address === ownProps.match.params.address)
+interface State {
+  schedules: [ScheduleJSON]
+  user: {
+    data: UserJSON
+    date: Date
+  }
+}
+
+const mapStateToProps = (state: State, ownProps: { match: match<{ address: string}> }) => {
+  const schedule = state.schedules.find((found: {address: string}) => found.address === ownProps.match.params.address)
   const reserved = schedule ? schedule.reserved : false
   return {
     user: new User(state.user.data),
     address: ownProps.match.params.address,
-    schedule: new Schedule(schedule),
+    schedule: schedule ? new Schedule(schedule) : null,
     reserved,
     date: state.user.date, // this is shitty
   }

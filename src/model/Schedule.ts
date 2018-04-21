@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-interface ScheduleJSON {
+export interface ScheduleJSON {
   address: string
   balance: number
   instructor: string

@@ -1,6 +1,6 @@
 import { eth } from 'util/eth'
 
-interface UserJSON {
+export interface UserJSON {
   type: string
   name: string
   contactDetails: string
