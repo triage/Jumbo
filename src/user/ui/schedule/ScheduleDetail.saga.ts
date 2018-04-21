@@ -11,9 +11,10 @@ import {
   spotCancelled,
   scheduleCompleted,
   scheduleCancelled,
+  ScheduleCancel,
 } from './ScheduleDetailActions'
 
-export function* doScheduleCancel(action) {
+export function* doScheduleCancel(action: ScheduleCancel) {
   const Schedule = eth.Schedule()
   const Studio = eth.Studio()
   const from = eth.from()
