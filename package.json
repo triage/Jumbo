@@ -76,6 +76,7 @@
     "@types/react-dom": "^16.0.5",
     "@types/react-redux": "^5.0.16",
     "@types/react-router-dom": "^4.2.6",
+    "@types/redux-form": "^7.2.3",
     "detect-port": "^1.1.0",
     "eslint-plugin-typescript": "^0.11.0",
     "history": "^4.7.2",

@@ -1,46 +1,58 @@
-import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
-import { reduxForm, Field } from 'redux-form'
+import React, { PureComponent, FormEvent } from 'react'
+import { reduxForm, Field, InjectedFormProps, SubmitHandler } from 'redux-form'
+import { Schedule } from 'model/Schedule'
+import { User } from 'model/User'
 import UserType from 'user/data/user/UserType'
 import { eth } from 'util/eth'
 
-class UserActions extends PureComponent {
-  static propTypes = {
-    user: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    pristine: PropTypes.bool.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    scheduleCancel: PropTypes.func.isRequired,
-    scheduleComplete: PropTypes.func.isRequired,
-    spotPurchase: PropTypes.func.isRequired,
-    spotCancel: PropTypes.func.isRequired,
-    schedule: PropTypes.object.isRequired,
-  }
-  constructor() {
-    super()
-    this.state = {
-      name: null,
-      timer: null,
+interface Props extends InjectedFormProps {
+  user: User
+  location: object
+  history: object
+  handleSubmit: SubmitHandler
+  pristine: boolean
+  submitting: boolean
+  scheduleCancel: (address: string, reason: string, history: object) => void
+  scheduleComplete: (address: string, history: object) => void
+  spotPurchase: (schedule: Schedule, address: string, history: Object, location: Object) => void
+  spotCancel: (schedule: Schedule, address: string, history: object, location: object) => void
+  schedule: Schedule
+}
+
+interface State {
+  timer?: NodeJS.Timer,
+  name?: string,
+  inputValid: boolean
+}
+
+class UserActions extends PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props, {
       inputValid: false,
-    }
+      timer: null,
+      name: null,
+    })
   }
 
-  onAddressChanged(event) {
-    clearTimeout(this.state.timer)
+  onAddressChanged(event: FormEvent<HTMLInputElement>) {
+    if (this.state.timer) {
+      clearTimeout(this.state.timer)
+    }
     this.setState({
       inputValid: false,
-      name: null,
-      timer: setTimeout(() => {
-        eth.Individual().deployed().then(reseller => reseller.getName.call(event.target.value)).then(name => {
-          this.setState({
-            inputValid: false,
-            name,
-          })
-        })
-      }, 1000),
-    })
+      name: undefined,
+      timer: global.setTimeout(
+        () => {
+          eth.Individual().deployed().then((entity: { getName: { call: (value: string) => Promise<string> }}) => 
+            entity.getName.call(event.currentTarget.value)).then((name: string) => {
+              this.setState({
+                inputValid: false,
+                name,
+              })
+            })
+        },
+        1000),
+    } as State)
   }
 
   render() {
@@ -66,9 +78,10 @@ class UserActions extends PureComponent {
       if (new Date() < schedule.dates.start.toDate()) {
         return (
           <form
-            onSubmit={handleSubmit(values => {
-              scheduleCancel(schedule.address, values.reason, history)
-            })}
+            onSubmit={
+              handleSubmit((values: {reason: string}) => {
+                scheduleCancel(schedule.address, values.reason, history)
+              })}
           >
             <hr />
             <Field
@@ -118,7 +131,7 @@ class UserActions extends PureComponent {
         if (user.type === UserType.reseller) {
           return (
             <form
-              onSubmit={handleSubmit(values => {
+              onSubmit={handleSubmit((values: { address: string }) => {
                   spotPurchase(schedule, values.address, history, location)
                 })}
             >
@@ -130,7 +143,7 @@ class UserActions extends PureComponent {
                     component="input"
                     type="text"
                     placeholder="User Address"
-                    onChange={event => this.onAddressChanged(event)}
+                    onChange={(event: FormEvent<HTMLInputElement>) => this.onAddressChanged(event)}
                   />
                   {this.state.name}
                 </div>
@@ -163,6 +176,7 @@ class UserActions extends PureComponent {
         <span>The purchase window of this class has past.</span>
       )
     }
+    return null
   }
 }
 

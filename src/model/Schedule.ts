@@ -39,7 +39,10 @@ export class Schedule {
   address: string
   balance: number
   instructor: string
-  price: object
+  price: {
+    individual: number,
+    reseller: number,
+  }
   dates: {
     date: moment.Moment
     start: moment.Moment

@@ -8,6 +8,7 @@ interface UserJSON {
 }
 
 export class User {
+  address: string
   type: string
   name: string
   contactDetails: string

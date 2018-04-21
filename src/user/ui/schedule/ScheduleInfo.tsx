@@ -44,7 +44,7 @@ const ScheduleInfo: React.SFC<ScheduleInfoProps> = props => {
             {schedule.dates.date.format(format.date)}<br />
             {schedule.dates.start.format(format.short)} - {schedule.dates.end.format(format.short)}<br />
           </p>
-          <UserActions {...props} className="userActions" />
+          <UserActions {...props} />
         </div>
         <div style={{ clear: 'both' }} />
       </div>
