@@ -12,6 +12,9 @@ import {
   scheduleCompleted,
   scheduleCancelled,
   ScheduleCancel,
+  SpotCancel,
+  SpotPurchase,
+  ScheduleComplete,
 } from './ScheduleDetailActions'
 
 export function* doScheduleCancel(action: ScheduleCancel) {
@@ -28,12 +31,13 @@ export function* doScheduleCancel(action: ScheduleCancel) {
     yield put(scheduleCancelled(action.schedule))
     yield call(action.history.push, '/dashboard')
   } catch (error) {
-    /* eslint-disable no-console */
+    /* tslint:disable-next-line */
     console.log(error)
     yield put({ type: 'SCHEDULE_CANCEL_FAILED', error })
   }
 }
-function* doScheduleComplete(action) {
+
+function* doScheduleComplete(action: ScheduleComplete) {
   const Schedule = eth.Schedule()
   const Studio = eth.Studio()
 
@@ -46,44 +50,44 @@ function* doScheduleComplete(action) {
     yield put(schedulesLoad())
     action.history.push('/dashboard')
   } catch (error) {
-    /* eslint-disable no-console */
+    /* tslint:disable-next-line */
     console.log(`error completing schedule:${error}`)
   }
 }
 
-function* doSpotCancel(action) {
+function* doSpotCancel(action: SpotCancel) {
   try {
+    const { schedule } = action
     const individual = yield eth.Individual().deployed()
-    yield apply(individual, individual.spotCancel.sendTransaction, [action.schedule.address, eth.from()])
+    yield apply(individual, individual.spotCancel.sendTransaction, [schedule, eth.from()])
     yield put(spotCancelled(action.schedule, action.history))
   } catch (error) {
-    /* eslint-disable no-console */
+    /* tslint:disable-next-line */
     console.log(error)
   }
 }
 
-function* doSpotPurchase(action) {
+function* doSpotPurchase(action: SpotPurchase) {
   try {
-    const userType = yield select(state => state.user.data.type)
+    const userType = yield select((state: { user: { data: { type: string }}}) => state.user.data.type)
+    const { schedule, price } = action 
+    const from = Object.assign({}, eth.from(), {
+      value: parseInt(price, 10),
+    })
     if (userType === UserType.individual) {
       const Individual = eth.Individual()
-      const from = Object.assign({}, eth.from(), {
-        value: parseInt(action.schedule.price.individual, 10),
-      })
       const individual = yield Individual.deployed()
-      yield apply(individual, individual.spotPurchase.sendTransaction, [action.schedule.address, from])
+      yield apply(individual, individual.spotPurchase.sendTransaction, [schedule, from])
     } else {
       const Reseller = eth.Reseller()
-      const from = Object.assign({}, eth.from(), {
-        value: parseInt(action.schedule.price.reseller, 10),
-      })
       const reseller = yield Reseller.deployed()
-      yield apply(reseller, reseller.spotPurchase.sendTransaction, [action.schedule.address, action.individual, from])
+      const { individual } = action
+      yield apply(reseller, reseller.spotPurchase.sendTransaction, [schedule, individual, from])
     }
 
     yield put(spotPurchased(action.schedule, action.history))
   } catch (error) {
-    /* eslint-disable no-console */
+    /* tslint:disable-next-line */
     console.log(error)
   }
 }

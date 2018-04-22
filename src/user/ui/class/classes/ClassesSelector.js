@@ -28,11 +28,10 @@ const ClassesSelector = props => {
           return
         }
         const [selectedOption] = event.target.selectedOptions
-        const [dataset] = selectedOption
-        const [address] = dataset
+        const { dataset } = selectedOption
+        const { address } = dataset
         input.onChange({ address })
-}
-      }
+    }}
     >
       <option value="" />
       {options}

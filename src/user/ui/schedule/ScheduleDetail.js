@@ -12,7 +12,7 @@ import Attendees from './Attendees'
 class ScheduleDetail extends PureComponent {
   static propTypes = {
     user: PropTypes.instanceOf(User).isRequired,
-    schedule: PropTypes.instanceOf(Schedule).isRequired,
+    schedule: PropTypes.instanceOf(Schedule),
     scheduleLoad: PropTypes.func.isRequired,
     address: PropTypes.string.isRequired,
   }

@@ -26,7 +26,7 @@ Attendees.propTypes = {
   schedule: PropTypes.shape({
     attendees: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
-    })).isRequired,
+    })),
   }).isRequired,
   user: PropTypes.shape({
     type: PropTypes.string.isRequired,

@@ -22,12 +22,20 @@ export const scheduleCancelled = (schedule: string) => ({
   schedule,
 })
 
+export interface ScheduleComplete {
+  type: string
+  schedule: string
+  history: {
+    push: (path: string) => void
+  }
+}
+
 export const SCHEDULE_COMPLETE = 'SCHEDULE_COMPLETE'
-export const scheduleComplete = (schedul: string, history: object) => ({
+export const scheduleComplete = (schedule: string, history: object) => ({
   type: SCHEDULE_COMPLETE,
   schedule,
   history,
-})
+} as ScheduleComplete)
 
 export const SCHEDULE_COMPLETED = 'SCHEDULE_COMPLETED'
 export const scheduleCompleted = (schedule: string, history: object) => ({
@@ -37,13 +45,37 @@ export const scheduleCompleted = (schedule: string, history: object) => ({
 })
 
 export const SPOT_PURCHASE = 'SPOT_PURCHASE'
-export const spotPurchase = (schedule: string, individual: string, history: object, location: object) => ({
-  type: SPOT_PURCHASE,
-  schedule,
-  individual,
-  history,
-  location,
-})
+
+export interface SpotPurchase {
+  type: string
+  schedule: string
+  price: string
+  individual: string
+  history: object
+  location: object
+}
+
+export const spotPurchase = (
+  schedule: string,
+  individual: string,
+  price: string,
+  history: object,
+  location: object) => ({
+    type: SPOT_PURCHASE,
+    schedule,
+    price,
+    individual,
+    history,
+    location,
+  } as SpotPurchase)
+
+export interface SpotCancel {
+  type: string
+  schedule: string
+  individual: string
+  history: object
+  location: object
+}
 
 export const SPOT_CANCEL = 'SPOT_CANCEL'
 export const spotCancel = (schedule: string, individual: string, history: object, location: object) => ({
@@ -52,7 +84,7 @@ export const spotCancel = (schedule: string, individual: string, history: object
   individual,
   history,
   location,
-})
+}) as SpotCancel
 
 export const SPOT_PURCHASED = 'SPOT_PURCHASED'
 export const spotPurchased = (schedule: string, history: object) => ({

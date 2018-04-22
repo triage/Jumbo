@@ -14,8 +14,8 @@ interface Props extends InjectedFormProps {
   submitting: boolean
   scheduleCancel: (address: string, reason: string, history: object) => void
   scheduleComplete: (address: string, history: object) => void
-  spotPurchase: (schedule: Schedule, address: string, history: Object, location: Object) => void
-  spotCancel: (schedule: Schedule, address: string, history: object, location: object) => void
+  spotPurchase: (schedule: string, address: string, price: number, history: Object, location: Object) => void
+  spotCancel: (schedule: string, address: string, history: object, location: object) => void
   schedule: Schedule
 }
 
@@ -117,7 +117,7 @@ class UserActions extends PureComponent<Props, State> {
             <button
               type="button"
               className="cta destructive"
-              onClick={() => spotCancel(schedule, user.address, history, location)}
+              onClick={() => spotCancel(schedule.address, user.address, history, location)}
             >
                 Cancel and refund
             </button>
@@ -132,7 +132,7 @@ class UserActions extends PureComponent<Props, State> {
           return (
             <form
               onSubmit={handleSubmit((values: { address: string }) => {
-                  spotPurchase(schedule, values.address, history, location)
+                  spotPurchase(schedule.address, values.address, price, history, location)
                 })}
             >
               <div>
@@ -164,7 +164,7 @@ class UserActions extends PureComponent<Props, State> {
               type="button"
               className="cta"
               onClick={() => {
-                  spotPurchase(schedule, user.address, history, location)
+                  spotPurchase(schedule.address, user.address, price, history, location)
                 }}
             >
               {`Buy class for ${eth.web3().fromWei(price)}`}
