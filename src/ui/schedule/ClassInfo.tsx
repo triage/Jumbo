@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { Schedule } from 'data/schedule/Schedule';
 
-const ClassInfo = props => {
+const ClassInfo: React.SFC<{schedule: Schedule}> = props => {
   const {
     schedule,
   } = props
@@ -11,10 +11,6 @@ const ClassInfo = props => {
       <p style={{ whiteSpace: 'pre-line' }}>{schedule.class.description}</p>
     </div>
   )
-}
-
-ClassInfo.propTypes = {
-  schedule: PropTypes.object.isRequired,
 }
 
 export default ClassInfo

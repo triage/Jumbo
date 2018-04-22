@@ -36,6 +36,9 @@ export class Studio {
 }
 
 export class Schedule {
+  attendees?: [{
+    name: string
+  }]
   address: string
   balance: number
   instructor: string
@@ -52,6 +55,7 @@ export class Schedule {
   }
   class: {
     name: string
+    description: string
   }
   reserved: boolean
   studio: {
