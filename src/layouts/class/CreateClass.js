@@ -1,5 +1,5 @@
 import React from 'react'
-import CreateClassContainer from 'user/ui/class/CreateClassContainer'
+import CreateClassContainer from 'ui/class/CreateClassContainer'
 
 const CreateClass = props => (
   <main className="container">

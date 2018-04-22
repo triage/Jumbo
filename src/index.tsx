@@ -4,14 +4,14 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 // Redux Store
 import store from './app/store'
-import { userLoggedIn } from './user/ui/signupform/SignUpFormActions'
+import { userLoggedIn } from 'ui/signupform/SignUpFormActions'
 import { start, SigninError } from './util/eth'
 import App from './App'
-import { userPurge } from './user/data/user/UserActions'
-import { studioLoad } from './user/data/studio/StudioActions'
-import { resellerLoad } from './user/data/reseller/ResellerActions'
-import { individualLoad } from './user/data/individual/IndividualActions'
-import UserType from './user/data/user/UserType'
+import { userPurge } from 'data/user/UserActions'
+import { studioLoad } from 'data/studio/StudioActions'
+import { resellerLoad } from 'data/reseller/ResellerActions'
+import { individualLoad } from 'data/individual/IndividualActions'
+import UserType from 'data/user/UserType'
 
 function render() {
   ReactDOM.render(

@@ -36,7 +36,7 @@
 
     // We set requireForBlockBody to false (airbnb is true)
     "arrow-parens": ["error", "as-needed", {
-      requireForBlockBody: false,
+      requireForBlockBody: false,ScheduleActions
     }],
 
     // This interfers with our dwell tracking code
