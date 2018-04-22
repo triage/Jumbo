@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
-import { Schedule, ScheduleJSON } from 'model/Schedule'
+import { Schedule, ScheduleJSON } from 'data/schedule/Schedule'
 import { match } from 'react-router'
-import { User, UserJSON } from 'model/User'
+import { User, UserJSON } from 'data/user/User'
+import { scheduleLoad } from 'data/schedule/ScheduleActions'
 import ScheduleDetail from './ScheduleDetail'
-import { scheduleLoad } from '../../data/schedule/ScheduleActions'
 import { spotPurchase, spotCancel, scheduleCancel, scheduleComplete } from './ScheduleDetailActions'
 
 interface State {

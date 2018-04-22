@@ -1,7 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react'
 import { reduxForm, Field, InjectedFormProps, SubmitHandler } from 'redux-form'
-import { Schedule } from 'model/Schedule'
-import { User } from 'model/User'
+import { Schedule } from 'data/schedule/Schedule'
+import { User } from 'data/user/User'
 import UserType from 'data/user/UserType'
 import { eth } from 'util/eth'
 

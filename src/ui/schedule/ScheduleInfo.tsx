@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Schedule } from 'model/Schedule'
-import { User } from 'model/User'
+import { Schedule } from 'data/schedule/Schedule'
+import { User } from 'data/user/User'
 import UserType from 'data/user/UserType'
 import UserActions from './UserActions'
 
