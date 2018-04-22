@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers'
-import NavigationContainer from './NavigationContainer'
+import NavigationContainer from './ui/navigation/NavigationContainer'
 
 // Layouts
 import Dashboard from './layouts/dashboard/Dashboard'

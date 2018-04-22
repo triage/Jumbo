@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { eth } from './util/eth'
-import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers'
+import { eth } from 'util/eth'
+import { HiddenOnlyAuth, VisibleOnlyAuth } from 'util/wrappers'
 
 const OnlyAuthLinks = VisibleOnlyAuth(props => {
   const balance = parseFloat(eth.web3().fromWei(props.user.data.balance), 10).toFixed(2)
