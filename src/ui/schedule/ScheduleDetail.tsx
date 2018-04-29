@@ -1,22 +1,28 @@
 import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
-import { reduxForm } from 'redux-form'
-import { eth } from 'util/eth'
+import { reduxForm, InjectedFormProps } from 'redux-form'
 import { Schedule } from 'data/schedule/Schedule'
 import { User } from 'data/user/User'
 import UserType from 'data/user/UserType'
-import ClassInfo from './ClassInfo'
+import { ClassInfo } from './ClassInfo'
 import { ScheduleInfo } from './ScheduleInfo'
-import Attendees from './Attendees'
+import { Attendees } from './Attendees'
 
-class ScheduleDetail extends PureComponent {
-  static propTypes = {
-    user: PropTypes.instanceOf(User).isRequired,
-    schedule: PropTypes.instanceOf(Schedule),
-    scheduleLoad: PropTypes.func.isRequired,
-    address: PropTypes.string.isRequired,
-  }
+export interface ScheduleDetailProps {
+  user: User
+  address: string
+  schedule?: Schedule
+  location: object
+  history: object
+  reserved: boolean
+  date?: Date
+  scheduleLoad: (address: string) => void
+  scheduleCancel: (address: string, reason: string, history: object) => void
+  scheduleComplete: (address: string, history: object) => void
+  spotPurchase: (schedule: string, address: string, price: number, history: Object, location: Object) => void
+  spotCancel: (schedule: string, address: string, history: object, location: object) => void
+}
 
+class ScheduleDetail extends PureComponent<ScheduleDetailProps & InjectedFormProps<{}, ScheduleDetailProps>> {
   render() {
     const {
       user,
@@ -31,11 +37,6 @@ class ScheduleDetail extends PureComponent {
       scheduleLoad(address)
       return null
     }
-
-    eth.Schedule().at(schedule.address).then(deployed => {
-      const event = deployed.SpotPurchased({ spotType: 1 }, { fromBlock: 0 })
-      event.get(() => {})
-    })
 
     document.title = `${schedule.class.name}`
 

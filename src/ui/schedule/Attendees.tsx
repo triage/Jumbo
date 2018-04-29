@@ -1,14 +1,9 @@
 import React from 'react'
 import UserType from 'data/user/UserType'
-import { Schedule } from 'data/schedule/Schedule';
 import { User } from 'data/user/User';
+import { Schedule } from 'data/schedule/Schedule';
 
-interface Props {
-  schedule: Schedule
-  user: User
-}
-
-const Attendees: React.SFC<Props> = props => {
+const Attendees: React.SFC<{schedule?: Schedule, user: User}> = props => {
   const {
     schedule,
     user,
@@ -17,7 +12,7 @@ const Attendees: React.SFC<Props> = props => {
   if (user.type !== UserType.studio) {
     return null
   }
-  const attendees = schedule.attendees!.map((attendee: { name: string}) => (
+  const attendees = schedule!.attendees!.map((attendee: { name: string}) => (
     <div key={attendee.name}>{attendee.name}</div>
   ))
 
@@ -29,4 +24,4 @@ const Attendees: React.SFC<Props> = props => {
   )) || null
 }
 
-export default Attendees
+export { Attendees }

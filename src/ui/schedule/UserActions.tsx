@@ -1,23 +1,8 @@
 import React, { PureComponent, FormEvent } from 'react'
-import { reduxForm, Field, InjectedFormProps, SubmitHandler } from 'redux-form'
-import { Schedule } from 'data/schedule/Schedule'
-import { User } from 'data/user/User'
+import { reduxForm, Field, InjectedFormProps } from 'redux-form'
 import UserType from 'data/user/UserType'
 import { eth } from 'util/eth'
-
-interface Props extends InjectedFormProps {
-  user: User
-  location: object
-  history: object
-  handleSubmit: SubmitHandler
-  pristine: boolean
-  submitting: boolean
-  scheduleCancel: (address: string, reason: string, history: object) => void
-  scheduleComplete: (address: string, history: object) => void
-  spotPurchase: (schedule: string, address: string, price: number, history: Object, location: Object) => void
-  spotCancel: (schedule: string, address: string, history: object, location: object) => void
-  schedule: Schedule
-}
+import { ScheduleDetailProps } from './ScheduleDetail'
 
 interface State {
   timer?: NodeJS.Timer,
@@ -25,13 +10,11 @@ interface State {
   inputValid: boolean
 }
 
-class UserActions extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props, {
-      inputValid: false,
-      timer: null,
-      name: null,
-    })
+class UserActions extends PureComponent<ScheduleDetailProps & InjectedFormProps, State> {
+  state = {
+    inputValid: false,
+    timer: undefined,
+    name: undefined,
   }
 
   onAddressChanged(event: FormEvent<HTMLInputElement>) {
@@ -72,15 +55,15 @@ class UserActions extends PureComponent<Props, State> {
 
     if (user.type === UserType.studio) {
       // studio can complete contract
-      const balance = eth.web3().fromWei(schedule.balance)
+      const balance = eth.web3().fromWei(schedule!.balance)
 
       // studio can only cancel if current date is before class
-      if (new Date() < schedule.dates.start.toDate()) {
+      if (new Date() < schedule!.dates.start.toDate()) {
         return (
           <form
             onSubmit={
               handleSubmit((values: {reason: string}) => {
-                scheduleCancel(schedule.address, values.reason, history)
+                scheduleCancel(schedule!.address, values.reason, history)
               })}
           >
             <hr />
@@ -104,20 +87,20 @@ class UserActions extends PureComponent<Props, State> {
         <button
           className="cta"
           onClick={() => {
-            scheduleComplete(schedule.address, history)
+            scheduleComplete(schedule!.address, history)
           }}
         >Complete class and withdraw ${balance}
         </button>
       )
     } else if (user.type === UserType.individual || user.type === UserType.reseller) {
-      const price = user.type === UserType.individual ? schedule.price.individual : schedule.price.reseller
-      if (schedule.reserved) {
-        if (new Date().valueOf() < schedule.dates.cancellation.toDate().valueOf()) {
+      const price = user.type === UserType.individual ? schedule!.price.individual : schedule!.price.reseller
+      if (schedule!.reserved) {
+        if (new Date().valueOf() < schedule!.dates.cancellation.toDate().valueOf()) {
           return (
             <button
               type="button"
               className="cta destructive"
-              onClick={() => spotCancel(schedule.address, user.address, history, location)}
+              onClick={() => spotCancel(schedule!.address, user.address, history, location)}
             >
                 Cancel and refund
             </button>
@@ -127,12 +110,12 @@ class UserActions extends PureComponent<Props, State> {
           <span>The cancellation window of this class has past.</span>
         )
       }
-      if (new Date().valueOf() < schedule.dates.purchase.toDate().valueOf()) {
+      if (new Date().valueOf() < schedule!.dates.purchase.toDate().valueOf()) {
         if (user.type === UserType.reseller) {
           return (
             <form
               onSubmit={handleSubmit((values: { address: string }) => {
-                  spotPurchase(schedule.address, values.address, price, history, location)
+                  spotPurchase(schedule!.address, values.address, price, history, location)
                 })}
             >
               <div>
@@ -164,7 +147,7 @@ class UserActions extends PureComponent<Props, State> {
               type="button"
               className="cta"
               onClick={() => {
-                  spotPurchase(schedule.address, user.address, price, history, location)
+                  spotPurchase(schedule!.address, user.address, price, history, location)
                 }}
             >
               {`Buy class for ${eth.web3().fromWei(price)}`}
