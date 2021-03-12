@@ -43,7 +43,7 @@
     "path-exists": "2.1.0",
     "postcss-loader": "1.0.0",
     "promise": "7.1.1",
-    "react-dev-utils": "^0.4.2",
+    "react-dev-utils": "^11.0.4",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-scripts": "1.1.1",
